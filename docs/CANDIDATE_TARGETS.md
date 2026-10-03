@@ -29,12 +29,27 @@ Queried 2026-10-02, window 2025-03-01 to 2026-10-01.
 
 **Computed separation:** ~604 arcsec (~10.1 arcmin) over ~8.12 hours — about **98 pixels** at SPHEREx's 6.15 arcsec/pixel scale. Comfortably visible in a single blink/swipe, and small enough (0.168°) to fit inside one cutout (max cutout size is 0.5°) centered between the two positions.
 
-**Status:** Position/coverage confirmed via MOST. Not yet confirmed: actual visual quality of Eros in these specific frames (brightness/SNR, whether it falls near a detector edge or gap) — that requires pulling the real cutouts, which is a Phase 2/3 task, not Phase 1.
+**Status: visually confirmed (2026-10-02).** Pulled both real cutouts (`?center=7.413807,9.976979&size=0.3`) and opened the `IMAGE` extension with astropy. Eros is a clean, obvious point source in both frames — not near a detector edge or gap, not confused with a background star:
+
+| | Epoch 1 | Epoch 2 |
+|---|---|---|
+| Predicted pixel | (133.8, 77.2) | (39.3, 97.4) |
+| Peak flux near predicted position | 10.39 | 10.02 |
+| Local background | 0.38 | 0.37 |
+| Local noise (std) | 0.42 | 0.35 |
+| **Peak SNR** | **~23.7** | **~27.4** |
+
+(SNR computed from a local 36×36px background box around the predicted position, not the whole-frame stddev — the frame contains two bright stars that would otherwise skew a naive noise estimate.) The detected peak sits 1–2 pixels from the MOST-predicted position in both frames, which is expected ephemeris/WCS rounding at this scale, not a misidentification — the same two background stars (including a bright close double, bottom-right of the full cutout) hold fixed pixel positions across both frames while the circled source clearly jumps, confirming it's the moving object and not noise.
+
+Full-frame comparison and zoomed-in crops:
+
+![Eros full-frame blink comparison, epoch 1 vs epoch 2](assets/eros_blink_comparison.png)
+![Eros zoomed detection, epoch 1 vs epoch 2](assets/eros_zoom.png)
+
+**This is a confirmed, demo-ready target.** It resolves the project's single biggest open risk (`PLAN.md`): a real asteroid, real SPHEREx data, real visible motion, real SNR — all grounded, nothing simulated.
 
 ## Still to check
 - At least one more candidate with a *longer* baseline (days, not hours) to show slower, more "did-you-catch-it" motion as a second story beat — contrast with Eros's fast jump.
 - A main-belt asteroid (slower mover, different story) as a variety target for the curated gallery, not just NEOs.
 - Run the same MOST query for 2–3 other bright, well-known asteroids (e.g., 1 Ceres, 4 Vesta, 99942 Apophis) to build out the gallery beyond one object.
-
-## Next step
-Pull the actual cutout images for the Eros pair above (`?center=7.413807,9.976979&size=0.3`, the precise midpoint between the two positions) and visually confirm the object is bright/clean enough to be the story-mode hook. This is the first real "touch the data" step — still allowed under `RULES_COMPLIANCE.md` as data exploration, not product building.
+- Proper astrometric centroiding (fit the PSF, don't just trust the predicted pixel) once this moves into Phase 3 build work — the 1–2px offset is fine for a demo check, not for shipped precision.
