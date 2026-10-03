@@ -34,7 +34,12 @@ Draft schema for a single "target" record — the interface the frontend builds 
 - `source_file` and `doi` are required on every observation — this is what powers the "Where did this come from?" source panel (Innovation / no-hallucinations criterion).
 - `verified: false` targets can exist in the dataset for the live-search stretch feature, but only `verified: true` targets appear in the curated gallery/story intro.
 
+## Resolved (2026-10-02, from IRSA's own tutorials — see `IRSA_DATA_GUIDE.md`)
+
+- **Query pattern:** SIA2 query first (`astroquery.ipac.irsa.Irsa.query_sia(pos=(coord, radius), collection='spherex_qr2')`) to find candidate images for a position, then append `?center={ra},{dec}&size={deg}` to any result's `access_url` to pull a small cutout instead of the full 2048×2048 detector frame. Confirmed: a single sky position can return dozens of observations across time (IRSA's own cutout tutorial pulled 84 for one test field) — repeat coverage is real, at least in some fields. Each team member still needs to verify it for our *specific* chosen target(s).
+- **`known_motion_arcsec` units/precision:** SPHEREx's pixel scale is **~6.15 arcsec/pixel** (confirmed figure, not the rough "~6" estimate). Store `known_motion_arcsec` as a float with at least 2 decimal places — anything under ~3 arcsec (half a pixel) is not a credible "it moved" claim.
+- **`wavelength_band`:** needs the real per-pixel wavelength, not a simplified label — SPHEREx wavelength varies *across* a single detector image. Pull it via the image's spectral WCS: `WCS(header=hdulist["IMAGE"].header, fobj=hdulist, key="W").pixel_to_world(x, y)` returns `(wavelength, bandwidth)` for a given pixel. Store both values on the observation, not just a band name.
+
 ## Open questions (resolve during Phase 1–2)
-- Exact IRSA query pattern per target (Simple Image Access V2 vs. Cutout Service) — partner documents this per target so Nov 14 fetching is mechanical.
-- Confirm units/precision for `known_motion_arcsec` against what IRSA actually returns.
-- Confirm whether `wavelength_band` needs to encode the FITS wavelength-per-pixel convention noted in `CHALLENGE.md`, or whether a simplified band label is sufficient for v1.
+- Which specific target(s) — likely a known asteroid, since stars/brown dwarfs won't visibly move at this pixel scale (see `MVP_CUT_LINE.md`) — actually have 2+ epochs with the object inside the cutout footprint. Not yet checked against a real moving object; the 84-epoch example above was a fixed extended object (galaxy), so it proves repeat coverage exists, not that any specific asteroid is caught twice.
+- Whether to query via SIA2 (per-image) or TAP SQL (bulk, sorted by time — what IRSA's own multi-epoch tutorial uses) for assembling a target's full observation list.

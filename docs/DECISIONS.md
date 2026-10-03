@@ -29,3 +29,7 @@ Log every decision here that changes scope, architecture, or the plan. This is t
 ## 2026-09-22 — MVP leads with asteroids, not stars
 **Why:** Stars barely move within SPHEREx's pixel resolution over six months; asteroids/comets move obviously between exposures hours/days apart and make a reliable demo.
 **Alternatives considered:** Lead with stellar/brown-dwarf motion as the hook — rejected as too fragile for a live demo.
+
+## 2026-10-02 — Worked through IRSA's SPHEREx tutorial, documented the real data access pattern
+**Why:** The tutorial's own terminology (MEF extensions, spectral WCS, SIA2 vs. cutout service) wasn't self-explanatory. Pulled IRSA's actual docs to ground the data contract in confirmed facts rather than guesses — added `docs/IRSA_DATA_GUIDE.md` and resolved the open questions in `DATA_CONTRACT.md` (query pattern, pixel scale 6.15 arcsec/px, wavelength-per-pixel handling).
+**Alternatives considered:** None — this was fact-finding, not a design choice. Still open: whether any specific candidate asteroid actually has 2+ usable SPHEREx epochs. IRSA's own example proved repeat coverage exists for at least one fixed object (84 epochs for a test galaxy), not for a mover we've picked.
