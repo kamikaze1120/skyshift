@@ -34,7 +34,7 @@ Three-phase plan from now through the Nov 14–15 build weekend, with kill crite
 
 ## Data
 
-Data contract teammates build against once real data is flowing: [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md). Plain-language guide to the actual SPHEREx/IRSA file format and how to query it: [`docs/IRSA_DATA_GUIDE.md`](docs/IRSA_DATA_GUIDE.md)
+Data contract teammates build against once real data is flowing: [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md). Plain-language guide to the actual SPHEREx/IRSA file format and how to query it: [`docs/IRSA_DATA_GUIDE.md`](docs/IRSA_DATA_GUIDE.md). Real, verified candidate targets found so far: [`docs/CANDIDATE_TARGETS.md`](docs/CANDIDATE_TARGETS.md)
 
 ## Contributing
 
