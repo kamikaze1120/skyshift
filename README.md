@@ -4,6 +4,8 @@ A public web tool for the 2026 NASA Space Apps Challenge — **"Planet X and SPH
 
 > **Status: pre-kickoff.** This repo currently holds process/governance docs only — no application code. Space Apps rules ask teams not to start building the actual solution before kickoff (Nov 14, 2026, 9:00 AM). See [`docs/RULES_COMPLIANCE.md`](docs/RULES_COMPLIANCE.md).
 
+**Start here:** [`docs/TEAM_CHARTER.md`](docs/TEAM_CHARTER.md) is the living team charter, architecture, and working agreement — the authoritative plan this README summarizes.
+
 ## The challenge
 
 Since 2025, NASA's SPHEREx mission has mapped the entire sky every six months in 102 bands of near-infrared light, imaging more than a billion objects. Comets, asteroids, stars, brown dwarfs, and even new planets reveal themselves by shifting position between images — but no one person can sift through all that data alone.
@@ -26,7 +28,7 @@ MVP scope: [`docs/MVP_CUT_LINE.md`](docs/MVP_CUT_LINE.md)
 
 ## Team
 
-Solo lead so far, team open to local participants. Roles and open slots: [`docs/TEAM_ROLES.md`](docs/TEAM_ROLES.md)
+Mujtaba (frontend, infra, submission) and Athena (backend, agents, data) — see [`docs/TEAM_CHARTER.md`](docs/TEAM_CHARTER.md) for the full ownership split. Still open to more local participants: [`docs/TEAM_ROLES.md`](docs/TEAM_ROLES.md)
 
 ## Plan
 
