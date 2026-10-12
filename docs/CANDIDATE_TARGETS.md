@@ -1,6 +1,8 @@
 # Candidate Targets
 
-Real, verified candidates for the blink-comparator gallery, found via IRSA's MOST tool (Moving Object Search Tool — see `IRSA_DATA_GUIDE.md`). Every entry here has been checked against actual SPHEREx archive matches, not just assumed.
+Real, verified candidates for the **curated hook/fallback gallery only** — found via IRSA's MOST tool (Moving Object Search Tool — see `IRSA_DATA_GUIDE.md`). Every entry here has been checked against actual SPHEREx archive matches, not just assumed.
+
+**This list is not the product's scope.** Per `docs/MVP_CUT_LINE.md` (updated 2026-10-12), the app's core capability is live, comprehensive search over the full SPHEREx archive via ObsTAP/`spherex.obscore` — anyone can look up any object or region, not just what's listed here. These entries exist purely as a fast-loading, pre-verified entry point and a fallback if live queries are slow or IRSA is down during judging. Don't scope the build around "support these N targets" — scope it around "the search works for anything, and these are cached for speed/reliability."
 
 ## How these were found
 
