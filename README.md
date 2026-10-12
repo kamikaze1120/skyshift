@@ -80,7 +80,7 @@ Data contract teammates build against once real data is flowing: [`docs/DATA_CON
 
 ## Contributing
 
-Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a branch — it's the workflow that keeps a small team from overwriting each other's changes.
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a branch — it's the workflow that keeps a small team from overwriting each other's changes. Task tracking lives on the [Skyshift project board](https://github.com/users/kamikaze1120/projects/1) — pick an open issue there before you start.
 
 ## Community
 
