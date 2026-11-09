@@ -112,6 +112,22 @@ Layer 0   IRSA
 | React + Vite or Next.js | Decide at kickoff based on whether SSR buys anything |
 | Groq or Gemini free tier, Ollama local fallback | The orchestrator is free. Inference is the real cost. Local model means a dead venue network does not kill the demo. |
 
+### Deployment topology and env vars (locked 2026-11-09)
+
+| Layer | Host | Why |
+|---|---|---|
+| Layer 4 (frontend) | Vercel | Fast static/SSR hosting, free tier, automatic preview deployments per PR |
+| Layers 1-3 (backend: FastAPI + LangGraph + Postgres/pgvector) | Render, Railway, or Fly.io (final pick made together, no later than kickoff morning) | FastAPI + LangGraph needs a persistent process and a pooled DB connection to Postgres/pgvector. Vercel's serverless functions are a poor fit for that: cold starts, short execution timeouts, no long-lived connections. |
+
+**Env var contract:**
+- Frontend (Vercel): `VITE_API_BASE_URL` (or `NEXT_PUBLIC_API_URL` if Next.js is chosen at kickoff) — public, build-time, points at the backend's deployed URL. Set separately per Vercel environment (Production / Preview / Development); locally it points at `http://localhost:8000` or wherever Athena runs FastAPI.
+- Backend (its own host, never Vercel): `DATABASE_URL` (Postgres/pgvector), LLM provider keys (Groq/Gemini) or the local Ollama endpoint, `CORS_ALLOWED_ORIGINS`. These secrets are never entered into Vercel's dashboard.
+- `.env.example` on both sides lists variable names with placeholder values only. Real `.env` files stay gitignored per Section 7 rule 4.
+
+**CORS gotcha:** Vercel issues a unique preview URL per PR/branch, not one fixed domain. The backend's CORS config must allow the production domain plus a pattern for preview deployments (e.g. `https://skyshift-*.vercel.app`), or every PR preview silently fails to reach the API.
+
+**Ownership:** Mujtaba sets up and owns the Vercel project and its env vars (this is the `infra/` line in Section 6). Athena picks and owns the backend host and its env vars. Neither side pastes the other's secrets into chat.
+
 ### Observability without paying
 
 No LangSmith. Structured JSON logging plus optional OpenTelemetry. Log every tool call with inputs, outputs, and duration. This doubles as evidence for the "no hallucination" claim.
@@ -127,7 +143,8 @@ Split by layer, not by feature. Nobody touches the other person's directories wi
 | `frontend/` React components, state, styling | `backend/` FastAPI routers, Pydantic schemas |
 | `frontend/lib/api.ts` generated client | `agents/` LangGraph graph, tool definitions |
 | Sky view, spectral plot, time slider | `data/` IRSA clients, DB models, migrations |
-| `infra/` deploy, env, CI | Fixture JSON that the frontend mocks against |
+| `infra/` — Vercel project, frontend env vars, CI | Backend host (Render/Railway/Fly) and its env vars |
+| | Fixture JSON that the frontend mocks against |
 | Submission form, citations, AI disclosure | Tool call logging and validation layer |
 | Demo video, screenshots, visual design | Offline and cached data fallback |
 | Narrative copy, About page | |

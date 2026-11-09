@@ -34,6 +34,15 @@ Draft schema for a single "target" record — the interface the frontend builds 
 - `source_file` and `doi` are required on every observation — this is what powers the "Where did this come from?" source panel (Innovation / no-hallucinations criterion).
 - `verified: false` targets can exist in the dataset for the live-search stretch feature, but only `verified: true` targets appear in the curated gallery/story intro.
 
+## Transport contract (locked 2026-11-09)
+
+How the frontend actually reaches these records — see `docs/TEAM_CHARTER.md` "Deployment topology and env vars" for the full reasoning.
+
+- Frontend calls the backend through `import.meta.env.VITE_API_BASE_URL` (a Vercel env var) — never a hardcoded URL in frontend source.
+- Backend endpoints, per `TEAM_CHARTER.md` Section 5: `/search` `/object` `/timeseries` `/spectrum` `/ask`. `/object` and `/timeseries` return a single target record shaped as above; `/search` returns an array of them.
+- Backend runs on its own host (Render/Railway/Fly — picked together, not Vercel), because Vercel's serverless functions don't suit a long-lived FastAPI + LangGraph + Postgres process. It needs `CORS_ALLOWED_ORIGINS` covering the production Vercel domain plus the `*.vercel.app` preview-deployment pattern, or PR previews can't reach it.
+- Local dev before any real deployment exists: frontend's `.env` sets `VITE_API_BASE_URL=http://localhost:8000` (or wherever Athena runs FastAPI locally).
+
 ## Resolved (2026-10-02, from IRSA's own tutorials — see `IRSA_DATA_GUIDE.md`)
 
 - **Query pattern:** SIA2 query first (`astroquery.ipac.irsa.Irsa.query_sia(pos=(coord, radius), collection='spherex_qr2')`) to find candidate images for a position, then append `?center={ra},{dec}&size={deg}` to any result's `access_url` to pull a small cutout instead of the full 2048×2048 detector frame. Confirmed: a single sky position can return dozens of observations across time (IRSA's own cutout tutorial pulled 84 for one test field) — repeat coverage is real, at least in some fields. Each team member still needs to verify it for our *specific* chosen target(s).
