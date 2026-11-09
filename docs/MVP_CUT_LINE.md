@@ -4,12 +4,14 @@ Scope discipline for a small team in a 48-hour build. Ordered by commitment leve
 
 **Scope principle (2026-10-12): comprehensive data access is a Must-ship, not a stretch.** The product is not a fixed gallery of a handful of hand-picked objects — it's a general exploration tool backed by a live query layer (ObsTAP/`spherex.obscore`, see `docs/TEAM_CHARTER.md` Section 4) over the full SPHEREx QR2 archive. A curated set of pre-verified targets still exists, but as a fast-loading, guaranteed-to-work *entry point and demo safety net* — never as the ceiling of what a visitor can explore. "Data access" is a named judging criterion, and a tool that only shows 10 fixed objects is a materially weaker answer to it than one that lets anyone search the real archive.
 
+**Confirmed against the official statement (2026-11-09, see `docs/CHALLENGE.md`):** the core ask is literally "user enters RA/Dec, tool shows a series of images like a little video" — this matches and validates the comprehensive-search principle above. It also names official feature suggestions worth weighing into the cut line: co-adding per-detector data for SNR, add/subtract images across epochs (differencing), adjustable field of view, and URL-embeddable coordinates. None of these were invented by us — they're straight from NASA's Potential Considerations.
+
 | Must ship | Ship if on schedule | Cut unless ahead |
 |---|---|---|
-| **Live search of the full SPHEREx archive** — by object name/designation or by sky coordinates/region, not a fixed list | Wavelength slider | Asteroid-catalog cross-check (flag vs. known object) |
-| Blink + swipe between two observations, for *any* object the search returns, not just curated ones | Anonymous flagging + global map | Accounts, comments |
-| Story intro + curated gallery of a handful of pre-verified targets (fast-loading hook, and a fallback demo if live queries are slow/down) | | 3D sky views |
-| Source panel on every image (file, date, DOI) — for curated *and* live-searched targets alike | | |
+| **Live search of the full SPHEREx archive** — by object name/designation or by sky coordinates/region, not a fixed list, rendered as a playable image sequence (not just a single pair) | Wavelength slider | Asteroid-catalog cross-check (flag vs. known object) |
+| Blink + swipe (or play) between observations, for *any* object the search returns, not just curated ones | Anonymous flagging + global map | Accounts, comments |
+| Story intro + curated gallery of a handful of pre-verified targets (fast-loading hook, and a fallback demo if live queries are slow/down) | Per-detector co-adding for SNR (official suggestion — WISE 0855 test shows single raw frames may not be enough, see `CANDIDATE_TARGETS.md`) | 3D sky views |
+| Source panel on every image (file, date, DOI) — for curated *and* live-searched targets alike | Image differencing (add/subtract epochs); adjustable field of view; URL-embeddable coordinates | |
 
 ## Why this order
 - **Comprehensive beats curated.** The original framing ("ship a gallery of 10–20 targets, live search is a stretch") undersold the product's actual capability and the "Data access" criterion. The backend's `spherex.obscore` TAP layer already supports searching anything in the archive — gating the UI to a fixed list would be *hiding* a capability we have, not reducing risk.

@@ -50,7 +50,28 @@ Full-frame comparison and zoomed-in crops:
 
 **This is a confirmed, demo-ready target.** It resolves the project's single biggest open risk (`PLAN.md`): a real asteroid, real SPHEREx data, real visible motion, real SNR — all grounded, nothing simulated.
 
-## Still to check
+## NASA's own named test targets — higher priority than our self-picked ones
+
+The full challenge statement (read 2026-11-09, see `CHALLENGE.md`) names five specific targets to test against: **Barnard's Star, Epsilon Indi B, WISE 0855, RW Aurigae, R Draconis.** None are solar-system objects, so they can't be found via MOST (which computes orbits) — they need a direct SIA2/ObsTAP coordinate query instead, same pattern documented in `IRSA_DATA_GUIDE.md`.
+
+These matter more than our own curated picks for one reason: **judges will likely test these exact five.** Treat verifying the app against them as higher priority than expanding the Eros-style gallery.
+
+### WISE 0855 — coverage confirmed, visibility NOT confirmed (checked 2026-11-09)
+
+- Coordinates from the challenge page: RA 08h55m10.831s, Dec -7d14m42.53s → decimal (133.795129, -7.245147).
+- Query: `https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr2&POS=CIRCLE+133.795129+-7.245147+0.01&RESPONSEFORMAT=CSV`
+- **256 exposures, 129 distinct epochs**, spanning MJD 60800.7 → 61174.3 (2025-05-07 to 2026-05-16, a 373.6-day baseline).
+- Pulled real cutouts for the earliest (`2025W19_1B_0116_1`, detector D6) and latest (`2026W20_1A_1166_1`, detector D2) epochs. **No clear point source visible at the predicted pixel in either frame** — see `assets/wise0855_comparison.png`. This is a real, un-glossed result, not a success.
+- **Why this probably happened:** WISE 0855 is one of the coldest, faintest known brown dwarfs (~250K) — notoriously hard to detect even for dedicated surveys. A single raw exposure in one detector band may simply be below SPHEREx's single-frame sensitivity for it. This directly matches the challenge page's own hint: *"it may make sense to separately add together all the data taken by each of the six detector arrays to improve the signal-to-noise."* Co-adding (stacking) is likely required to show this specific target, not optional polish.
+- **Risk flag:** if the app can only show single raw frames, the official demo target most likely to embarrass the tool in front of judges is this one. Co-adding/stacking should move up in priority accordingly.
+
+### Not yet checked
+- **Barnard's Star** — highest proper-motion star known (~10.3 arcsec/year); likely to show *borderline* motion over a long baseline, similar risk profile to the "stars barely move" caveat already in `MVP_CUT_LINE.md`.
+- **Epsilon Indi B** — brown dwarf binary; check both components resolve separately at SPHEREx's 6.15 arcsec/pixel scale, or whether they blend into one source.
+- **RW Aurigae, R Draconis** — variable stars; these test the *brightness-over-time* dimension, not position. Need a light-curve view (flux vs. epoch at a fixed position), not a blink/swipe — worth confirming the API contract's `/timeseries` endpoint (issue #11 on the project board) actually covers this case, not just moving-object position tracking.
+
+## Our own curated gallery — lower priority, still useful for the hook
+
 - At least one more candidate with a *longer* baseline (days, not hours) to show slower, more "did-you-catch-it" motion as a second story beat — contrast with Eros's fast jump.
 - A main-belt asteroid (slower mover, different story) as a variety target for the curated gallery, not just NEOs.
 - Run the same MOST query for 2–3 other bright, well-known asteroids (e.g., 1 Ceres, 4 Vesta, 99942 Apophis) to build out the gallery beyond one object.
