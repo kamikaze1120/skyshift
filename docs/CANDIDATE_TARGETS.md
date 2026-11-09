@@ -65,10 +65,46 @@ These matter more than our own curated picks for one reason: **judges will likel
 - **Why this probably happened:** WISE 0855 is one of the coldest, faintest known brown dwarfs (~250K) — notoriously hard to detect even for dedicated surveys. A single raw exposure in one detector band may simply be below SPHEREx's single-frame sensitivity for it. This directly matches the challenge page's own hint: *"it may make sense to separately add together all the data taken by each of the six detector arrays to improve the signal-to-noise."* Co-adding (stacking) is likely required to show this specific target, not optional polish.
 - **Risk flag:** if the app can only show single raw frames, the official demo target most likely to embarrass the tool in front of judges is this one. Co-adding/stacking should move up in priority accordingly.
 
-### Not yet checked
-- **Barnard's Star** — highest proper-motion star known (~10.3 arcsec/year); likely to show *borderline* motion over a long baseline, similar risk profile to the "stars barely move" caveat already in `MVP_CUT_LINE.md`.
-- **Epsilon Indi B** — brown dwarf binary; check both components resolve separately at SPHEREx's 6.15 arcsec/pixel scale, or whether they blend into one source.
-- **RW Aurigae, R Draconis** — variable stars; these test the *brightness-over-time* dimension, not position. Need a light-curve view (flux vs. epoch at a fixed position), not a blink/swipe — worth confirming the API contract's `/timeseries` endpoint (issue #11 on the project board) actually covers this case, not just moving-object position tracking.
+### Barnard's Star — confirmed, strong, demo-ready (checked 2026-11-09)
+
+- Position used: J2000 SIMBAD position (17h57m48.498s, +04°41'36.11") propagated with its real proper motion (μα*=-801.551, μδ=+10362.394 mas/yr) to 2025-09-01 via astropy → (269.44634, 4.76724). Using the raw J2000 catalog position would have been ~0.07° off given this star's huge proper motion — worth remembering for the real app's query logic, not just this check.
+- **241 exposures, 121 epochs**, spanning MJD 60902.9 → 61165.1 (2025-09-01 to 2026-05-24, 262.2-day baseline).
+- Pulled earliest (`2025W33_2C_0321_1`) and latest (`2026W19_1A_0403_1`) cutouts. **Bright, obvious, resolved point source sits almost exactly on the predicted pixel in both frames.** Peak SNR ~24 (epoch 1) and ~11 (epoch 2) — see `assets/four_targets_comparison.png` (top row).
+- **This is a strong, confirmed, demo-ready official test target** — brighter and easier than our own 433 Eros pick, and it's a star (position motion), giving variety alongside RW Aur/R Dra (brightness) below.
+
+### Epsilon Indi B — NOT detected (checked 2026-11-09)
+
+- Position used: "CI Ind" cross-ID, resolved via IRSA's finder-chart name resolver (NED) → (331.043836, -56.782707). This is the whole Ba/Bb binary's position; the two components are only ~0.7 arcsec apart, far below SPHEREx's 6.15 arcsec/pixel scale, so they'd blend into one source even if detected.
+- **332 exposures, 180 epochs**, spanning MJD 60789.9 → 61164.1 (374.3-day baseline) — excellent coverage.
+- Pulled earliest and latest cutouts. **No source at the predicted position in either frame** (SNR ~0–0.2) — see `assets/four_targets_comparison.png` (second row). A bright extended object appears in the corner of one frame, but well away from the marked position — not this target.
+- **Why:** Ba/Bb are T1/T6 brown dwarfs — intrinsically far fainter than Barnard's Star, likely in the same "below single-frame sensitivity" category as WISE 0855. Same risk flag applies: probably needs co-adding, and may simply be out of reach even then given how faint T-dwarfs are.
+
+### RW Aurigae — confirmed, strong, demo-ready (checked 2026-11-09)
+
+- Position: Wikipedia infobox, component A (05h07m49.4562s, +30°24'04.774") → (76.9564535, 30.4013327).
+- **224 exposures, 113 epochs**, spanning MJD 60919.4 → 61111.0 (191.6-day baseline).
+- Pulled earliest and latest cutouts. **Bright, clear point source right at the predicted position in both frames**, and visibly different brightness between epochs (peak SNR ~15.5 → ~32.5) — consistent with RW Aurigae being an actively variable young star. See `assets/four_targets_comparison.png` (third row).
+- **Confirmed, demo-ready** — and a good one for the brightness-change (not position-change) story, since it's a real T Tauri variable, not a mover.
+
+### R Draconis — detected but needs a cleaner re-check (checked 2026-11-09)
+
+- Position: NED resolver via "R Dra" → (248.167472, 66.7549882).
+- **545 exposures, 278 epochs**, spanning MJD 60812.0 → 61237.9 (425.9-day baseline) — the best coverage of any target checked so far.
+- Pulled earliest and latest cutouts. A very bright, likely **saturated** source (peak flux ~6400, with a visible diffraction-ring artifact typical of saturation) appears in both frames, but offset by a few pixels from the exact predicted position — not a clean miss like Epsilon Indi B, but not a precise hit like Barnard's Star either. The second epoch's predicted pixel also landed near the frame edge (row 4 of 59), which produced a `NaN` in the automated SNR calculation even though the source is visibly present nearby. See `assets/four_targets_comparison.png` (bottom row).
+- **Status: real detection, position/centroid needs cleanup.** R Draconis is a Mira variable with a huge amplitude (mag 6.7–13.2 over a 246-day period) — the saturation is plausible given it may be near maximum brightness in these epochs. Re-check with a better-centered cutout (not edge-of-frame) and a saturation-aware peak measurement before treating this as fully confirmed.
+
+### Summary table
+
+| Target | Epochs | Baseline | Result |
+|---|---|---|---|
+| 433 Eros (ours) | 80 | 12 days | ✅ Confirmed, SNR ~24–27 |
+| WISE 0855 | 129 | 373.6 days | ❌ Not detected (single-frame) — likely needs co-adding |
+| Barnard's Star | 121 | 262.2 days | ✅ Confirmed, SNR ~11–24 |
+| Epsilon Indi B | 180 | 374.3 days | ❌ Not detected — likely too faint even with co-adding |
+| RW Aurigae | 113 | 191.6 days | ✅ Confirmed, SNR ~15–32, visible brightness change |
+| R Draconis | 278 | 425.9 days | ⚠️ Detected but saturated/off-center, needs re-check |
+
+**Bottom line for the demo:** 3 of NASA's 5 named targets (Barnard's Star, RW Aurigae, and our own Eros) are clean and ready. Two (WISE 0855, Epsilon Indi B) are real risks that single-raw-frame display will not show — co-adding is likely required and may still not be enough for Epsilon Indi B. R Draconis needs one more clean check. **Recommendation: lead the official-target demo with Barnard's Star (position) and RW Aurigae (brightness), not WISE 0855 — don't let the hardest official target be the first thing judges see.**
 
 ## Our own curated gallery — lower priority, still useful for the hook
 
