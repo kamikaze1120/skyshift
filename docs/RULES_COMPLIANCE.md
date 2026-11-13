@@ -4,9 +4,16 @@
 | Date | Event |
 |---|---|
 | Sep 17, 2026 | Challenge Summaries available; Team Formation opens |
-| Oct 28, 2026 | Full Challenge Statements available |
+| Oct 28, 2026 | Full Challenge Statements available (read by us 2026-11-09, see `CHALLENGE.md`) |
+| Nov 13, 2026 | Challenge data and resources page; re-check for late additions |
 | Nov 14, 2026, 9:00 AM | Kickoff — building the actual solution may begin |
-| Nov 15, 2026, 11:59 PM local | Submission closes |
+| Nov 15, 2026, 11:59 PM local | Global submission close |
+| **To confirm** | **Our Local Event's own stated end time, which governs and may be earlier** |
+
+> **Open item, confirm before kickoff.** Project submission opens Saturday 9:00 AM in the time zone
+> of the team's Local Event, and projects are submitted according to the ending time of that Local
+> Event. That time, not the global 11:59 PM, is our real deadline. Confirm it on the Local Event page
+> and record it in `DECISIONS.md`.
 
 ## Can we start now?
 - The 2026 Terms & Conditions don't explicitly ban pre-event work, but past official FAQs are explicit: organizers ask participants to start the actual work when the hackathon begins. Treat that as still in force.

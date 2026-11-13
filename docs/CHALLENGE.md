@@ -37,7 +37,48 @@ None of these are solar system objects — they're a high-proper-motion star, a 
 - It can be useful to display metadata, like contamination flags.
 - Consider looking for publicly available tools that may help in handling astronomical data, like the Astropy tools, and in displaying astronomical data, like the Aladin tool developed by the Strasbourg Astronomical Data Center (CDS).
 
-"For data and resources related to this challenge, refer to the Resources tab at the top of the page. More resources may be added before the hackathon begins." (The Resources tab didn't render reliably when checked on 2026-11-09 — worth a manual re-check closer to kickoff.)
+"For data and resources related to this challenge, refer to the Resources tab at the top of the page. More resources may be added before the hackathon begins."
+
+## Official Data and Resources
+
+NASA supplied list, captured 2026-11-13. What we decided to do about each is in `REFERENCE_TOOLS.md`,
+and anything we use must be cited in `CREDITS.md`.
+
+**NASA**
+
+| Resource | Note |
+|---|---|
+| [IRSA SPHEREx resources](https://irsa.ipac.caltech.edu/Missions/spherex.html) | The archive. Release registry in `DATA_RELEASES.md` |
+| [SPHEREx tutorial notebooks](https://caltech-ipac.github.io/irsa-tutorials/spherex/) | Distilled in `IRSA_DATA_GUIDE.md` |
+| [WiseView](http://byw.tools/wiseview) | A tool for the earlier WISE mission, used by the public to make hundreds of discoveries, offered as a model or inspiration. **The most useful item on this list.** 20 minute teardown checklist in `REFERENCE_TOOLS.md` |
+| [Gaia mission data](https://archive.stsci.edu/missions-and-data/gaia) | Use the latest release, DR3. This is the overlay consideration |
+
+**CSA (Canadian Space Agency) partner resources**
+
+| Resource | Note |
+|---|---|
+| [NEOSSat](https://www.asc-csa.gc.ca/eng/satellites/neossat/) | First space telescope dedicated to tracking asteroids, comets, satellites and debris. Directly adjacent to our 433 Eros hero |
+| [NEOSSat dataset](https://data.asc-csa.gc.ca/dataset/neossat) | Real near Earth object observations |
+| [NEOSSat tutorial](https://github.com/asc-csa/NEOSSAT_Tutorial) | Python visualization walkthrough |
+| [CADC](https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/) | Canadian and international archive |
+
+Partner resources carry weight on the Global connection criterion. Cheapest meaningful use: name
+NEOSSat alongside JPL in the known object cross check copy, and cite it. That is one sentence plus a
+citation, and it makes a partner resource part of the method rather than a logo.
+
+## Where each Potential Consideration is handled
+
+| Consideration | Where it lives now |
+|---|---|
+| Easy to update with new releases | `DATA_RELEASES.md`, and Must ship in `MVP_CUT_LINE.md` |
+| 102 bands, per-detector co-adding | Ship if on schedule in `MVP_CUT_LINE.md` |
+| Spectra on the fly | Stretch, with a 20 minute cube feasibility check in `DATA_RELEASES.md` |
+| Add or subtract images across epochs | Ship if on schedule |
+| Adjustable field of view | Ship if on schedule |
+| Gaia or WISE overlay | Cut unless ahead. Approach in `REFERENCE_TOOLS.md` |
+| URL embeddable coordinates | **Must ship** |
+| Metadata such as contamination flags | **Must ship** |
+| Astropy, Aladin and other public tools | `REFERENCE_TOOLS.md` |
 
 ## What this changes vs. our earlier assumptions
 - **Co-adding per-detector data for SNR** and **image differencing (add/subtract epochs)** are official suggestions, not things we invented — worth promoting from "nice to have" toward real scope.
