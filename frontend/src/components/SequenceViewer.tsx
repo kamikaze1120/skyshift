@@ -55,16 +55,18 @@ function SequenceViewer({ target }: SequenceViewerProps) {
   const showsMotion = (target.known_motion_arcsec ?? 0) > SHOWS_MOTION_THRESHOLD_ARCSEC
 
   return (
-    <div className="flex flex-col gap-4">
-      <SkyFrame observation={observation} index={currentIndex} reducedMotion={reducedMotion} showsMotion={showsMotion} />
-      <PlaybackScrubber
-        observationCount={target.observations.length}
-        currentIndex={currentIndex}
-        isPlaying={isPlaying}
-        onIndexChange={setCurrentIndex}
-        onPlayPauseToggle={() => setIsPlaying(p => !p)}
-        epochLabels={target.observations.map(o => o.epoch)}
-      />
+    <div className="grid gap-4 md:grid-cols-[minmax(0,1.65fr)_minmax(260px,0.65fr)]">
+      <div className="flex flex-col gap-4">
+        <SkyFrame observation={observation} index={currentIndex} reducedMotion={reducedMotion} showsMotion={showsMotion} />
+        <PlaybackScrubber
+          observationCount={target.observations.length}
+          currentIndex={currentIndex}
+          isPlaying={isPlaying}
+          onIndexChange={setCurrentIndex}
+          onPlayPauseToggle={() => setIsPlaying(p => !p)}
+          epochLabels={target.observations.map(o => o.epoch)}
+        />
+      </div>
       <SourcePanel observation={observation} verified={target.verified} storyNote={target.story_note} />
     </div>
   )
