@@ -93,7 +93,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: WORDMARK_MS / 1000 + 1 }}
-            className="text-accent-ember"
+            className="text-accent-lime"
           >
             {STORY_LINES[1]}
           </motion.p>
@@ -114,7 +114,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
           event.stopPropagation()
           complete()
         }}
-        className="absolute bottom-6 right-6 rounded border border-starlight/30 px-3 py-1.5 text-xs text-starlight/70 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-ember"
+        className="absolute bottom-6 right-6 rounded border border-starlight/30 px-3 py-1.5 text-xs text-starlight/70 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
       >
         Skip intro
       </button>

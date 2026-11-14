@@ -96,7 +96,7 @@ function App() {
       {!introDone && <IntroSequence onComplete={handleIntroComplete} />}
       <a
         href="#viewer"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded focus:bg-accent-ember focus:px-3 focus:py-2 focus:text-space-950"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded focus:bg-accent-lime focus:px-3 focus:py-2 focus:text-space-950"
       >
         Skip to the sky viewer
       </a>

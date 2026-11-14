@@ -27,7 +27,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion }: SkyFramePr
       </p>
       <div
         data-marker
-        className={`absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-ember ${reducedMotion ? '' : 'transition-all duration-700 ease-out'}`}
+        className={`absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-lime ${reducedMotion ? '' : 'transition-all duration-700 ease-out'}`}
         style={{ top: marker.top, left: marker.left }}
       />
       <p className="absolute bottom-2 left-2 right-2 text-xs text-starlight/60">

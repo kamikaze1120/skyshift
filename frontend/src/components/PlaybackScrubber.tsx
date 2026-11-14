@@ -46,7 +46,7 @@ function PlaybackScrubber({
       <button
         type="button"
         onClick={onPlayPauseToggle}
-        className="rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-ember"
+        className="rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
       >
         {isPlaying ? 'Pause' : 'Play'}
       </button>
@@ -60,10 +60,10 @@ function PlaybackScrubber({
         aria-label="Observation epoch"
         onKeyDown={handleKeyDown}
         onPointerDown={handlePointerDown}
-        className="h-2 flex-1 cursor-pointer rounded-full bg-starlight/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-ember"
+        className="h-2 flex-1 cursor-pointer rounded-full bg-starlight/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
       >
         <div
-          className="h-2 rounded-full bg-accent-ember"
+          className="h-2 rounded-full bg-accent-lime"
           style={{ width: `${(currentIndex / Math.max(1, maxIndex)) * 100}%` }}
         />
       </div>

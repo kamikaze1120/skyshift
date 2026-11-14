@@ -51,7 +51,7 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
         </label>
         <button
           type="submit"
-          className="rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-ember"
+          className="rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
         >
           Search
         </button>
@@ -78,14 +78,14 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
         </label>
         <button
           type="submit"
-          className="rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-ember"
+          className="rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
         >
           Find by coordinates
         </button>
       </form>
 
       {notFound && (
-        <p role="status" className="text-accent-ember">Not in the local demo set yet — try one of the curated targets below.</p>
+        <p role="status" className="text-accent-lime">Not in the local demo set yet — try one of the curated targets below.</p>
       )}
 
       <div className="flex flex-wrap gap-2">
@@ -97,12 +97,12 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
               setNotFound(false)
               onTargetSelected(target)
             }}
-            className="flex items-center gap-1.5 rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-ember"
+            className="flex items-center gap-1.5 rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
           >
             {target.display_name}
             <span
               className={`rounded-full px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${
-                target.verified ? 'bg-starlight/15 text-starlight/70' : 'bg-accent-ember/20 text-accent-ember'
+                target.verified ? 'bg-starlight/15 text-starlight/70' : 'bg-accent-lime/20 text-accent-lime'
               }`}
             >
               {target.verified ? 'Verified' : 'Unconfirmed'}

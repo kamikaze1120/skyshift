@@ -1,12 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-space-950: #05060b;
-  --color-starlight: #f5f3ff;
-  --color-accent-ember: #ff7a45;
+  --color-space-950: #07110f;
+  --color-starlight: #eef0e5;
+  --color-accent-lime: #c9f27b;
+  --color-ink: #081410;
+  --color-muted: #92a49b;
+
+  --font-sans: 'Manrope', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-display: 'Newsreader', serif;
 }
 
 body {
   background-color: var(--color-space-950);
   color: var(--color-starlight);
+  font-family: var(--font-sans);
+  font-synthesis: none;
 }
