@@ -25,12 +25,14 @@ function AppShell({ target, curatedTargets, onTargetSelected, onReplayIntro, lin
         onToggleAbout={() => setAboutOpen(open => !open)}
         linkNotFound={linkNotFound}
       />
-      <div id="viewer" className="overflow-y-auto px-4 py-4">
-        <SequenceViewer target={target} />
-        <p data-testid="honesty-badge" className="mt-4 max-w-2xl text-sm text-starlight/60">
-          So the visual area is deliberately a placeholder — not a generated star field. Dates, coordinates, status,
-          and DOI are real; every limitation is shown where it matters.
-        </p>
+      <div id="viewer" className="overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
+        <div className="mx-auto max-w-3xl lg:max-w-4xl">
+          <SequenceViewer target={target} />
+          <p data-testid="honesty-badge" className="mt-4 max-w-2xl text-sm text-starlight/60">
+            So the visual area is deliberately a placeholder — not a generated star field. Dates, coordinates, status,
+            and DOI are real; every limitation is shown where it matters.
+          </p>
+        </div>
       </div>
       <AboutPanel isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />
     </div>
