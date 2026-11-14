@@ -39,15 +39,6 @@ describe('App', () => {
     expect(document.getElementById('viewer')).toBeInTheDocument()
   })
 
-  it('shows the hero section, and its CTA actually selects the real Eros target', () => {
-    window.history.pushState({}, '', '/')
-    render(<App />)
-    expect(screen.getByText(/never fabricates sky pixels/i)).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: /watch.*eros/i }))
-    expect(screen.getByText(eros.observations[eros.observations.length - 1].doi)).toBeInTheDocument()
-  })
-
   it('shows the about section', () => {
     window.history.pushState({}, '', '/')
     render(<App />)

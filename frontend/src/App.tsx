@@ -3,7 +3,6 @@ import StarfieldBackdrop from './components/StarfieldBackdrop'
 import SequenceViewer from './components/SequenceViewer'
 import CoordinateSearch from './components/CoordinateSearch'
 import ShareLinkBadge from './components/ShareLinkBadge'
-import HeroSection from './components/HeroSection'
 import AboutSection from './components/AboutSection'
 import { findTargetByCoordinates, getTargetById } from './lib/api'
 import { parseTargetParams, buildTargetParams } from './lib/urlParams'
@@ -56,7 +55,6 @@ function App() {
       </a>
       <StarfieldBackdrop />
       <h1 className="mb-6 text-2xl font-semibold">Skyshift</h1>
-      <HeroSection erosTarget={EROS} onWatchEros={handleTargetSelected} />
       {linkNotFound && (
         <p role="status" className="mb-4 text-accent-ember">
           Not in the local demo set yet — here are the curated targets you can explore instead.
