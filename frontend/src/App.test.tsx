@@ -7,6 +7,34 @@ import type { TargetRecord } from './fixtures/types'
 const eros = (targets as TargetRecord[])[0]
 
 describe('App', () => {
+  it('shows the intro on a fresh session with no deep link, then reveals the app on completion', () => {
+    sessionStorage.clear()
+    window.history.pushState({}, '', '/')
+    render(<App />)
+    // The app's own <h1> also says "Skyshift", so this targets the intro's
+    // Skip button specifically rather than the ambiguous wordmark text.
+    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(screen.getByRole('slider')).toBeInTheDocument()
+  })
+
+  it('skips the intro entirely on a deep link, even one that matches no fixture', () => {
+    sessionStorage.clear()
+    window.history.pushState({}, '', '/?ra=100&dec=50&size=0.2')
+    render(<App />)
+    // The app's own <h1> also says "Skyshift" (unrelated to the intro, and
+    // not retired until the AppShell tasks), so this has to target the
+    // intro's Skip button specifically rather than the ambiguous wordmark text.
+    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+  })
+
+  it('does not replay the intro on remount within the same session', () => {
+    sessionStorage.setItem('skyshift:introPlayed', '1')
+    window.history.pushState({}, '', '/')
+    render(<App />)
+    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+  })
+
   it("with no URL params, loads Barnard's Star paused at the first frame", () => {
     window.history.pushState({}, '', '/')
     render(<App />)
