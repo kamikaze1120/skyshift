@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-space-950: #05060b;
+  --color-starlight: #f5f3ff;
+  --color-accent-ember: #ff7a45;
+}
+
+body {
+  background-color: var(--color-space-950);
+  color: var(--color-starlight);
+}
