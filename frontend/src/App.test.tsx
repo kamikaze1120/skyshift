@@ -38,6 +38,13 @@ describe('App', () => {
     expect(screen.getByText(eros.observations[eros.observations.length - 1].doi)).toBeInTheDocument()
   })
 
+  it("a deep-link's size param overrides the fixture's default field of view, instead of being silently dropped", () => {
+    sessionStorage.setItem(INTRO_SESSION_KEY, '1')
+    window.history.pushState({}, '', `/?ra=${eros.coordinates.ra_deg}&dec=${eros.coordinates.dec_deg}&size=0.45`)
+    render(<App />)
+    expect(screen.getAllByText('0.45°').length).toBeGreaterThan(0)
+  })
+
   it('with a malformed deep-link, falls back to Barnard\'s Star instead of crashing', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/?ra=not-a-number&dec=200')

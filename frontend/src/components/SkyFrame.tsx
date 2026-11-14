@@ -1,5 +1,6 @@
 import type { Observation } from '../fixtures/types'
 import { useDifferenceImage } from '../lib/useDifferenceImage'
+import { fovToScale } from '../lib/fieldOfView'
 
 interface SkyFrameProps {
   observation: Observation
@@ -78,7 +79,8 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
             <img
               src={displaySrc}
               alt={'SPHEREx reference cutout for observation ' + (index + 1) + ', ' + observation.epoch}
-              className={'h-full w-full object-cover scale-[1.09] transition duration-700 ' + imageClass}
+              className={'h-full w-full object-cover transition duration-700 ' + imageClass}
+              style={{ transform: `scale(${fovToScale(fieldOfView)})` }}
             />
             <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[.06]" />
           </div>

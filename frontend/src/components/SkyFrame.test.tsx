@@ -46,4 +46,12 @@ describe('SkyFrame', () => {
     expect(screen.getByRole('img')).toHaveAttribute('src', '/real.png')
     expect(screen.queryByText(/real pixel difference/i)).not.toBeInTheDocument()
   })
+
+  it('actually zooms the image in as the field of view narrows, instead of only changing displayed text', () => {
+    const { container: wide } = render(<SkyFrame observation={realObs} index={0} reducedMotion={false} showsMotion={false} fieldOfView={0.5} />)
+    const { container: close } = render(<SkyFrame observation={realObs} index={0} reducedMotion={false} showsMotion={false} fieldOfView={0.05} />)
+    const wideImg = wide.querySelector('img') as HTMLImageElement
+    const closeImg = close.querySelector('img') as HTMLImageElement
+    expect(wideImg.style.transform).not.toBe(closeImg.style.transform)
+  })
 })

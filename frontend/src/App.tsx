@@ -21,7 +21,12 @@ function stateFromLocation(): AppState {
   const parsed = parseTargetParams(window.location.search)
   if (parsed) {
     const match = findTargetByCoordinates(parsed.ra, parsed.dec)
-    if (match) return { target: match, linkNotFound: false }
+    if (match) {
+      // size seeds the FOV slider — honor a link's explicit value instead
+      // of silently falling back to the fixture's own default.
+      const target = parsed.size !== undefined ? { ...match, size_deg: parsed.size } : match
+      return { target, linkNotFound: false }
+    }
     // A syntactically-valid deep link that matches nothing in the local
     // demo set is not the same as "no link was given" — silently falling
     // back to Barnard's autoplay would hide that the link didn't resolve.
