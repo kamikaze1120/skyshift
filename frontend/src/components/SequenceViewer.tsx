@@ -105,7 +105,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
             </span>
           </div>
 
-          <SkyFrame observation={observation} index={currentIndex} reducedMotion={reducedMotion} showsMotion={showsMotion} displayMode={displayMode} fieldOfView={fieldOfView} />
+          <SkyFrame observation={observation} index={currentIndex} reducedMotion={reducedMotion} showsMotion={showsMotion} displayMode={displayMode} fieldOfView={fieldOfView} baselineImageUrl={target.observations[0].image_url} />
 
           <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 sm:inset-x-8 sm:bottom-6">
             <div className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-starlight/10 bg-space-950/85 px-4 py-3 shadow-2xl backdrop-blur-xl sm:px-5">
@@ -202,7 +202,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
           </section>
 
           <p data-testid="honesty-badge" className="mx-4 mb-5 rounded-xl border border-starlight/8 bg-starlight/[.02] px-3 py-2.5 text-[9px] leading-relaxed text-moon/30">
-            Local placeholder/reference cutouts are labeled. Difference and co-added styling is illustrative until the live IRSA analysis endpoint is connected.
+            Local placeholder/reference cutouts are labeled. Difference view computes a real pixel subtraction when two real epochs are available, falling back to illustrative styling otherwise. Co-added styling stays illustrative until the live IRSA analysis endpoint is connected.
           </p>
         </aside>
       </div>

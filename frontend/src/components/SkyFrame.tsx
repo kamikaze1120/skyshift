@@ -1,4 +1,5 @@
 import type { Observation } from '../fixtures/types'
+import { useDifferenceImage } from '../lib/useDifferenceImage'
 
 interface SkyFrameProps {
   observation: Observation
@@ -7,6 +8,7 @@ interface SkyFrameProps {
   showsMotion: boolean
   displayMode?: 'science' | 'difference' | 'coadded'
   fieldOfView?: number
+  baselineImageUrl?: string | null
 }
 
 const MARKER_POSITIONS = [
@@ -27,11 +29,19 @@ function formatEpoch(epoch: string) {
   }).format(date)
 }
 
-function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode = 'science', fieldOfView = 0.2 }: SkyFrameProps) {
+function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode = 'science', fieldOfView = 0.2, baselineImageUrl = null }: SkyFrameProps) {
   const marker = showsMotion ? MARKER_POSITIONS[index % MARKER_POSITIONS.length] : MARKER_POSITIONS[0]
   const hasReferenceImage = !observation.image_url.startsWith('fixture-placeholder')
 
-  const imageClass = displayMode === 'difference'
+  const wantsRealDiff = displayMode === 'difference' && hasReferenceImage
+  const { status: diffStatus, dataUrl: diffDataUrl } = useDifferenceImage(
+    wantsRealDiff ? observation.image_url : null,
+    wantsRealDiff ? baselineImageUrl : null
+  )
+  const hasRealDiff = diffStatus === 'ready' && diffDataUrl !== null
+  const displaySrc = hasRealDiff ? diffDataUrl! : observation.image_url
+
+  const imageClass = displayMode === 'difference' && !hasRealDiff
     ? 'grayscale contrast-150 sepia-[.18] hue-rotate-[310deg] saturate-150'
     : displayMode === 'coadded'
       ? 'brightness-125 contrast-110 saturate-75'
@@ -53,6 +63,12 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
           <span>{fieldOfView.toFixed(2)}° field</span>
           <span className="h-3 w-px bg-starlight/15" />
           <span className={hasReferenceImage ? 'text-orbit/60' : 'text-accent-ember/60'}>{hasReferenceImage ? 'Reference cutout' : 'Placeholder cutout'}</span>
+          {hasRealDiff && (
+            <>
+              <span className="h-3 w-px bg-starlight/15" />
+              <span className="text-orbit/60">Real pixel difference</span>
+            </>
+          )}
         </div>
       </div>
 
@@ -60,7 +76,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
         {hasReferenceImage ? (
           <div className="relative aspect-square w-[min(78vw,640px)] overflow-hidden rounded-2xl border border-starlight/12 bg-black shadow-[0_24px_90px_rgba(0,0,0,.45)]">
             <img
-              src={observation.image_url}
+              src={displaySrc}
               alt={'SPHEREx reference cutout for observation ' + (index + 1) + ', ' + observation.epoch}
               className={'h-full w-full object-cover scale-[1.09] transition duration-700 ' + imageClass}
             />
