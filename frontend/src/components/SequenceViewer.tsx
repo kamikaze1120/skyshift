@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import type { TargetRecord } from '../fixtures/types'
 import { useReducedMotion } from '../lib/useReducedMotion'
 import { AUTOPLAY_INTRO_MS } from '../lib/constants'
+import { getLoggedDetector } from '../lib/spherexBands'
 import SkyFrame from './SkyFrame'
 import PlaybackScrubber from './PlaybackScrubber'
 import SourcePanel from './SourcePanel'
+import BandSelector from './BandSelector'
 
 interface SequenceViewerProps {
   target: TargetRecord
@@ -18,6 +20,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
   const lastIndex = target.observations.length - 1
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [selectedBand, setSelectedBand] = useState(1)
   const reducedMotion = useReducedMotion()
 
   // Switching targets reuses this component instance (no remount), so
@@ -26,6 +29,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
   useEffect(() => {
     setCurrentIndex(0)
     setIsPlaying(false)
+    setSelectedBand(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [target.target_id])
 
@@ -65,6 +69,11 @@ function SequenceViewer({ target }: SequenceViewerProps) {
           onIndexChange={setCurrentIndex}
           onPlayPauseToggle={() => setIsPlaying(p => !p)}
           epochLabels={target.observations.map(o => o.epoch)}
+        />
+        <BandSelector
+          selectedBand={selectedBand}
+          onBandChange={setSelectedBand}
+          loggedDetector={getLoggedDetector(observation.wavelength_band)}
         />
       </div>
       <SourcePanel observation={observation} verified={target.verified} storyNote={target.story_note} />

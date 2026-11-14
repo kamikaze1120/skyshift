@@ -14,7 +14,7 @@ describe('App', () => {
     render(<App />)
     expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
     fireEvent.keyDown(window, { key: 'Escape' })
-    expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('slider', { name: /epoch/i })).toHaveAttribute('aria-valuenow', '0')
   })
 
   it('skips the intro entirely on a deep link, even one that matches no fixture', () => {
@@ -42,7 +42,7 @@ describe('App', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/?ra=not-a-number&dec=200')
     render(<App />)
-    expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('slider', { name: /epoch/i })).toHaveAttribute('aria-valuenow', '0')
   })
 
   it('with a syntactically-valid deep-link that matches no fixture, shows an honest not-in-demo-set status', () => {
@@ -73,7 +73,7 @@ describe('App', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/')
     render(<App />)
-    expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('slider', { name: /epoch/i })).toHaveAttribute('aria-valuenow', '0')
 
     window.history.pushState({}, '', `/?ra=${eros.coordinates.ra_deg}&dec=${eros.coordinates.dec_deg}&size=${eros.size_deg}`)
     fireEvent(window, new PopStateEvent('popstate'))
