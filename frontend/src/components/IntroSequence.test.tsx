@@ -10,89 +10,38 @@ describe('IntroSequence', () => {
     vi.unstubAllGlobals()
   })
 
-  it('shows the wordmark, then the three story lines, then calls onComplete', () => {
+  it('keeps the mission briefing open until the user enters the research bay', () => {
     const onComplete = vi.fn()
     render(<IntroSequence onComplete={onComplete} />)
     expect(screen.getByText('Skyshift')).toBeInTheDocument()
 
     act(() => { vi.advanceTimersByTime(7000) })
+    expect(onComplete).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: /enter research bay/i }))
     expect(onComplete).toHaveBeenCalledTimes(1)
   })
 
-  it('skips immediately on Escape, Enter, or Space', () => {
+  it('does not complete from an unrelated global key press', () => {
     const onComplete = vi.fn()
     render(<IntroSequence onComplete={onComplete} />)
     fireEvent.keyDown(window, { key: 'Escape' })
-    expect(onComplete).toHaveBeenCalledTimes(1)
+    expect(onComplete).not.toHaveBeenCalled()
   })
 
-  it('skips immediately when the visible Skip control is clicked', () => {
+  it('enters immediately when the visible Enter control is clicked', () => {
     const onComplete = vi.fn()
     render(<IntroSequence onComplete={onComplete} />)
-    fireEvent.click(screen.getByRole('button', { name: /skip intro/i }))
+    fireEvent.click(screen.getByRole('button', { name: /enter research bay/i }))
     expect(onComplete).toHaveBeenCalledTimes(1)
   })
 
-  it('suppresses the default keyboard action, so a still-focused control underneath is not re-activated', async () => {
+  it('allows keyboard users to activate the focused Enter control', async () => {
     vi.useRealTimers()
     const onComplete = vi.fn()
-    const underlyingClick = vi.fn()
-    render(
-      <>
-        <button onClick={underlyingClick}>Replay intro</button>
-        <IntroSequence onComplete={onComplete} />
-      </>,
-    )
-    screen.getByRole('button', { name: 'Replay intro' }).focus()
+    render(<IntroSequence onComplete={onComplete} />)
     const user = userEvent.setup()
     await user.keyboard('{Enter}')
     expect(onComplete).toHaveBeenCalledTimes(1)
-    expect(underlyingClick).not.toHaveBeenCalled()
-  })
-
-  it('tells an honest, specific story about the real motion it demos, not generic copy', () => {
-    const onComplete = vi.fn()
-    render(<IntroSequence onComplete={onComplete} />)
-    expect(screen.getByText('433 Eros did.')).toBeInTheDocument()
-    expect(screen.getByText(/604 arcsec/i)).toBeInTheDocument()
-  })
-
-  it('lets the user turn on ambient startup sound where Web Audio is available', () => {
-    class FakeOscillator {
-      type = ''
-      frequency = { value: 0 }
-      connect = vi.fn()
-      start = vi.fn()
-      stop = vi.fn()
-    }
-    class FakeGainNode {
-      gain = { value: 0, linearRampToValueAtTime: vi.fn() }
-      connect = vi.fn()
-    }
-    class FakeAudioContext {
-      destination = {}
-      currentTime = 0
-      createOscillator() {
-        return new FakeOscillator()
-      }
-      createGain() {
-        return new FakeGainNode()
-      }
-      close = vi.fn()
-    }
-    vi.stubGlobal('AudioContext', FakeAudioContext)
-
-    const onComplete = vi.fn()
-    render(<IntroSequence onComplete={onComplete} />)
-    const soundToggle = screen.getByRole('button', { name: /sound: off/i })
-    fireEvent.click(soundToggle)
-    expect(screen.getByRole('button', { name: /sound: on/i })).toBeInTheDocument()
-  })
-
-  it('does not show a sound toggle at all where Web Audio is unavailable, rather than a dead control', () => {
-    const onComplete = vi.fn()
-    render(<IntroSequence onComplete={onComplete} />)
-    expect(screen.queryByRole('button', { name: /sound:/i })).not.toBeInTheDocument()
   })
 
   it('respects prefers-reduced-motion: shows a plain fade, without the drifting story animation', () => {

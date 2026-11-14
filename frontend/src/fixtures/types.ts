@@ -3,7 +3,7 @@ export type ObjectType = 'asteroid' | 'comet' | 'star' | 'brown_dwarf' | 'unknow
 export interface Observation {
   epoch: string // ISO 8601
   wavelength_band: string
-  image_url: string // "fixture-placeholder://<slug>" in this pass
+  image_url: string // Browser-friendly cutout URL; fixture-placeholder://<slug> is used when unavailable
   source_file: string
   doi: string
 }

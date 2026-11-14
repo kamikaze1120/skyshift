@@ -8,7 +8,7 @@ const BARNARD = getTargetById('barnards-star-2025-2026')!
 const RW_AUR = getTargetById('rw-aurigae-2025-2026')!
 
 describe('NavBar', () => {
-  it('renders one-click chips for the curated targets and selects on click', () => {
+  it('keeps curated targets in a compact picker and selects on click', () => {
     const onTargetSelected = vi.fn()
     render(
       <NavBar
@@ -20,6 +20,7 @@ describe('NavBar', () => {
         linkNotFound={false}
       />,
     )
+    fireEvent.click(screen.getByRole('button', { name: /choose target/i }))
     fireEvent.click(screen.getByRole('button', { name: /433 eros/i }))
     expect(onTargetSelected).toHaveBeenCalledWith(EROS)
   })

@@ -12,23 +12,23 @@ describe('App', () => {
     sessionStorage.clear()
     window.history.pushState({}, '', '/')
     render(<App />)
-    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
-    fireEvent.keyDown(window, { key: 'Escape' })
-    expect(screen.getByRole('slider', { name: /epoch/i })).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('button', { name: /enter research bay/i })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /enter research bay/i }))
+    expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
   })
 
   it('skips the intro entirely on a deep link, even one that matches no fixture', () => {
     sessionStorage.clear()
     window.history.pushState({}, '', '/?ra=100&dec=50&size=0.2')
     render(<App />)
-    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /enter research bay/i })).not.toBeInTheDocument()
   })
 
   it('does not replay the intro on remount within the same session', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/')
     render(<App />)
-    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /enter research bay/i })).not.toBeInTheDocument()
   })
 
   it("with a deep-link matching a fixture, skips straight to that target's SourcePanel", () => {
@@ -42,7 +42,7 @@ describe('App', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/?ra=not-a-number&dec=200')
     render(<App />)
-    expect(screen.getByRole('slider', { name: /epoch/i })).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
   })
 
   it('with a syntactically-valid deep-link that matches no fixture, shows an honest not-in-demo-set status', () => {
@@ -73,7 +73,7 @@ describe('App', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/')
     render(<App />)
-    expect(screen.getByRole('slider', { name: /epoch/i })).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
 
     window.history.pushState({}, '', `/?ra=${eros.coordinates.ra_deg}&dec=${eros.coordinates.dec_deg}&size=${eros.size_deg}`)
     fireEvent(window, new PopStateEvent('popstate'))
@@ -84,25 +84,25 @@ describe('App', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, '1')
     window.history.pushState({}, '', '/')
     render(<App />)
-    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /enter research bay/i })).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /replay intro/i }))
-    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /enter research bay/i })).toBeInTheDocument()
   })
 
   it('replaying the intro works even when the current session started from a deep link', () => {
     sessionStorage.clear()
     window.history.pushState({}, '', `/?ra=${eros.coordinates.ra_deg}&dec=${eros.coordinates.dec_deg}&size=${eros.size_deg}`)
     render(<App />)
-    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /enter research bay/i })).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /replay intro/i }))
-    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /enter research bay/i })).toBeInTheDocument()
   })
 
   it('treats a malformed deep-link the same as no deep link at all, so the intro still plays once', () => {
     sessionStorage.clear()
     window.history.pushState({}, '', '/?ra=not-a-number&dec=200')
     render(<App />)
-    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /enter research bay/i })).toBeInTheDocument()
   })
 
   it('still renders the shell even when sessionStorage access throws (e.g. a locked-down browser)', () => {

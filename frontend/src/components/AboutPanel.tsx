@@ -19,15 +19,19 @@ function AboutPanel({ isOpen, onClose }: AboutPanelProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 max-h-[80vh] overflow-y-auto border-t border-starlight/20 bg-space-950 p-4 sm:inset-y-0 sm:left-auto sm:right-0 sm:w-96 sm:max-h-none sm:border-l sm:border-t-0">
-      <button
-        type="button"
-        onClick={onClose}
-        className="mb-3 rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
-      >
-        Close
-      </button>
-      <AboutSection />
+    <div className="fixed inset-0 z-40 flex justify-end bg-space-950/45 p-2 backdrop-blur-sm sm:p-4" role="presentation" onMouseDown={event => { if (event.currentTarget === event.target) onClose() }}>
+      <div className="glass-panel soft-scrollbar h-full w-full max-w-md overflow-y-auto rounded-2xl p-5 shadow-2xl">
+        <div className="sticky top-0 z-10 mb-5 flex items-center justify-between rounded-xl border border-starlight/10 bg-space-900/80 px-3 py-2 backdrop-blur-xl">
+          <div>
+            <p className="text-[9px] uppercase tracking-[.2em] text-orbit/55">Mission context</p>
+            <p className="display-font text-lg text-starlight">About Skyshift</p>
+          </div>
+          <button type="button" onClick={onClose} className="grid size-8 place-items-center rounded-full border border-starlight/10 text-moon/60 transition hover:bg-starlight/[.06] hover:text-starlight focus-visible:outline-2 focus-visible:outline-orbit" aria-label="Close">
+            <svg viewBox="0 0 20 20" className="size-4" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+          </button>
+        </div>
+        <AboutSection />
+      </div>
     </div>
   )
 }
