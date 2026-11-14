@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { getTargetById, searchTargets, findTargetByCoordinates } from './api'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { getTargetById, searchTargets, findTargetByCoordinates, searchArchive } from './api'
 
 describe('api (fixture-backed)', () => {
   it('getTargetById returns the matching record', () => {
@@ -20,5 +20,46 @@ describe('api (fixture-backed)', () => {
   })
   it('findTargetByCoordinates returns undefined far from any fixture', () => {
     expect(findTargetByCoordinates(0, 0)).toBeUndefined()
+  })
+})
+
+describe('searchArchive (backend, optional)', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+  })
+
+  it('returns null without calling fetch when no backend URL is configured', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', '')
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    const result = await searchArchive({ query: 'Eros' })
+    expect(result).toBeNull()
+    expect(fetchSpy).not.toHaveBeenCalled()
+  })
+
+  it('returns the parsed array when the backend responds with target records', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    const remoteTarget = { target_id: 'remote-1', display_name: 'Remote Object' }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [remoteTarget],
+    }))
+    const result = await searchArchive({ query: 'Remote' })
+    expect(result).toEqual([remoteTarget])
+  })
+
+  it('returns null, not a throw, when the backend is unreachable', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')))
+    const result = await searchArchive({ query: 'Eros' })
+    expect(result).toBeNull()
+  })
+
+  it('returns null when the backend responds but not ok', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, json: async () => [] }))
+    const result = await searchArchive({ query: 'Eros' })
+    expect(result).toBeNull()
   })
 })

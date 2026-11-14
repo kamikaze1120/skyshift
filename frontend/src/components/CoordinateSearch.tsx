@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { TargetRecord } from '../fixtures/types'
-import { searchTargets, findTargetByCoordinates } from '../lib/api'
+import { searchTargets, findTargetByCoordinates, searchArchive } from '../lib/api'
 import targets from '../fixtures/targets.json'
 
 interface CoordinateSearchProps {
@@ -12,10 +12,14 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
   const [raQuery, setRaQuery] = useState('')
   const [decQuery, setDecQuery] = useState('')
   const [notFound, setNotFound] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
 
-  function handleNameSearch(event: React.FormEvent) {
+  async function handleNameSearch(event: React.FormEvent) {
     event.preventDefault()
-    const matches = searchTargets(nameQuery)
+    setIsSearching(true)
+    const remote = await searchArchive({ query: nameQuery })
+    const matches = remote && remote.length > 0 ? remote : searchTargets(nameQuery)
+    setIsSearching(false)
     if (matches.length > 0) {
       setNotFound(false)
       onTargetSelected(matches[0])
@@ -24,11 +28,18 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
     }
   }
 
-  function handleCoordinateSearch(event: React.FormEvent) {
+  async function handleCoordinateSearch(event: React.FormEvent) {
     event.preventDefault()
     const ra = Number.parseFloat(raQuery)
     const dec = Number.parseFloat(decQuery)
-    const match = Number.isFinite(ra) && Number.isFinite(dec) ? findTargetByCoordinates(ra, dec) : undefined
+    if (!Number.isFinite(ra) || !Number.isFinite(dec)) {
+      setNotFound(true)
+      return
+    }
+    setIsSearching(true)
+    const remote = await searchArchive({ ra, dec })
+    const match = remote && remote.length > 0 ? remote[0] : findTargetByCoordinates(ra, dec)
+    setIsSearching(false)
     if (match) {
       setNotFound(false)
       onTargetSelected(match)
@@ -55,8 +66,8 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
             Name or designation
             <input type="text" value={nameQuery} onChange={e => setNameQuery(e.target.value)} placeholder="433 Eros" className={inputClass} />
           </label>
-          <button type="submit" className="h-10 rounded-xl bg-starlight px-4 text-xs font-medium text-space-950 transition hover:bg-orbit focus-visible:outline-2 focus-visible:outline-orbit">
-            Search
+          <button type="submit" disabled={isSearching} className="h-10 rounded-xl bg-starlight px-4 text-xs font-medium text-space-950 transition hover:bg-orbit focus-visible:outline-2 focus-visible:outline-orbit disabled:cursor-wait disabled:opacity-60">
+            {isSearching ? 'Searching…' : 'Search'}
           </button>
         </form>
 
@@ -71,8 +82,8 @@ function CoordinateSearch({ onTargetSelected }: CoordinateSearchProps) {
             Dec (deg)
             <input type="number" value={decQuery} onChange={e => setDecQuery(e.target.value)} placeholder="+4.767" className={inputClass} />
           </label>
-          <button type="submit" className="h-10 rounded-xl border border-starlight/15 bg-starlight/[.06] px-4 text-xs text-starlight transition hover:bg-starlight/10 focus-visible:outline-2 focus-visible:outline-orbit">
-            Find
+          <button type="submit" disabled={isSearching} className="h-10 rounded-xl border border-starlight/15 bg-starlight/[.06] px-4 text-xs text-starlight transition hover:bg-starlight/10 focus-visible:outline-2 focus-visible:outline-orbit disabled:cursor-wait disabled:opacity-60">
+            {isSearching ? 'Searching…' : 'Find'}
           </button>
         </form>
       </div>

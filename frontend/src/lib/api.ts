@@ -1,6 +1,34 @@
 import targets from '../fixtures/targets.json'
 import type { TargetRecord } from '../fixtures/types'
 
+export interface ArchiveSearchParams {
+  query?: string
+  ra?: number
+  dec?: number
+}
+
+// Athena's /search endpoint isn't live yet. Once VITE_API_BASE_URL points
+// at it, this starts returning real archive results instead of null — no
+// other code needs to change. Mirrors askSkyshift's graceful-degrade shape.
+export async function searchArchive(params: ArchiveSearchParams): Promise<TargetRecord[] | null> {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL
+  if (!baseUrl) return null
+
+  try {
+    const url = new URL('/search', baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`)
+    if (params.query) url.searchParams.set('q', params.query)
+    if (params.ra !== undefined) url.searchParams.set('ra', String(params.ra))
+    if (params.dec !== undefined) url.searchParams.set('dec', String(params.dec))
+
+    const response = await fetch(url.toString())
+    if (!response.ok) return null
+    const payload = await response.json()
+    return Array.isArray(payload) ? (payload as TargetRecord[]) : null
+  } catch {
+    return null
+  }
+}
+
 const COORDINATE_TOLERANCE_DEG = 0.05
 
 export function getTargetById(id: string): TargetRecord | undefined {
