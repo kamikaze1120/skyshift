@@ -14,7 +14,6 @@ const EROS = getTargetById('433-eros-2025-06')!
 
 interface AppState {
   target: TargetRecord
-  autoplayNarration: string | null
   linkNotFound: boolean
 }
 
@@ -22,17 +21,17 @@ function stateFromLocation(): AppState {
   const parsed = parseTargetParams(window.location.search)
   if (parsed) {
     const match = findTargetByCoordinates(parsed.ra, parsed.dec)
-    if (match) return { target: match, autoplayNarration: null, linkNotFound: false }
+    if (match) return { target: match, linkNotFound: false }
     // A syntactically-valid deep link that matches nothing in the local
     // demo set is not the same as "no link was given" — silently falling
     // back to Barnard's autoplay would hide that the link didn't resolve.
-    return { target: BARNARD, autoplayNarration: null, linkNotFound: true }
+    return { target: BARNARD, linkNotFound: true }
   }
-  return { target: BARNARD, autoplayNarration: BARNARD.story_note, linkNotFound: false }
+  return { target: BARNARD, linkNotFound: false }
 }
 
 function App() {
-  const [{ target, autoplayNarration, linkNotFound }, setState] = useState(stateFromLocation)
+  const [{ target, linkNotFound }, setState] = useState(stateFromLocation)
 
   useEffect(() => {
     function handlePopState() {
@@ -43,7 +42,7 @@ function App() {
   }, [])
 
   function handleTargetSelected(newTarget: TargetRecord) {
-    setState({ target: newTarget, autoplayNarration: null, linkNotFound: false })
+    setState({ target: newTarget, linkNotFound: false })
     window.history.pushState({}, '', buildTargetParams(newTarget))
   }
 
@@ -64,7 +63,7 @@ function App() {
         </p>
       )}
       <div id="viewer">
-        <SequenceViewer target={target} autoplayNarration={autoplayNarration} />
+        <SequenceViewer target={target} />
       </div>
       <div className="mt-6">
         <CoordinateSearch onTargetSelected={handleTargetSelected} />
