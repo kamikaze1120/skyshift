@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
-import StarfieldBackdrop from './components/StarfieldBackdrop'
-import SequenceViewer from './components/SequenceViewer'
-import CoordinateSearch from './components/CoordinateSearch'
-import ShareLinkBadge from './components/ShareLinkBadge'
-import AboutSection from './components/AboutSection'
+import AppShell from './components/AppShell'
 import IntroSequence from './components/IntroSequence'
 import { findTargetByCoordinates, getTargetById } from './lib/api'
 import { parseTargetParams, buildTargetParams } from './lib/urlParams'
@@ -11,6 +7,8 @@ import type { TargetRecord } from './fixtures/types'
 
 const BARNARD = getTargetById('barnards-star-2025-2026')!
 const EROS = getTargetById('433-eros-2025-06')!
+const RW_AURIGAE = getTargetById('rw-aurigae-2025-2026')!
+const CURATED_TARGETS = [EROS, BARNARD, RW_AURIGAE]
 
 export const INTRO_SESSION_KEY = 'skyshift:introPlayed'
 
@@ -60,7 +58,7 @@ function App() {
   }
 
   return (
-    <div className="relative mx-auto min-h-screen max-w-3xl px-4 py-8 text-starlight">
+    <>
       {!introDone && !isDeepLink && <IntroSequence onComplete={handleIntroComplete} />}
       <a
         href="#viewer"
@@ -68,24 +66,17 @@ function App() {
       >
         Skip to the sky viewer
       </a>
-      <StarfieldBackdrop />
-      <h1 className="mb-6 text-2xl font-semibold">Skyshift</h1>
-      {linkNotFound && (
-        <p role="status" className="mb-4 text-accent-ember">
-          Not in the local demo set yet — here are the curated targets you can explore instead.
-        </p>
-      )}
-      <div id="viewer">
-        <SequenceViewer target={target} />
-      </div>
-      <div className="mt-6">
-        <CoordinateSearch onTargetSelected={handleTargetSelected} />
-      </div>
-      <div className="mt-4">
-        <ShareLinkBadge target={target} />
-      </div>
-      <AboutSection />
-    </div>
+      <AppShell
+        target={target}
+        curatedTargets={CURATED_TARGETS}
+        onTargetSelected={handleTargetSelected}
+        onReplayIntro={() => {
+          sessionStorage.removeItem(INTRO_SESSION_KEY)
+          setIntroDone(false)
+        }}
+        linkNotFound={linkNotFound}
+      />
+    </>
   )
 }
 

@@ -25,7 +25,7 @@ function AppShell({ target, curatedTargets, onTargetSelected, onReplayIntro, lin
         onToggleAbout={() => setAboutOpen(open => !open)}
         linkNotFound={linkNotFound}
       />
-      <div className="overflow-y-auto px-4 py-4">
+      <div id="viewer" className="overflow-y-auto px-4 py-4">
         <SequenceViewer target={target} />
         <p data-testid="honesty-badge" className="mt-4 max-w-2xl text-sm text-starlight/60">
           So the visual area is deliberately a placeholder — not a generated star field. Dates, coordinates, status,
