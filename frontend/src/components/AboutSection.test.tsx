@@ -28,4 +28,11 @@ describe('AboutSection', () => {
     render(<AboutSection />)
     expect(screen.getByText(/no accounts.*no personal data/i)).toBeInTheDocument()
   })
+
+  it('generates one citation link per enabled release from the release config, not hand-written text', () => {
+    render(<AboutSection />)
+    const link = screen.getByRole('link', { name: /10\.26131\/IRSA652/ })
+    expect(link).toHaveAttribute('href', 'https://doi.org/10.26131/IRSA652')
+    expect(screen.getByText(/Quick Release 2/)).toBeInTheDocument()
+  })
 })

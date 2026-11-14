@@ -1,4 +1,5 @@
 import type { Observation } from '../fixtures/types'
+import { releaseForDoi } from '../lib/releases'
 
 interface SourcePanelProps {
   observation: Observation
@@ -11,10 +12,8 @@ function shortFile(sourceFile: string) {
   return segments.length > 1 ? segments.at(-1) : sourceFile
 }
 
-function releaseForDoi(doi: string) {
-  if (doi.endsWith('678')) return 'DR1'
-  if (doi.endsWith('662')) return 'QR3'
-  return 'QR2 fixture'
+function releaseLabel(doi: string) {
+  return releaseForDoi(doi)?.label ?? 'Unlisted release'
 }
 
 function SourcePanel({ observation, verified, storyNote = null }: SourcePanelProps) {
@@ -42,7 +41,7 @@ function SourcePanel({ observation, verified, storyNote = null }: SourcePanelPro
           </div>
           <div>
             <dt className="text-[9px] uppercase tracking-[.16em] text-moon/35">Release</dt>
-            <dd className="mt-1 text-xs text-moon/75">{releaseForDoi(observation.doi)}</dd>
+            <dd className="mt-1 text-xs text-moon/75">{releaseLabel(observation.doi)}</dd>
           </div>
           <div>
             <dt className="text-[9px] uppercase tracking-[.16em] text-moon/35">Quality flags</dt>

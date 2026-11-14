@@ -27,4 +27,13 @@ describe('SourcePanel', () => {
     expect(screen.getByText(honestNote)).toBeInTheDocument()
     expect(screen.queryByText(/needs a re-check before it's treated as a success/i)).not.toBeInTheDocument()
   })
+  it('shows the real release label resolved from the DOI, not a guessed suffix match', () => {
+    render(<SourcePanel observation={obs} verified={true} />)
+    expect(screen.getByText('Quick Release 2')).toBeInTheDocument()
+  })
+  it('shows an honest "unlisted release" label when the DOI matches no known release', () => {
+    const unlistedObs = { ...obs, doi: '10.26131/IRSA999' }
+    render(<SourcePanel observation={unlistedObs} verified={true} />)
+    expect(screen.getByText(/unlisted release/i)).toBeInTheDocument()
+  })
 })

@@ -1,3 +1,5 @@
+import { enabledReleases } from '../lib/releases'
+
 function AboutSection() {
   return (
     <section className="text-sm text-moon/60">
@@ -36,11 +38,17 @@ function AboutSection() {
         Administration.
       </p>
       <p className="mt-3 leading-relaxed">
-        The current fixtures cite QR2, DOI{' '}
-        <a href="https://doi.org/10.26131/IRSA652" target="_blank" rel="noreferrer" className="text-starlight underline underline-offset-2 hover:text-accent-ember">
-          10.26131/IRSA652
-        </a>
-        . New production work should prefer DR1 + QR3 as IRSA releases supersede QR2.
+        This build cites data from{' '}
+        {enabledReleases().map((release, index, all) => (
+          <span key={release.id}>
+            {release.label}, DOI{' '}
+            <a href={`https://doi.org/${release.doi}`} target="_blank" rel="noreferrer" className="text-starlight underline underline-offset-2 hover:text-accent-ember">
+              {release.doi}
+            </a>
+            {index < all.length - 1 ? '; ' : '. '}
+          </span>
+        ))}
+        A new IRSA release is added here by config, not by code change.
       </p>
       <p className="mt-3 leading-relaxed">
         See the{' '}
