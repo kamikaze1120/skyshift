@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { getTargetById, searchTargets, findTargetByCoordinates, searchArchive } from './api'
+import { getTargetById, searchTargets, findTargetByCoordinates, searchArchive, submitFlag, getGlobalFlags } from './api'
 
 describe('api (fixture-backed)', () => {
   it('getTargetById returns the matching record', () => {
@@ -60,6 +60,74 @@ describe('searchArchive (backend, optional)', () => {
     vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, json: async () => [] }))
     const result = await searchArchive({ query: 'Eros' })
+    expect(result).toBeNull()
+  })
+})
+
+describe('submitFlag (backend, optional)', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+  })
+
+  it('returns false without calling fetch when no backend URL is configured', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', '')
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    const result = await submitFlag({ target_id: '433-eros-2025-06' })
+    expect(result).toBe(false)
+    expect(fetchSpy).not.toHaveBeenCalled()
+  })
+
+  it('returns true when the backend accepts the flag', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) }))
+    const result = await submitFlag({ target_id: '433-eros-2025-06' })
+    expect(result).toBe(true)
+  })
+
+  it('returns false, not a throw, when the backend is unreachable', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')))
+    const result = await submitFlag({ target_id: '433-eros-2025-06' })
+    expect(result).toBe(false)
+  })
+
+  it('returns false when the backend responds but not ok', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }))
+    const result = await submitFlag({ target_id: '433-eros-2025-06' })
+    expect(result).toBe(false)
+  })
+})
+
+describe('getGlobalFlags (backend, optional)', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+  })
+
+  it('returns null without calling fetch when no backend URL is configured', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', '')
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    const result = await getGlobalFlags()
+    expect(result).toBeNull()
+    expect(fetchSpy).not.toHaveBeenCalled()
+  })
+
+  it('returns the parsed country tally when the backend responds', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    const tally = [{ country: 'Kenya', count: 3 }, { country: 'Japan', count: 1 }]
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => tally }))
+    const result = await getGlobalFlags()
+    expect(result).toEqual(tally)
+  })
+
+  it('returns null, not a throw, when the backend is unreachable', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')))
+    const result = await getGlobalFlags()
     expect(result).toBeNull()
   })
 })

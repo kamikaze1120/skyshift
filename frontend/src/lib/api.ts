@@ -60,6 +60,47 @@ export interface AssistantContext {
   channel: number
 }
 
+export interface FlagSubmission {
+  target_id: string
+}
+
+export interface FlagSummaryEntry {
+  country: string
+  count: number
+}
+
+// Country is derived server-side from the request, never sent by the
+// client — anonymous by construction, per docs/RULES_COMPLIANCE.md.
+export async function submitFlag(submission: FlagSubmission): Promise<boolean> {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL
+  if (!baseUrl) return false
+
+  try {
+    const response = await fetch(`${baseUrl.replace(/\/$/, '')}/flags`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(submission),
+    })
+    return response.ok
+  } catch {
+    return false
+  }
+}
+
+export async function getGlobalFlags(): Promise<FlagSummaryEntry[] | null> {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL
+  if (!baseUrl) return null
+
+  try {
+    const response = await fetch(`${baseUrl.replace(/\/$/, '')}/flags/summary`)
+    if (!response.ok) return null
+    const payload = await response.json()
+    return Array.isArray(payload) ? (payload as FlagSummaryEntry[]) : null
+  } catch {
+    return null
+  }
+}
+
 export async function askSkyshift(question: string, context: AssistantContext): Promise<string | null> {
   const baseUrl = import.meta.env.VITE_API_BASE_URL
   if (!baseUrl) return null

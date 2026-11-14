@@ -31,6 +31,11 @@ describe('SequenceViewer', () => {
     expect(screen.getByText(barnard.observations[0].doi)).toBeInTheDocument()
   })
 
+  it('offers a way to flag the current target as a possible mover', () => {
+    render(<SequenceViewer target={barnard} />)
+    expect(screen.getByRole('button', { name: /flag.*possible mover/i })).toBeInTheDocument()
+  })
+
   describe('with fake timers', () => {
     beforeEach(() => vi.useFakeTimers())
     afterEach(() => vi.useRealTimers())

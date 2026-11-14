@@ -5,6 +5,7 @@ import { AUTOPLAY_INTRO_MS } from '../lib/constants'
 import SkyFrame from './SkyFrame'
 import PlaybackScrubber from './PlaybackScrubber'
 import SourcePanel from './SourcePanel'
+import FlagMoverPanel from './FlagMoverPanel'
 import SpectralControls from './SpectralControls'
 import AssistantPanel from './AssistantPanel'
 
@@ -185,6 +186,10 @@ function SequenceViewer({ target }: SequenceViewerProps) {
           </section>
 
           <SourcePanel observation={observation} verified={target.verified} storyNote={target.story_note} />
+
+          <div className="px-4 sm:px-5">
+            <FlagMoverPanel targetId={target.target_id} />
+          </div>
 
           <section className="border-t border-starlight/10 px-4 py-4 sm:px-5">
             <button type="button" onClick={() => setAssistantOpen(open => !open)} className="flex w-full items-center justify-between rounded-xl border border-accent-ember/20 bg-accent-ember/[.045] px-3 py-3 text-left transition hover:bg-accent-ember/[.08] focus-visible:outline-1 focus-visible:outline-accent-ember">
