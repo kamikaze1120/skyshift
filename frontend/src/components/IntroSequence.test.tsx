@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, act } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import IntroSequence from './IntroSequence'
 
@@ -30,6 +31,23 @@ describe('IntroSequence', () => {
     render(<IntroSequence onComplete={onComplete} />)
     fireEvent.click(screen.getByRole('button', { name: /skip intro/i }))
     expect(onComplete).toHaveBeenCalledTimes(1)
+  })
+
+  it('suppresses the default keyboard action, so a still-focused control underneath is not re-activated', async () => {
+    vi.useRealTimers()
+    const onComplete = vi.fn()
+    const underlyingClick = vi.fn()
+    render(
+      <>
+        <button onClick={underlyingClick}>Replay intro</button>
+        <IntroSequence onComplete={onComplete} />
+      </>,
+    )
+    screen.getByRole('button', { name: 'Replay intro' }).focus()
+    const user = userEvent.setup()
+    await user.keyboard('{Enter}')
+    expect(onComplete).toHaveBeenCalledTimes(1)
+    expect(underlyingClick).not.toHaveBeenCalled()
   })
 
   it('respects prefers-reduced-motion: shows a plain fade, without the drifting story animation', () => {

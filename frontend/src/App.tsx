@@ -30,17 +30,51 @@ function stateFromLocation(): AppState {
   return { target: BARNARD, linkNotFound: false }
 }
 
+// A deep link is present only when ra/dec parse to something in range; a
+// malformed query (e.g. ?ra=not-a-number) is treated the same as "no link
+// was given" and still gets the intro once per session — this matches
+// stateFromLocation's own fallback branch for malformed input above.
+function isDeepLinkRequest(): boolean {
+  return parseTargetParams(window.location.search) !== null
+}
+
+// sessionStorage can throw (blocked site data, a sandboxed iframe) — that
+// should degrade to "play the intro" or "replay silently did nothing",
+// never crash the whole app.
+function readIntroPlayed(): boolean {
+  try {
+    return Boolean(sessionStorage.getItem(INTRO_SESSION_KEY))
+  } catch {
+    return false
+  }
+}
+
+function writeIntroPlayed() {
+  try {
+    sessionStorage.setItem(INTRO_SESSION_KEY, '1')
+  } catch {
+    // see readIntroPlayed
+  }
+}
+
+function clearIntroPlayed() {
+  try {
+    sessionStorage.removeItem(INTRO_SESSION_KEY)
+  } catch {
+    // see readIntroPlayed
+  }
+}
+
 function App() {
   const [{ target, linkNotFound }, setState] = useState(stateFromLocation)
-  const [introDone, setIntroDone] = useState(() => Boolean(sessionStorage.getItem(INTRO_SESSION_KEY)))
-  // A deep link is present whether or not it parses to something in range —
-  // a malformed one (e.g. ?ra=not-a-number) still represents an attempted
-  // link, not "no link was given", so it skips the intro the same way
-  // stateFromLocation already treats it the same as an unmatched one.
-  const [isDeepLink] = useState(() => parseTargetParams(window.location.search) !== null)
+  // A deep link bypasses the intro on load, but "Replay intro" must still
+  // work afterwards — so the bypass is folded into introDone's initial
+  // value instead of gating the render separately, which would otherwise
+  // leave "Replay intro" a dead control for anyone who arrived via a link.
+  const [introDone, setIntroDone] = useState(() => isDeepLinkRequest() || readIntroPlayed())
 
   function handleIntroComplete() {
-    sessionStorage.setItem(INTRO_SESSION_KEY, '1')
+    writeIntroPlayed()
     setIntroDone(true)
   }
 
@@ -59,7 +93,7 @@ function App() {
 
   return (
     <>
-      {!introDone && !isDeepLink && <IntroSequence onComplete={handleIntroComplete} />}
+      {!introDone && <IntroSequence onComplete={handleIntroComplete} />}
       <a
         href="#viewer"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded focus:bg-accent-ember focus:px-3 focus:py-2 focus:text-space-950"
@@ -71,7 +105,7 @@ function App() {
         curatedTargets={CURATED_TARGETS}
         onTargetSelected={handleTargetSelected}
         onReplayIntro={() => {
-          sessionStorage.removeItem(INTRO_SESSION_KEY)
+          clearIntroPlayed()
           setIntroDone(false)
         }}
         linkNotFound={linkNotFound}

@@ -88,4 +88,36 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /replay intro/i }))
     expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
   })
+
+  it('replaying the intro works even when the current session started from a deep link', () => {
+    sessionStorage.clear()
+    window.history.pushState({}, '', `/?ra=${eros.coordinates.ra_deg}&dec=${eros.coordinates.dec_deg}&size=${eros.size_deg}`)
+    render(<App />)
+    expect(screen.queryByRole('button', { name: /skip intro/i })).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /replay intro/i }))
+    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
+  })
+
+  it('treats a malformed deep-link the same as no deep link at all, so the intro still plays once', () => {
+    sessionStorage.clear()
+    window.history.pushState({}, '', '/?ra=not-a-number&dec=200')
+    render(<App />)
+    expect(screen.getByRole('button', { name: /skip intro/i })).toBeInTheDocument()
+  })
+
+  it('still renders the shell even when sessionStorage access throws (e.g. a locked-down browser)', () => {
+    const originalGetItem = Storage.prototype.getItem
+    Storage.prototype.getItem = () => {
+      throw new DOMException('blocked', 'SecurityError')
+    }
+    // No deep link, so the mount-time check actually has to read storage
+    // (a deep link would short-circuit past that read entirely).
+    window.history.pushState({}, '', '/')
+    try {
+      render(<App />)
+      expect(screen.getByRole('banner')).toBeInTheDocument()
+    } finally {
+      Storage.prototype.getItem = originalGetItem
+    }
+  })
 })

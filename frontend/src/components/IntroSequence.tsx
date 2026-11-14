@@ -20,6 +20,7 @@ const STORY_LINES = [
 function IntroSequence({ onComplete }: IntroSequenceProps) {
   const reducedMotion = useReducedMotion()
   const completedRef = useRef(false)
+  const skipButtonRef = useRef<HTMLButtonElement>(null)
 
   function complete() {
     if (completedRef.current) return
@@ -34,9 +35,19 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducedMotion])
 
+  // Whatever control the user clicked to get here (e.g. "Replay intro")
+  // would otherwise keep focus underneath this overlay, so Escape/Enter/
+  // Space skipping the intro would also re-trigger that control's own
+  // default key activation on the same keypress. Moving focus into the
+  // overlay, plus preventDefault below, stops that double-activation.
+  useEffect(() => {
+    skipButtonRef.current?.focus()
+  }, [])
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault()
         complete()
       }
     }
@@ -97,6 +108,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
         </div>
       )}
       <button
+        ref={skipButtonRef}
         type="button"
         onClick={event => {
           event.stopPropagation()
