@@ -8,6 +8,7 @@ interface IntroSequenceProps {
   onComplete: () => void
 }
 
+const WORDMARK = 'Skyshift'
 const WORDMARK_MS = 1000
 const STORY_MS = 4500
 const REDUCED_MOTION_MS = 1000
@@ -85,14 +86,37 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
       <div
         aria-hidden="true"
         className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-amber/15"
-      />
+      >
+        <span className="absolute left-1/2 top-1/2 h-full w-px -translate-x-1/2 -translate-y-1/2 bg-accent-amber/10" />
+        <span className="absolute left-1/2 top-1/2 h-px w-full -translate-x-1/2 -translate-y-1/2 bg-accent-amber/10" />
+        {!reducedMotion && (
+          <span
+            className="absolute inset-0"
+            style={{ animation: 'skyshift-reticle-orbit 6s linear infinite' }}
+          >
+            <span className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-amber/60" />
+          </span>
+        )}
+      </div>
+      <p className="sr-only">{WORDMARK}</p>
       <motion.p
+        aria-hidden="true"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: reducedMotion ? 0.3 : 0.8 }}
         className="font-display text-4xl italic tracking-wide text-starlight"
       >
-        Skyshift
+        {WORDMARK.split('').map((letter, i) => (
+          <motion.span
+            key={i}
+            initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.4, delay: 0.05 * i }}
+            className="inline-block"
+          >
+            {letter}
+          </motion.span>
+        ))}
       </motion.p>
       {reducedMotion ? (
         <motion.p
