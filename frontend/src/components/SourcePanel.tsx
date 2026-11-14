@@ -16,6 +16,12 @@ function releaseLabel(doi: string) {
   return releaseForDoi(doi)?.label ?? 'Unlisted release'
 }
 
+function flagsLabel(flags: string[] | undefined) {
+  if (flags === undefined) return 'Not logged in this pass'
+  if (flags.length === 0) return 'No flags raised'
+  return flags.join(', ')
+}
+
 function SourcePanel({ observation, verified, storyNote = null }: SourcePanelProps) {
   return (
     <div className="soft-scrollbar flex max-h-full flex-col overflow-y-auto p-4">
@@ -45,7 +51,9 @@ function SourcePanel({ observation, verified, storyNote = null }: SourcePanelPro
           </div>
           <div>
             <dt className="text-[9px] uppercase tracking-[.16em] text-moon/35">Quality flags</dt>
-            <dd className="mt-1 text-xs text-moon/75">FLAGS extension</dd>
+            <dd className={`mt-1 text-xs ${observation.flags && observation.flags.length > 0 ? 'text-accent-ember/80' : 'text-moon/75'}`}>
+              {flagsLabel(observation.flags)}
+            </dd>
           </div>
         </div>
         <div>

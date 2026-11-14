@@ -6,6 +6,10 @@ export interface Observation {
   image_url: string // Browser-friendly cutout URL; fixture-placeholder://<slug> is used when unavailable
   source_file: string
   doi: string
+  // Contamination flag names from the FITS FLAGS extension. undefined means
+  // this pass never logged them (honest gap, not "none found"); an empty
+  // array means they were checked and none were raised.
+  flags?: string[]
 }
 
 export interface TargetRecord {

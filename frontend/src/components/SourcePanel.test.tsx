@@ -36,4 +36,17 @@ describe('SourcePanel', () => {
     render(<SourcePanel observation={unlistedObs} verified={true} />)
     expect(screen.getByText(/unlisted release/i)).toBeInTheDocument()
   })
+  it('honestly says flags were not logged when the observation carries no flags field', () => {
+    render(<SourcePanel observation={obs} verified={true} />)
+    expect(screen.getByText(/not logged in this pass/i)).toBeInTheDocument()
+  })
+  it('says no flags were raised when the observation has an empty flags list', () => {
+    render(<SourcePanel observation={{ ...obs, flags: [] }} verified={true} />)
+    expect(screen.getByText(/no flags raised/i)).toBeInTheDocument()
+  })
+  it('lists the real flag names when the observation carries contamination flags', () => {
+    render(<SourcePanel observation={{ ...obs, flags: ['SOURCE_CONFUSION', 'NEAR_SATURATED'] }} verified={true} />)
+    expect(screen.getByText(/SOURCE_CONFUSION/)).toBeInTheDocument()
+    expect(screen.getByText(/NEAR_SATURATED/)).toBeInTheDocument()
+  })
 })
