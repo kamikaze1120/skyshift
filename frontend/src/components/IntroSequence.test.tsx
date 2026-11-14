@@ -50,6 +50,51 @@ describe('IntroSequence', () => {
     expect(underlyingClick).not.toHaveBeenCalled()
   })
 
+  it('tells an honest, specific story about the real motion it demos, not generic copy', () => {
+    const onComplete = vi.fn()
+    render(<IntroSequence onComplete={onComplete} />)
+    expect(screen.getByText('433 Eros did.')).toBeInTheDocument()
+    expect(screen.getByText(/604 arcsec/i)).toBeInTheDocument()
+  })
+
+  it('lets the user turn on ambient startup sound where Web Audio is available', () => {
+    class FakeOscillator {
+      type = ''
+      frequency = { value: 0 }
+      connect = vi.fn()
+      start = vi.fn()
+      stop = vi.fn()
+    }
+    class FakeGainNode {
+      gain = { value: 0, linearRampToValueAtTime: vi.fn() }
+      connect = vi.fn()
+    }
+    class FakeAudioContext {
+      destination = {}
+      currentTime = 0
+      createOscillator() {
+        return new FakeOscillator()
+      }
+      createGain() {
+        return new FakeGainNode()
+      }
+      close = vi.fn()
+    }
+    vi.stubGlobal('AudioContext', FakeAudioContext)
+
+    const onComplete = vi.fn()
+    render(<IntroSequence onComplete={onComplete} />)
+    const soundToggle = screen.getByRole('button', { name: /sound: off/i })
+    fireEvent.click(soundToggle)
+    expect(screen.getByRole('button', { name: /sound: on/i })).toBeInTheDocument()
+  })
+
+  it('does not show a sound toggle at all where Web Audio is unavailable, rather than a dead control', () => {
+    const onComplete = vi.fn()
+    render(<IntroSequence onComplete={onComplete} />)
+    expect(screen.queryByRole('button', { name: /sound:/i })).not.toBeInTheDocument()
+  })
+
   it('respects prefers-reduced-motion: shows a plain fade, without the drifting story animation', () => {
     vi.stubGlobal('matchMedia', (query: string) => ({
       matches: query.includes('reduce'),
