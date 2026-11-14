@@ -121,7 +121,7 @@ Layer 0   IRSA
 
 **Env var contract:**
 - Frontend (Vercel): `VITE_API_BASE_URL` (or `NEXT_PUBLIC_API_URL` if Next.js is chosen at kickoff) — public, build-time, points at the backend's deployed URL. Set separately per Vercel environment (Production / Preview / Development); locally it points at `http://localhost:8000` or wherever Athena runs FastAPI.
-- Backend (its own host, never Vercel): `DATABASE_URL` (Postgres/pgvector), LLM provider keys (Groq/Gemini) or the local Ollama endpoint, `CORS_ALLOWED_ORIGINS`. These secrets are never entered into Vercel's dashboard.
+- Backend (its own host, never Vercel): `DATABASE_URL` (Postgres/pgvector), `GROQ_API_KEY`, the local Ollama endpoint URL, `CORS_ALLOWED_ORIGINS`. These secrets are never entered into Vercel's dashboard.
 - `.env.example` on both sides lists variable names with placeholder values only. Real `.env` files stay gitignored per Section 7 rule 4.
 
 **CORS gotcha:** Vercel issues a unique preview URL per PR/branch, not one fixed domain. The backend's CORS config must allow the production domain plus a pattern for preview deployments (e.g. `https://skyshift-*.vercel.app`), or every PR preview silently fails to reach the API.
@@ -212,6 +212,8 @@ Finalize the API contract on paper. Rehearse the demo narrative. Four hour dry r
 | Venue Wi-Fi too slow for FITS downloads | Pre cached demo region, seeded fixtures, Ollama local model |
 | TAP endpoint slow or down | AWS Open Data bucket as fallback path |
 | Agent loops, burns free tier | Recursion cap, timeouts, cache every tool result |
+| LLM call stalls or returns empty mid-demo (Gemini free tier tested unreliable pre-kickoff) | Groq as primary provider, Ollama local as guaranteed fallback; hard 5-8s timeout per LLM call in the LangGraph layer; on timeout or empty response, fall back to a code-generated (non-AI) sentence describing the deterministic query results so the UI never stalls; pre-run and cache the exact demo queries before judging so the live call is warm, not cold |
+| LLM call stalls or returns empty mid-demo (Gemini free tier tested unreliable pre-kickoff) | Groq as primary provider, Ollama local as guaranteed fallback; hard 5-8s timeout per LLM call in the LangGraph layer; on timeout or empty response, fall back to a code-generated (non-AI) sentence describing the deterministic query results so the UI never stalls; pre-run and cache the exact demo queries before judging so the live call is warm, not cold |
 | Scope creep into real astronomy analysis | Ship exploration and comparison, make no discovery claims |
 | Merge conflicts | Layer ownership plus contract first |
 | Citation or AI disclosure miss costs the award | Both files exist from commit one, checked before submit |
