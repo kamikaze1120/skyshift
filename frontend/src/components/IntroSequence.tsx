@@ -29,9 +29,9 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-[#03050a] text-starlight">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-space-950 text-starlight">
       <StarfieldBackdrop />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_40%,rgba(225,123,80,.13),transparent_24%),linear-gradient(90deg,rgba(3,5,10,.98),rgba(3,5,10,.72),rgba(3,5,10,.92))]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_40%,rgba(255,176,32,.13),transparent_24%),linear-gradient(90deg,rgba(7,23,63,.98),rgba(7,23,63,.72),rgba(7,23,63,.92))]" aria-hidden="true" />
       <div className="relative flex h-full flex-col px-5 py-5 sm:px-10 sm:py-8 lg:px-16">
         <div className="flex items-center justify-between border-b border-starlight/10 pb-5">
           <div className="flex items-center gap-3">
@@ -86,9 +86,9 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
             <div className="absolute inset-[12%] rounded-full border border-starlight/10" />
             <div className="absolute inset-[26%] rounded-full border border-accent-ember/25" />
             <div className="absolute inset-[42%] rounded-full bg-accent-ember/20 blur-2xl" />
-            <div className="absolute size-20 rounded-full bg-gradient-to-br from-starlight/85 via-accent-ember to-[#3b1820] shadow-[0_0_60px_rgba(225,123,80,.35)]" />
+            <div className="absolute size-20 rounded-full bg-gradient-to-br from-starlight/85 via-accent-ember to-[#3b1820] shadow-[0_0_60px_rgba(255,176,32,.35)]" />
             <div className="absolute h-px w-full rotate-[-28deg] bg-accent-ember/25" />
-            <div className="absolute h-2 w-2 -translate-y-36 rounded-full bg-orbit shadow-[0_0_20px_rgba(145,214,232,.85)]" />
+            <div className="absolute h-2 w-2 -translate-y-36 rounded-full bg-orbit shadow-[0_0_20px_rgba(46,150,245,.85)]" />
             <div className="absolute bottom-10 left-1/2 w-52 -translate-x-1/2 text-center">
               <p className="micro-label text-moon/35">Research starts with a patch</p>
               <p className="mt-2 text-[10px] leading-relaxed text-moon/50">Coordinates in. Real epochs out. Every frame cited.</p>

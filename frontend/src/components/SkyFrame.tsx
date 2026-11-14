@@ -51,7 +51,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
   const markerClass = 'absolute z-10 -translate-x-1/2 -translate-y-1/2 ' + (reducedMotion ? '' : 'transition-all duration-1000 ease-out')
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#020408]">
+    <div className="absolute inset-0 overflow-hidden bg-space-950">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(102,165,193,.08),transparent_35%),linear-gradient(140deg,#07101b,#020408_55%,#0d0a12)]" />
       {!hasReferenceImage && <div className="sky-noise drift-slow absolute -inset-10 opacity-35" aria-hidden="true" />}
 
@@ -86,7 +86,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
           </div>
         ) : (
           <div className="relative aspect-square w-[min(78vw,640px)] overflow-hidden rounded-2xl border border-starlight/10 bg-black/30 shadow-[0_24px_90px_rgba(0,0,0,.45)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(255,224,180,.24),transparent_2%),radial-gradient(circle_at_20%_75%,rgba(145,214,232,.18),transparent_1%),radial-gradient(circle_at_55%_25%,rgba(242,239,231,.7),transparent_1%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(255,224,180,.24),transparent_2%),radial-gradient(circle_at_20%_75%,rgba(46,150,245,.18),transparent_1%),radial-gradient(circle_at_55%_25%,rgba(255,255,255,.7),transparent_1%)]" />
             <div className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(255,255,255,.85)_0_1px,transparent_1.4px)] [background-size:87px_73px]" />
             <div data-marker className={markerClass} style={{ top: marker.top, left: marker.left }}>
               <span className="absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-ember/10 blur-xl" />

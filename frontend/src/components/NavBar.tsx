@@ -23,7 +23,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
         <div className="flex items-center gap-3">
           <span className="relative grid size-9 place-items-center" aria-hidden="true">
             <span className="absolute h-4 w-8 -rotate-12 rounded-[50%] border border-accent-ember/65" />
-            <span className="size-2 rounded-full bg-starlight shadow-[0_0_14px_rgba(242,239,231,.7)]" />
+            <span className="size-2 rounded-full bg-starlight shadow-[0_0_14px_rgba(255,255,255,.7)]" />
           </span>
           <div>
             <span className="display-font block text-xl leading-none text-starlight">Skyshift</span>
@@ -54,7 +54,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
               className="flex h-10 min-w-44 items-center justify-between gap-3 rounded-full border border-starlight/15 bg-black/20 px-4 text-xs text-starlight backdrop-blur-md transition hover:border-starlight/30 focus-visible:outline-2 focus-visible:outline-accent-ember"
             >
               <span className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-accent-ember shadow-[0_0_10px_rgba(225,123,80,.75)]" />
+                <span className="size-1.5 rounded-full bg-accent-ember shadow-[0_0_10px_rgba(255,176,32,.75)]" />
                 {activeTarget.display_name}
               </span>
               <svg viewBox="0 0 20 20" className={`size-3.5 text-moon/45 transition ${targetMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true"><path d="m5 7 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>

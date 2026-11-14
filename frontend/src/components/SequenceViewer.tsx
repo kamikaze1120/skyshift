@@ -92,7 +92,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
   const activeMode = MODE_DEFINITIONS.find(mode => mode.id === displayMode) ?? MODE_DEFINITIONS[0]
 
   return (
-    <section className="relative h-full overflow-hidden bg-[#05070d] pt-20">
+    <section className="relative h-full overflow-hidden bg-space-950 pt-20">
       <div className="flex h-full min-h-0 flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="relative min-h-0 flex-1 overflow-hidden border-b border-starlight/10 lg:border-b-0 lg:border-r">
           <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4 sm:px-8">
@@ -121,7 +121,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
           </div>
         </div>
 
-        <aside className="soft-scrollbar relative min-h-0 overflow-y-auto bg-[#080b12]">
+        <aside className="soft-scrollbar relative min-h-0 overflow-y-auto bg-space-900">
           <div className="border-b border-starlight/10 px-4 py-4 sm:px-5">
             <div className="flex items-start justify-between gap-3">
               <div>

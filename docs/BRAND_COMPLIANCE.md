@@ -66,6 +66,16 @@ Don't" in the guide (recoloring, tilting, stretching, deconstructing lockups) by
 logo mark at all. If the team wants to add the actual Space Apps "Orbit" logo mark later, pull the
 real asset from spaceappschallenge.org/brand rather than approximating it.
 
+## Follow-up: literal color leftovers
+
+The first pass only updated the `@theme` token *values*. A review pass afterward found several
+places with pre-migration colors hardcoded as literal hex/rgb (Tailwind arbitrary values like
+`bg-[#03050a]`, or raw `rgba(225,123,80,...)` in shadows/gradients) instead of referencing the
+tokens — these don't pick up a token-value change and were still rendering the old palette. Fixed in
+`IntroSequence.tsx`, `NavBar.tsx`, `SequenceViewer.tsx`, `SkyFrame.tsx`, and `index.css`
+(`.soft-scrollbar`, `.orbit-line`, `.glass-panel`). The documented decorative-art exemption
+(`.scene-shell`, `.sky-canvas`, `.celestial-body`, `.sky-noise`) is unchanged on purpose.
+
 ## Icons and imagery
 
 Icons are custom inline SVGs, line-based with consistent stroke weight — already matches the guide's
