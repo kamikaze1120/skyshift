@@ -28,17 +28,17 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion }: SkyFramePr
       />
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-lime/30"
+        className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-amber/30"
       >
-        <span className="absolute left-1/2 top-1/2 h-px w-10 -translate-x-1/2 -translate-y-1/2 bg-accent-lime/25" />
-        <span className="absolute left-1/2 top-1/2 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-accent-lime/25" />
+        <span className="absolute left-1/2 top-1/2 h-px w-10 -translate-x-1/2 -translate-y-1/2 bg-accent-amber/25" />
+        <span className="absolute left-1/2 top-1/2 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-accent-amber/25" />
       </div>
       <p className="absolute left-2 top-2 font-mono text-[10px] uppercase tracking-wide text-starlight/50">
         Frame {index + 1}
       </p>
       <div
         data-marker
-        className={`absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-lime ${reducedMotion ? '' : 'transition-all duration-700 ease-out'}`}
+        className={`absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-amber ${reducedMotion ? '' : 'transition-all duration-700 ease-out'}`}
         style={{ top: marker.top, left: marker.left }}
       />
       <p className="absolute bottom-2 left-2 right-2 font-mono text-xs text-starlight/60">

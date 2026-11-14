@@ -84,7 +84,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
       <StarfieldBackdrop />
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-lime/15"
+        className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-amber/15"
       />
       <motion.p
         initial={{ opacity: 0 }}
@@ -99,7 +99,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.3 }}
-          className="mt-4 max-w-md text-center font-mono text-sm text-accent-lime"
+          className="mt-4 max-w-md text-center font-mono text-sm text-accent-amber"
         >
           {STORY_LINES[2]}
         </motion.p>
@@ -125,7 +125,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: WORDMARK_MS / 1000 + 2 }}
-            className="text-lg text-accent-lime"
+            className="text-lg text-accent-amber"
           >
             {STORY_LINES[2]}
           </motion.p>
@@ -146,7 +146,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
             event.stopPropagation()
             toggleSound()
           }}
-          className="absolute bottom-6 left-6 rounded border border-starlight/20 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-starlight/60 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+          className="absolute bottom-6 left-6 rounded border border-starlight/20 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-starlight/60 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
         >
           Sound: {soundOn ? 'on' : 'off'}
         </button>
@@ -158,7 +158,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
           event.stopPropagation()
           complete()
         }}
-        className="absolute bottom-6 right-6 rounded border border-starlight/20 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-starlight/60 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+        className="absolute bottom-6 right-6 rounded border border-starlight/20 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-starlight/60 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
       >
         Skip intro
       </button>

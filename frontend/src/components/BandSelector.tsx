@@ -51,10 +51,10 @@ function BandSelector({ selectedBand, onBandChange, loggedDetector }: BandSelect
         aria-valuenow={band.index}
         onKeyDown={handleKeyDown}
         onPointerDown={handlePointerDown}
-        className="h-2 cursor-pointer rounded-full bg-starlight/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+        className="h-2 cursor-pointer rounded-full bg-starlight/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
       >
         <div
-          className="h-2 rounded-full bg-accent-lime"
+          className="h-2 rounded-full bg-accent-amber"
           style={{ width: `${((band.index - 1) / (SPHEREX_BAND_COUNT - 1)) * 100}%` }}
         />
       </div>

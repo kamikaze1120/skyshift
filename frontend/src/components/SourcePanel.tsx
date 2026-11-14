@@ -18,7 +18,7 @@ function SourcePanel({ observation, verified, storyNote = null }: SourcePanelPro
             href={`https://doi.org/${observation.doi}`}
             target="_blank"
             rel="noreferrer"
-            className="underline hover:text-accent-lime"
+            className="underline hover:text-accent-amber"
           >
             {observation.doi}
           </a>
@@ -29,7 +29,7 @@ function SourcePanel({ observation, verified, storyNote = null }: SourcePanelPro
         <dd>{observation.wavelength_band}</dd>
       </dl>
       {!verified && (
-        <p className="mt-2 text-accent-lime">
+        <p className="mt-2 text-accent-amber">
           {storyNote ?? "Not yet confirmed — this detection needs a re-check before it's treated as a success."}
         </p>
       )}

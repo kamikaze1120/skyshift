@@ -25,7 +25,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
           type="button"
           onClick={() => setMobileMenuOpen(open => !open)}
           aria-expanded={mobileMenuOpen}
-          className="ml-auto rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime md:hidden"
+          className="ml-auto rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber md:hidden"
         >
           Menu
         </button>
@@ -40,9 +40,9 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
                 type="button"
                 onClick={() => onTargetSelected(target)}
                 aria-pressed={target.target_id === activeTarget.target_id}
-                className={`rounded border px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime ${
+                className={`rounded border px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber ${
                   target.target_id === activeTarget.target_id
-                    ? 'border-accent-lime text-accent-lime'
+                    ? 'border-accent-amber text-accent-amber'
                     : 'border-starlight/20 text-starlight/80'
                 }`}
               >
@@ -55,7 +55,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
             type="button"
             onClick={() => setSearchOpen(open => !open)}
             aria-expanded={searchOpen}
-            className="rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+            className="rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
           >
             Search
           </button>
@@ -66,14 +66,14 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
           <button
             type="button"
             onClick={onReplayIntro}
-            className="rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide text-starlight/70 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+            className="rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide text-starlight/70 hover:text-starlight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
           >
             Replay intro
           </button>
           <button
             type="button"
             onClick={onToggleAbout}
-            className="rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+            className="rounded border border-starlight/20 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
           >
             About
           </button>
@@ -81,7 +81,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
       </div>
 
       {linkNotFound && (
-        <p role="status" className="font-mono text-xs text-accent-lime">
+        <p role="status" className="font-mono text-xs text-accent-amber">
           Not in the local demo set yet — here are the curated targets you can explore instead.
         </p>
       )}

@@ -23,7 +23,7 @@ function AboutPanel({ isOpen, onClose }: AboutPanelProps) {
       <button
         type="button"
         onClick={onClose}
-        className="mb-3 rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+        className="mb-3 rounded border border-starlight/30 px-3 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
       >
         Close
       </button>

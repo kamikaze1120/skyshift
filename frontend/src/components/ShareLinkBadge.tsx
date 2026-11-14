@@ -24,7 +24,7 @@ function ShareLinkBadge({ target }: ShareLinkBadgeProps) {
       <button
         type="button"
         onClick={handleCopy}
-        className="rounded border border-starlight/30 px-2 py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-lime"
+        className="rounded border border-starlight/30 px-2 py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-amber"
       >
         {copied ? 'Link copied' : 'Copy link'}
       </button>
