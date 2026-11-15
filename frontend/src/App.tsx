@@ -101,6 +101,14 @@ function App() {
     setStep('selecting')
   }
 
+  function handleOpenTargetSelection() {
+    setStep('selecting')
+  }
+
+  function handleDismissTargetSelection() {
+    setStep('done')
+  }
+
   function handleTargetChosen(chosenTarget: TargetRecord) {
     writeIntroPlayed()
     setState({ target: chosenTarget, linkNotFound: false })
@@ -125,7 +133,11 @@ function App() {
     <>
       {step === 'intro' && <IntroSequence onComplete={handleIntroComplete} />}
       {step === 'selecting' && (
-        <TargetSelectionScreen targets={OFFICIAL_TARGETS} onTargetChosen={handleTargetChosen} />
+        <TargetSelectionScreen
+          targets={OFFICIAL_TARGETS}
+          onTargetChosen={handleTargetChosen}
+          onDismiss={handleDismissTargetSelection}
+        />
       )}
       <a
         href="#viewer"
@@ -141,6 +153,7 @@ function App() {
           clearIntroPlayed()
           setStep('intro')
         }}
+        onOpenTargetSelection={handleOpenTargetSelection}
         linkNotFound={linkNotFound}
       />
     </>

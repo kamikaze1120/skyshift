@@ -8,11 +8,12 @@ interface NavBarProps {
   activeTarget: TargetRecord
   onTargetSelected: (target: TargetRecord) => void
   onReplayIntro: () => void
+  onOpenTargetSelection: () => void
   onToggleAbout: () => void
   linkNotFound: boolean
 }
 
-function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro, onToggleAbout, linkNotFound }: NavBarProps) {
+function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro, onOpenTargetSelection, onToggleAbout, linkNotFound }: NavBarProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const [targetMenuOpen, setTargetMenuOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -36,6 +37,9 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
         <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex">
           <button type="button" onClick={onReplayIntro} aria-label="Replay intro story" className="micro-label text-moon/45 transition hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember">
             Story
+          </button>
+          <button type="button" onClick={onOpenTargetSelection} className="micro-label text-moon/45 transition hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember">
+            Targets
           </button>
           <button type="button" onClick={() => setSearchOpen(open => !open)} aria-expanded={searchOpen} aria-label="Search sky" className="micro-label text-moon/45 transition hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember">
             Explore
@@ -103,6 +107,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
             </button>
           ))}
           <div className="my-1 h-px bg-starlight/10" />
+          <button type="button" onClick={() => { onOpenTargetSelection(); setMobileMenuOpen(false) }} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">Targets</button>
           <button type="button" onClick={() => { setSearchOpen(true); setMobileMenuOpen(false) }} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">Explore</button>
           <button type="button" onClick={onReplayIntro} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">Replay intro</button>
           <button type="button" onClick={onToggleAbout} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">About</button>

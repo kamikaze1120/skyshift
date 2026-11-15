@@ -4,7 +4,7 @@ import App from './App'
 import targets from './fixtures/targets.json'
 import type { TargetRecord } from './fixtures/types'
 
-vi.mock('./components/OrbitField3D', () => ({ default: () => <div data-testid="orbit-field-mock" /> }))
+vi.mock('./components/SkyScanBackdrop3D', () => ({ default: () => <div data-testid="sky-scan-backdrop-mock" /> }))
 
 const eros = (targets as TargetRecord[])[0]
 const INTRO_SESSION_KEY = 'skyshift:introPlayed'
@@ -103,6 +103,31 @@ describe('App', () => {
     expect(screen.queryByRole('button', { name: /enter research bay/i })).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /replay intro/i }))
     expect(screen.getByRole('button', { name: /enter research bay/i })).toBeInTheDocument()
+  })
+
+  it('lets the user return to the target selection screen from the research bay without replaying the intro', () => {
+    sessionStorage.setItem(INTRO_SESSION_KEY, '1')
+    window.history.pushState({}, '', '/')
+    render(<App />)
+    expect(screen.getByRole('slider')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /^targets$/i }))
+
+    expect(screen.getByRole('heading', { name: /choose your target/i })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /enter research bay/i })).not.toBeInTheDocument()
+  })
+
+  it('lets the user back out of the target selection screen without choosing, returning to the research bay', () => {
+    sessionStorage.setItem(INTRO_SESSION_KEY, '1')
+    window.history.pushState({}, '', '/')
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: /^targets$/i }))
+    expect(screen.getByRole('heading', { name: /choose your target/i })).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /back to research bay/i }))
+
+    expect(screen.queryByRole('heading', { name: /choose your target/i })).not.toBeInTheDocument()
+    expect(screen.getByRole('slider')).toBeInTheDocument()
   })
 
   it('replaying the intro works even when the current session started from a deep link', () => {

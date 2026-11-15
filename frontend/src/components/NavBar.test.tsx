@@ -16,6 +16,7 @@ describe('NavBar', () => {
         activeTarget={BARNARD}
         onTargetSelected={onTargetSelected}
         onReplayIntro={vi.fn()}
+        onOpenTargetSelection={vi.fn()}
         onToggleAbout={vi.fn()}
         linkNotFound={false}
       />,
@@ -32,6 +33,7 @@ describe('NavBar', () => {
         activeTarget={BARNARD}
         onTargetSelected={vi.fn()}
         onReplayIntro={vi.fn()}
+        onOpenTargetSelection={vi.fn()}
         onToggleAbout={vi.fn()}
         linkNotFound={false}
       />,
@@ -47,6 +49,7 @@ describe('NavBar', () => {
         activeTarget={BARNARD}
         onTargetSelected={vi.fn()}
         onReplayIntro={vi.fn()}
+        onOpenTargetSelection={vi.fn()}
         onToggleAbout={vi.fn()}
         linkNotFound={true}
       />,
@@ -61,6 +64,7 @@ describe('NavBar', () => {
         activeTarget={BARNARD}
         onTargetSelected={vi.fn()}
         onReplayIntro={vi.fn()}
+        onOpenTargetSelection={vi.fn()}
         onToggleAbout={vi.fn()}
         linkNotFound={false}
       />,
@@ -75,11 +79,29 @@ describe('NavBar', () => {
         activeTarget={BARNARD}
         onTargetSelected={vi.fn()}
         onReplayIntro={vi.fn()}
+        onOpenTargetSelection={vi.fn()}
         onToggleAbout={vi.fn()}
         linkNotFound={false}
       />,
     )
     expect(screen.getByRole('button', { name: /search/i })).not.toHaveAttribute('tabindex', '-1')
     expect(screen.getByRole('button', { name: /about/i })).not.toHaveAttribute('tabindex', '-1')
+  })
+
+  it('offers a Targets control that re-opens target selection', () => {
+    const onOpenTargetSelection = vi.fn()
+    render(
+      <NavBar
+        curatedTargets={[EROS, BARNARD, RW_AUR]}
+        activeTarget={BARNARD}
+        onTargetSelected={vi.fn()}
+        onReplayIntro={vi.fn()}
+        onOpenTargetSelection={onOpenTargetSelection}
+        onToggleAbout={vi.fn()}
+        linkNotFound={false}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /^targets$/i }))
+    expect(onOpenTargetSelection).toHaveBeenCalled()
   })
 })

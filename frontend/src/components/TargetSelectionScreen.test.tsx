@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest'
 import TargetSelectionScreen from './TargetSelectionScreen'
 import { getTargetById } from '../lib/api'
 
-vi.mock('./OrbitField3D', () => ({ default: () => <div data-testid="orbit-field-mock" /> }))
+vi.mock('./SkyScanBackdrop3D', () => ({ default: () => <div data-testid="sky-scan-backdrop-mock" /> }))
 
 const BARNARD = getTargetById('barnards-star-2025-2026')!
 const WISE = getTargetById('wise-0855-2025-2026')!
@@ -37,5 +37,17 @@ describe('TargetSelectionScreen', () => {
     fireEvent.click(screen.getByRole('button', { name: /back/i }))
     expect(screen.queryByText(BARNARD.story_note!)).not.toBeInTheDocument()
     expect(onTargetChosen).not.toHaveBeenCalled()
+  })
+
+  it('offers a way to dismiss the whole screen without choosing a target, when onDismiss is given', () => {
+    const onDismiss = vi.fn()
+    render(<TargetSelectionScreen targets={[BARNARD]} onTargetChosen={vi.fn()} onDismiss={onDismiss} />)
+    fireEvent.click(screen.getByRole('button', { name: /back to research bay/i }))
+    expect(onDismiss).toHaveBeenCalled()
+  })
+
+  it('does not render a dismiss control when onDismiss is not given', () => {
+    render(<TargetSelectionScreen targets={[BARNARD]} onTargetChosen={vi.fn()} />)
+    expect(screen.queryByRole('button', { name: /back to research bay/i })).not.toBeInTheDocument()
   })
 })
