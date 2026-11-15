@@ -11,6 +11,10 @@ class FakeImage {
   private _src = ''
   set src(value: string) {
     this._src = value
+    if (value.includes('wide')) {
+      this.width = 4
+      this.height = 2
+    }
     queueMicrotask(() => {
       if (value.includes('bad')) this.onerror?.()
       else this.onload?.()
@@ -22,11 +26,12 @@ class FakeImage {
 }
 
 function stubCanvas() {
-  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+  const ctx = {
     drawImage: vi.fn(),
     getImageData: vi.fn().mockReturnValue({ width: 2, height: 2, data: new Uint8ClampedArray(16) }),
     putImageData: vi.fn(),
-  } as unknown as CanvasRenderingContext2D)
+  }
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(ctx as unknown as CanvasRenderingContext2D)
   vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue('data:fake-diff')
   vi.stubGlobal('ImageData', class {
     data: Uint8ClampedArray
@@ -38,6 +43,7 @@ function stubCanvas() {
       this.height = height
     }
   })
+  return ctx
 }
 
 describe('useDifferenceImage', () => {
@@ -71,5 +77,14 @@ describe('useDifferenceImage', () => {
     const { result } = renderHook(() => useDifferenceImage('/current.png', '/bad.png'))
     await waitFor(() => expect(result.current.status).toBe('unavailable'))
     expect(result.current.dataUrl).toBeNull()
+  })
+
+  it('is unavailable, not a distorted diff, when the two epochs have different dimensions', async () => {
+    vi.stubGlobal('Image', FakeImage)
+    const ctx = stubCanvas()
+    const { result } = renderHook(() => useDifferenceImage('/current-wide.png', '/baseline.png'))
+    await waitFor(() => expect(result.current.status).toBe('unavailable'))
+    expect(result.current.dataUrl).toBeNull()
+    expect(ctx.drawImage).not.toHaveBeenCalled()
   })
 })

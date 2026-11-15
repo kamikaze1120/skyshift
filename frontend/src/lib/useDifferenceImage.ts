@@ -38,6 +38,14 @@ export function useDifferenceImage(currentUrl: string | null, baselineUrl: strin
       .then(([currentImg, baselineImg]) => {
         if (cancelled) return
 
+        // Forcing mismatched frames onto the same square would silently
+        // stretch/crop one of them, producing a diff that looks real but
+        // isn't a fair pixel comparison — honest "unavailable" instead.
+        if (currentImg.width !== baselineImg.width || currentImg.height !== baselineImg.height) {
+          setStatus('unavailable')
+          return
+        }
+
         const size = Math.min(currentImg.width, currentImg.height, baselineImg.width, baselineImg.height)
         const canvas = document.createElement('canvas')
         canvas.width = size
