@@ -21,6 +21,7 @@ Space Apps 2026 rules permit AI tools to accelerate innovation and creativity, w
 |2026-11-14|Claude (Sonnet 5.5)|Drafted schemas/models.py and backend/main.py (API contract, /objects endpoint, CORS); author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted /timeseries (archive search, cutouts, PNG frames); author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted /search and frontend-compatible contract fields (wavelength\_band, flags, size\_deg); author reviewed and tested locally|
+|2026-11-15|Claude (Sonnet 5.5)|Drafted /flags and /flags/summary (anonymous, country-only citizen flagging); author reviewed and tested locally|
 
 Add a row here every time an AI tool materially contributes to code, docs, design, or copy that ships in the submission.
 
