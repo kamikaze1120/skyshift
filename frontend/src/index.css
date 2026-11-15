@@ -9,7 +9,13 @@
    guide's literal Rocket Red: Rocket Red only reaches ~4.0:1 on Deep Blue
    and drops under WCAG AA once rendered at this app's existing reduced
    text opacities (it's used at values down to /60 throughout); this amber
-   keeps the same warm accent role while staying >=4.5:1 at those opacities. */
+   keeps the same warm accent role while staying >=4.5:1 at those opacities.
+   electric-blue = Electric Blue #0042A6, the guide's second approved
+   background and the top-left stop of its own documented 45° gradient
+   (Electric Blue -> Deep Blue, see .brand-gradient below) — used to break
+   up flat Deep-Blue-only chrome with a second on-brand tone, not a new hue.
+   neon-blue = Neon Blue #0960E1, a second accent distinct from Blue
+   Yonder for secondary interactive states (hover/secondary actions). */
 @theme {
   --color-space-950: #07173F;
   --color-space-900: #0b1d4d;
@@ -19,6 +25,8 @@
   --color-accent-ember: #FFB020;
   --color-orbit: #2E96F5;
   --color-lilac: #eafe07;
+  --color-electric-blue: #0042A6;
+  --color-neon-blue: #0960E1;
 }
 
 :root {
@@ -125,6 +133,15 @@ code, pre {
   background: rgb(7 23 63 / 64%);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
   backdrop-filter: blur(18px);
+}
+
+/* The brand guide's own documented background treatment: a smooth 45°
+   linear gradient from Electric Blue (top-left) to Deep Blue (bottom-right).
+   Applied to UI chrome surfaces (nav, panels, cards) to break up flat
+   single-tone Deep Blue — never to the decorative sky/nebula art, which
+   stays its own illustrative gradient per docs/BRAND_COMPLIANCE.md. */
+.brand-gradient {
+  background: linear-gradient(135deg, var(--color-electric-blue) 0%, var(--color-space-950) 100%);
 }
 
 .soft-scrollbar {

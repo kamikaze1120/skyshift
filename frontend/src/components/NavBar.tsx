@@ -8,18 +8,19 @@ interface NavBarProps {
   activeTarget: TargetRecord
   onTargetSelected: (target: TargetRecord) => void
   onReplayIntro: () => void
+  onOpenTargetSelection: () => void
   onToggleAbout: () => void
   linkNotFound: boolean
 }
 
-function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro, onToggleAbout, linkNotFound }: NavBarProps) {
+function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro, onOpenTargetSelection, onToggleAbout, linkNotFound }: NavBarProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const [targetMenuOpen, setTargetMenuOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-30">
-      <div className="pointer-events-auto flex h-20 items-center border-b border-starlight/10 px-5 sm:px-8 lg:px-12">
+      <div className="pointer-events-auto flex h-20 items-center border-b border-starlight/10 bg-space-950/40 px-5 backdrop-blur-sm sm:px-8 lg:px-12">
         <div className="flex items-center gap-3">
           <span className="relative grid size-9 place-items-center" aria-hidden="true">
             <span className="absolute h-4 w-8 -rotate-12 rounded-[50%] border border-accent-ember/65" />
@@ -29,11 +30,16 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
             <span className="display-font block text-xl leading-none text-starlight">Skyshift</span>
             <span className="micro-label mt-1 block text-moon/40">SPHEREx · 2026</span>
           </div>
+          <span className="mx-3 hidden h-6 w-px bg-starlight/10 sm:block" aria-hidden="true" />
+          <img src="/brand/space-apps-mark.svg" alt="NASA Space Apps Challenge" className="hidden size-6 opacity-80 sm:block" />
         </div>
 
         <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex">
           <button type="button" onClick={onReplayIntro} aria-label="Replay intro story" className="micro-label text-moon/45 transition hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember">
             Story
+          </button>
+          <button type="button" onClick={onOpenTargetSelection} className="micro-label text-moon/45 transition hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember">
+            Targets
           </button>
           <button type="button" onClick={() => setSearchOpen(open => !open)} aria-expanded={searchOpen} aria-label="Search sky" className="micro-label text-moon/45 transition hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember">
             Explore
@@ -101,6 +107,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
             </button>
           ))}
           <div className="my-1 h-px bg-starlight/10" />
+          <button type="button" onClick={() => { onOpenTargetSelection(); setMobileMenuOpen(false) }} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">Targets</button>
           <button type="button" onClick={() => { setSearchOpen(true); setMobileMenuOpen(false) }} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">Explore</button>
           <button type="button" onClick={onReplayIntro} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">Replay intro</button>
           <button type="button" onClick={onToggleAbout} className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-moon/65">About</button>
