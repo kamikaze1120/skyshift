@@ -1,19 +1,28 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import App from './App'
 import targets from './fixtures/targets.json'
 import type { TargetRecord } from './fixtures/types'
+
+vi.mock('./components/OrbitField3D', () => ({ default: () => <div data-testid="orbit-field-mock" /> }))
 
 const eros = (targets as TargetRecord[])[0]
 const INTRO_SESSION_KEY = 'skyshift:introPlayed'
 
 describe('App', () => {
-  it('shows the intro on a fresh session with no deep link, then reveals the app on completion', () => {
+  it('shows the intro on a fresh session with no deep link, then a target-selection screen, then reveals the app once a target is chosen', () => {
     sessionStorage.clear()
     window.history.pushState({}, '', '/')
     render(<App />)
     expect(screen.getByRole('button', { name: /enter research bay/i })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /enter research bay/i }))
+
+    // Lands on the selection screen first, not straight into the viewer.
+    expect(screen.getByRole('heading', { name: /choose your target/i })).toBeInTheDocument()
+    const barnardCard = screen.getByRole('listitem', { name: /barnard/i })
+    fireEvent.click(barnardCard)
+    fireEvent.click(screen.getByRole('button', { name: /begin research/i }))
+
     expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '0')
   })
 
