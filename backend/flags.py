@@ -1,6 +1,7 @@
 import re
 import threading
-from collections import Counter
+import time
+from collections import Counter, deque
 
 from fastapi import HTTPException, Request
 from pydantic import BaseModel
@@ -15,6 +16,8 @@ except Exception:
 _ID = re.compile(r"^[A-Za-z0-9_.+-]{1,80}$")
 _LOCK = threading.Lock()
 _BY_COUNTRY = Counter()
+_RECENT = deque()
+MAX_PER_MINUTE = 60
 
 
 class FlagIn(BaseModel):
@@ -31,6 +34,17 @@ def country_of(request: Request) -> str:
     return "Unknown"
 
 
+def _allow() -> bool:
+    # Global cap on flags per minute. No per-visitor tracking, so no personal data.
+    now = time.monotonic()
+    while _RECENT and now - _RECENT[0] > 60:
+        _RECENT.popleft()
+    if len(_RECENT) >= MAX_PER_MINUTE:
+        return False
+    _RECENT.append(now)
+    return True
+
+
 def register_flags(app):
     @app.post("/flags")
     def submit_flag(body: FlagIn, request: Request):
@@ -38,6 +52,8 @@ def register_flags(app):
             raise HTTPException(422, "Invalid target_id.")
         country = country_of(request)
         with _LOCK:
+            if not _allow():
+                raise HTTPException(429, "Too many flags right now, try again shortly.")
             _BY_COUNTRY[country] += 1
         return {"ok": True}
 
