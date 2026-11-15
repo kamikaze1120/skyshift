@@ -13,6 +13,9 @@ describe('urlParams', () => {
   it('drops an unusable size instead of rejecting an otherwise-valid link', () => {
     expect(parseTargetParams('?ra=7.41&dec=9.98&size=not-a-number')).toEqual({ ra: 7.41, dec: 9.98 })
   })
+  it('drops a size outside the FOV slider\'s representable range (0.05-0.5)', () => {
+    expect(parseTargetParams('?ra=7.41&dec=9.98&size=100')).toEqual({ ra: 7.41, dec: 9.98 })
+  })
   it('returns null for missing params', () => {
     expect(parseTargetParams('')).toBeNull()
   })

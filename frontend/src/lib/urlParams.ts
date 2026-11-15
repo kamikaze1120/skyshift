@@ -1,5 +1,10 @@
 import type { TargetRecord } from '../fixtures/types'
 
+// Matches the FOV slider's min/max in SequenceViewer.tsx — a size outside
+// this range would seed state the slider can't represent.
+const MIN_FOV_DEG = 0.05
+const MAX_FOV_DEG = 0.5
+
 export function parseTargetParams(search: string): { ra: number; dec: number; size?: number } | null {
   const params = new URLSearchParams(search)
   const raStr = params.get('ra')
@@ -16,7 +21,7 @@ export function parseTargetParams(search: string): { ra: number; dec: number; si
   // is dropped rather than invalidating an otherwise-good ra/dec link.
   const sizeStr = params.get('size')
   const size = sizeStr !== null ? Number.parseFloat(sizeStr) : NaN
-  if (Number.isFinite(size) && size > 0) return { ra, dec, size }
+  if (Number.isFinite(size) && size >= MIN_FOV_DEG && size <= MAX_FOV_DEG) return { ra, dec, size }
 
   return { ra, dec }
 }
