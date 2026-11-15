@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { getTargetById, searchTargets, findTargetByCoordinates, searchArchive, submitFlag, getGlobalFlags } from './api'
+import { getTargetById, searchTargets, findTargetByCoordinates, searchArchive, submitFlag, getGlobalFlags, askSkyshift } from './api'
 
 describe('api (fixture-backed)', () => {
   it('getTargetById returns the matching record', () => {
@@ -128,6 +128,52 @@ describe('getGlobalFlags (backend, optional)', () => {
     vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')))
     const result = await getGlobalFlags()
+    expect(result).toBeNull()
+  })
+})
+
+describe('askSkyshift (backend, optional)', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+  })
+
+  const context = { targetName: '433 Eros', channel: 51 }
+
+  it('returns null without calling fetch when no backend URL is configured', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', '')
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    const result = await askSkyshift('What moved?', context)
+    expect(result).toBeNull()
+    expect(fetchSpy).not.toHaveBeenCalled()
+  })
+
+  it('returns the real answer when the backend responds with one', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ answer: 'It drifted 604 arcsec.' }) }))
+    const result = await askSkyshift('What moved?', context)
+    expect(result).toBe('It drifted 604 arcsec.')
+  })
+
+  it('returns null instead of a fabricated answer when the backend response has no answer text', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ answer: '  ' }) }))
+    const result = await askSkyshift('What moved?', context)
+    expect(result).toBeNull()
+  })
+
+  it('returns null, not a throw, when the backend is unreachable', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')))
+    const result = await askSkyshift('What moved?', context)
+    expect(result).toBeNull()
+  })
+
+  it('returns null when the backend responds but not ok', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }))
+    const result = await askSkyshift('What moved?', context)
     expect(result).toBeNull()
   })
 })
