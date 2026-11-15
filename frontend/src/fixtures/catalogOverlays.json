@@ -3,60 +3,60 @@
     "target_id": "barnards-star-2025-2026",
     "source": "Gaia DR3",
     "query": "cone search, 5 arcsec radius, via https://gea.esac.esa.int/tap-server/tap/sync",
-    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "fetched_at": "2026-11-15T23:30:29.004510+00:00",
     "status": "service_unreachable",
-    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Read timed out. (read timeout=20)",
+    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Max retries exceeded with url: /tap-server/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=json&QUERY=SELECT+TOP+5+source_id%2C+ra%2C+dec%2C+phot_g_mean_mag%2C+parallax%2C+pmra%2C+pmdec+FROM+gaiadr3.gaia_source+WHERE+1%3DCONTAINS%28POINT%28%27ICRS%27%2C+ra%2C+dec%29%2C+CIRCLE%28%27ICRS%27%2C+269.44634%2C+4.76724%2C+0.001388888888888889%29%29 (Caused by ConnectTimeoutError(<HTTPSConnection(host='gea.esac.esa.int', port=443) at 0x77a3ac1e3a40>, 'Connection to gea.esac.esa.int timed out. (connect timeout=20)'))",
     "sources": []
   },
   {
     "target_id": "rw-aurigae-2025-2026",
     "source": "Gaia DR3",
     "query": "cone search, 5 arcsec radius, via https://gea.esac.esa.int/tap-server/tap/sync",
-    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "fetched_at": "2026-11-15T23:30:29.004510+00:00",
     "status": "service_unreachable",
-    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Read timed out. (read timeout=20)",
+    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Max retries exceeded with url: /tap-server/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=json&QUERY=SELECT+TOP+5+source_id%2C+ra%2C+dec%2C+phot_g_mean_mag%2C+parallax%2C+pmra%2C+pmdec+FROM+gaiadr3.gaia_source+WHERE+1%3DCONTAINS%28POINT%28%27ICRS%27%2C+ra%2C+dec%29%2C+CIRCLE%28%27ICRS%27%2C+76.9564535%2C+30.4013327%2C+0.001388888888888889%29%29 (Caused by ConnectTimeoutError(<HTTPSConnection(host='gea.esac.esa.int', port=443) at 0x77a3ac2341a0>, 'Connection to gea.esac.esa.int timed out. (connect timeout=20)'))",
     "sources": []
   },
   {
     "target_id": "r-draconis-2025-2026",
     "source": "Gaia DR3",
     "query": "cone search, 5 arcsec radius, via https://gea.esac.esa.int/tap-server/tap/sync",
-    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "fetched_at": "2026-11-15T23:30:29.004510+00:00",
     "status": "service_unreachable",
-    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Read timed out. (read timeout=20)",
+    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Max retries exceeded with url: /tap-server/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=json&QUERY=SELECT+TOP+5+source_id%2C+ra%2C+dec%2C+phot_g_mean_mag%2C+parallax%2C+pmra%2C+pmdec+FROM+gaiadr3.gaia_source+WHERE+1%3DCONTAINS%28POINT%28%27ICRS%27%2C+ra%2C+dec%29%2C+CIRCLE%28%27ICRS%27%2C+248.167472%2C+66.7549882%2C+0.001388888888888889%29%29 (Caused by ConnectTimeoutError(<HTTPSConnection(host='gea.esac.esa.int', port=443) at 0x77a3ac234860>, 'Connection to gea.esac.esa.int timed out. (connect timeout=20)'))",
     "sources": []
   },
   {
     "target_id": "433-eros-2025-06",
     "source": "JPL Small-Body Database",
     "query": "sstr=433, via https://ssd-api.jpl.nasa.gov/sbdb.api",
-    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "fetched_at": "2026-11-15T23:30:29.004510+00:00",
     "status": "ok",
     "object": {
-      "shortname": "433 Eros",
-      "neo": true,
-      "prefix": null,
+      "spkid": "20000433",
       "des": "433",
-      "kind": "an",
-      "orbit_class": {
-        "code": "AMO",
-        "name": "Amor"
-      },
+      "neo": true,
+      "shortname": "433 Eros",
       "orbit_id": "659",
+      "kind": "an",
       "pha": false,
-      "fullname": "433 Eros (A898 PA)",
-      "spkid": "20000433"
+      "orbit_class": {
+        "name": "Amor",
+        "code": "AMO"
+      },
+      "prefix": null,
+      "fullname": "433 Eros (A898 PA)"
     },
     "discovery": {
-      "name": null,
-      "date": "1898-Aug-13",
-      "discovery": "Discovered 1898-08-13 by Witt, G. at Berlin",
-      "location": "Berlin",
-      "cref": null,
       "who": "Witt, G.",
-      "ref": "DISCOVERY.DB",
+      "date": "1898-Aug-13",
+      "name": null,
+      "location": "Berlin",
       "site": null,
-      "citation": null
+      "ref": "DISCOVERY.DB",
+      "citation": null,
+      "discovery": "Discovered 1898-08-13 by Witt, G. at Berlin",
+      "cref": null
     }
   }
 ]
