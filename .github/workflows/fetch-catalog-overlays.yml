@@ -7,6 +7,9 @@ name: Fetch catalog overlays (one-off)
 
 on:
   workflow_dispatch: {}
+  push:
+    branches: [mujtaba/story-overhaul]
+    paths: ['.github/workflows/fetch-catalog-overlays.yml']
 
 permissions:
   contents: write
