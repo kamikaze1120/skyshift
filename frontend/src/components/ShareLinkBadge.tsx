@@ -13,7 +13,11 @@ function ShareLinkBadge({ target }: ShareLinkBadgeProps) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
-    await navigator.clipboard?.writeText(url)
+    try {
+      await navigator.clipboard?.writeText(url)
+    } catch {
+      return
+    }
     setCopied(true)
     window.setTimeout(() => setCopied(false), COPIED_RESET_MS)
   }
