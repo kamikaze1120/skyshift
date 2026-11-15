@@ -40,7 +40,7 @@ describe('searchArchive (backend, optional)', () => {
 
   it('returns the parsed array when the backend responds with target records', async () => {
     vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
-    const remoteTarget = { target_id: 'remote-1', display_name: 'Remote Object' }
+    const remoteTarget = { target_id: 'remote-1', display_name: 'Remote Object', observations: [{ image_url: 'a.png' }] }
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: true,
       json: async () => [remoteTarget],
@@ -61,6 +61,24 @@ describe('searchArchive (backend, optional)', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, json: async () => [] }))
     const result = await searchArchive({ query: 'Eros' })
     expect(result).toBeNull()
+  })
+
+  it('preserves a path prefix in the configured base URL, like its sibling endpoints do', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'https://api.skyshift.app/v1')
+    const fetchSpy = vi.fn().mockResolvedValue({ ok: true, json: async () => [] })
+    vi.stubGlobal('fetch', fetchSpy)
+    await searchArchive({ query: 'Eros' })
+    const calledUrl = fetchSpy.mock.calls[0][0].toString()
+    expect(calledUrl.startsWith('https://api.skyshift.app/v1/search')).toBe(true)
+  })
+
+  it('drops a remote record with no observations instead of handing the app something that will crash the viewer', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
+    const good = { target_id: 'remote-1', display_name: 'Remote Object', observations: [{ image_url: 'a.png' }] }
+    const malformed = { target_id: 'remote-2', display_name: 'Empty Object', observations: [] }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => [good, malformed] }))
+    const result = await searchArchive({ query: 'Remote' })
+    expect(result).toEqual([good])
   })
 })
 

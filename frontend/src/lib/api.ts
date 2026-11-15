@@ -15,7 +15,7 @@ export async function searchArchive(params: ArchiveSearchParams): Promise<Target
   if (!baseUrl) return null
 
   try {
-    const url = new URL('/search', baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`)
+    const url = new URL('search', baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`)
     if (params.query) url.searchParams.set('q', params.query)
     if (params.ra !== undefined) url.searchParams.set('ra', String(params.ra))
     if (params.dec !== undefined) url.searchParams.set('dec', String(params.dec))
@@ -23,7 +23,11 @@ export async function searchArchive(params: ArchiveSearchParams): Promise<Target
     const response = await fetch(url.toString())
     if (!response.ok) return null
     const payload = await response.json()
-    return Array.isArray(payload) ? (payload as TargetRecord[]) : null
+    if (!Array.isArray(payload)) return null
+    // Every renderer downstream (SequenceViewer, SkyFrame) assumes at least
+    // one observation to read observations[0] from — drop anything that
+    // doesn't have one rather than handing the app a record that crashes it.
+    return (payload as TargetRecord[]).filter(t => Array.isArray(t.observations) && t.observations.length > 0)
   } catch {
     return null
   }
