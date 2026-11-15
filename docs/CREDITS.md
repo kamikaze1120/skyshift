@@ -66,6 +66,9 @@ Cite these even where we only studied them. See `REFERENCE_TOOLS.md` for what we
 | FastAPI | Backend web API | MIT |
 | Pydantic | Data contract / validation models | MIT |
 | Uvicorn | Server that runs the API | BSD 3-Clause |
+| NumPy | Array handling for image data | BSD 3-Clause (bundled components: 0BSD, MIT, Zlib, CC0-1.0) |
+| Pillow | Converting image data to PNG | MIT-CMU |
+| Requests | HTTP requests to IRSA | Apache 2.0 |
 | *(populate the rest as the build starts: framework, viewer, plotting, server)* | | |
 
 ## AI tools

@@ -19,6 +19,7 @@ Space Apps 2026 rules permit AI tools to accelerate innovation and creativity, w
 |2026-09-22|Claude (Opus 5)|Judging-criteria lock-in, concept pressure test, MVP scope cut, two-person work split|
 |2026-09-25|Claude (Opus 5)|Team kickoff-meeting talking points|
 |2026-11-14|Claude (Sonnet 5.5)|Drafted schemas/models.py and backend/main.py (API contract, /objects endpoint, CORS); author reviewed and tested locally|
+|2026-11-15|Claude (Sonnet 5.5)|Drafted /timeseries (archive search, cutouts, PNG frames); author reviewed and tested locally|
 
 Add a row here every time an AI tool materially contributes to code, docs, design, or copy that ships in the submission.
 
