@@ -135,7 +135,13 @@ def timeseries(
         object_type=card.object_type if card else "unknown",
         coordinates=Coordinates(ra_deg=ra, dec_deg=dec),
         observations=observations,
+        size_deg=size,
         known_motion_arcsec=None,
         verified=False,
         story_note=None,
     )
+
+
+from backend.search import register_search  # noqa: E402
+
+register_search(app, OBJECTS, timeseries)
