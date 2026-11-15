@@ -44,7 +44,11 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
               <p className="micro-label mt-1 text-moon/35">A public SPHEREx research tool</p>
             </div>
           </div>
-          <p className="micro-label hidden text-moon/30 sm:block">NASA Space Apps · 2026</p>
+          <img
+            src="/brand/space-apps-lockup.svg"
+            alt="NASA Space Apps Challenge 2026"
+            className="hidden h-6 w-auto opacity-90 sm:block"
+          />
         </div>
 
         <div className="grid min-h-0 flex-1 items-center gap-8 py-8 lg:grid-cols-[1fr_340px] lg:gap-20">

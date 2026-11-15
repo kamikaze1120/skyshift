@@ -44,6 +44,11 @@ describe('IntroSequence', () => {
     expect(onComplete).toHaveBeenCalledTimes(1)
   })
 
+  it('shows the official NASA Space Apps logo lockup instead of plain text', () => {
+    render(<IntroSequence onComplete={vi.fn()} />)
+    expect(screen.getByRole('img', { name: /nasa space apps/i })).toBeInTheDocument()
+  })
+
   it('respects prefers-reduced-motion: shows a plain fade, without the drifting story animation', () => {
     vi.stubGlobal('matchMedia', (query: string) => ({
       matches: query.includes('reduce'),

@@ -54,6 +54,20 @@ describe('NavBar', () => {
     expect(screen.getByRole('status')).toHaveTextContent(/not.*(local|demo).*set/i)
   })
 
+  it('shows the official NASA Space Apps Orbit mark in the header', () => {
+    render(
+      <NavBar
+        curatedTargets={[EROS, BARNARD, RW_AUR]}
+        activeTarget={BARNARD}
+        onTargetSelected={vi.fn()}
+        onReplayIntro={vi.fn()}
+        onToggleAbout={vi.fn()}
+        linkNotFound={false}
+      />,
+    )
+    expect(screen.getByRole('img', { name: /nasa space apps/i })).toBeInTheDocument()
+  })
+
   it('is operable by keyboard: Tab reaches the search toggle and the About toggle', () => {
     render(
       <NavBar

@@ -19,7 +19,7 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-30">
-      <div className="pointer-events-auto flex h-20 items-center border-b border-starlight/10 px-5 sm:px-8 lg:px-12">
+      <div className="pointer-events-auto flex h-20 items-center border-b border-starlight/10 bg-space-950/40 px-5 backdrop-blur-sm sm:px-8 lg:px-12">
         <div className="flex items-center gap-3">
           <span className="relative grid size-9 place-items-center" aria-hidden="true">
             <span className="absolute h-4 w-8 -rotate-12 rounded-[50%] border border-accent-ember/65" />
@@ -29,6 +29,8 @@ function NavBar({ curatedTargets, activeTarget, onTargetSelected, onReplayIntro,
             <span className="display-font block text-xl leading-none text-starlight">Skyshift</span>
             <span className="micro-label mt-1 block text-moon/40">SPHEREx · 2026</span>
           </div>
+          <span className="mx-3 hidden h-6 w-px bg-starlight/10 sm:block" aria-hidden="true" />
+          <img src="/brand/space-apps-mark.svg" alt="NASA Space Apps Challenge" className="hidden size-6 opacity-80 sm:block" />
         </div>
 
         <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex">
