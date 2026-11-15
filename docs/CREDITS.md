@@ -63,6 +63,9 @@ Cite these even where we only studied them. See `REFERENCE_TOOLS.md` for what we
 |---|---|---|
 | Astropy | FITS, WCS, coordinates, proper motion propagation | BSD 3-Clause |
 | astroquery | IRSA SIA2 queries | BSD 3-Clause |
+| FastAPI | Backend web API | MIT |
+| Pydantic | Data contract / validation models | MIT |
+| Uvicorn | Server that runs the API | BSD 3-Clause |
 | *(populate the rest as the build starts: framework, viewer, plotting, server)* | | |
 
 ## AI tools
