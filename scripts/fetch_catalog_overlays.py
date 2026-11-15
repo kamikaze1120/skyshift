@@ -20,13 +20,32 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+from astropy.coordinates import SkyCoord
+from astropy.time import Time
+import astropy.units as u
 
 GAIA_TAP_SYNC_URL = "https://gea.esac.esa.int/tap-server/tap/sync"
 SBDB_URL = "https://ssd-api.jpl.nasa.gov/sbdb.api"
 GAIA_CONE_RADIUS_DEG = 5 / 3600.0  # 5 arcsec
+GAIA_REFERENCE_EPOCH = Time("J2016.0")
 REQUEST_TIMEOUT_S = 20
 
 OUTPUT_PATH = Path(__file__).resolve().parent.parent / "frontend" / "src" / "fixtures" / "catalogOverlays.json"
+
+# Gaia DR3 stores every source's position at epoch J2016.0. A target with
+# large proper motion must be propagated back to that epoch before a cone
+# search, or the search centers on empty sky and falsely implies the star
+# isn't catalogued at all. Barnard's Star moves ~10.4 arcsec/yr (the fastest
+# of any star), so its fixture position (as observed ~2025) is ~100 arcsec
+# from where Gaia actually sees it. RW Aurigae and R Draconis have no
+# logged proper motion (see known_motion_arcsec: null in targets.json) —
+# negligible over this baseline, so they're queried at the fixture position
+# directly, matching Athena's own review finding.
+PROPER_MOTION_MAS_PER_YR = {
+    # (pm_ra_cosdec, pm_dec), same values as backend's PROPER_MOTION dict
+    "barnards-star-2025-2026": (-801.551, 10362.394),
+}
+FIXTURE_COORDINATE_EPOCH = Time("2025-08-15")  # targets.json's first observation epoch for this target
 
 STAR_TARGETS = [
     {"target_id": "barnards-star-2025-2026", "display_name": "Barnard's Star", "ra_deg": 269.44634, "dec_deg": 4.76724},
@@ -35,6 +54,24 @@ STAR_TARGETS = [
 ]
 
 ASTEROID_TARGET = {"target_id": "433-eros-2025-06", "display_name": "433 Eros", "sstr": "433"}
+
+
+def gaia_search_position(target: dict) -> tuple[float, float, bool]:
+    """Returns (ra_deg, dec_deg, was_propagated) to actually search Gaia at."""
+    proper_motion = PROPER_MOTION_MAS_PER_YR.get(target["target_id"])
+    if proper_motion is None:
+        return target["ra_deg"], target["dec_deg"], False
+
+    pm_ra_cosdec, pm_dec = proper_motion
+    coord = SkyCoord(
+        ra=target["ra_deg"] * u.deg,
+        dec=target["dec_deg"] * u.deg,
+        pm_ra_cosdec=pm_ra_cosdec * u.mas / u.yr,
+        pm_dec=pm_dec * u.mas / u.yr,
+        obstime=FIXTURE_COORDINATE_EPOCH,
+    )
+    propagated = coord.apply_space_motion(new_obstime=GAIA_REFERENCE_EPOCH)
+    return propagated.ra.deg, propagated.dec.deg, True
 
 
 def fetch_gaia_cone_search(ra_deg: float, dec_deg: float) -> dict:
@@ -75,12 +112,18 @@ def main() -> None:
     overlays = []
 
     for target in STAR_TARGETS:
-        result = fetch_gaia_cone_search(target["ra_deg"], target["dec_deg"])
+        search_ra, search_dec, was_propagated = gaia_search_position(target)
+        result = fetch_gaia_cone_search(search_ra, search_dec)
+        epoch_note = (
+            f"position propagated to J2016.0 from fixture epoch {FIXTURE_COORDINATE_EPOCH.iso[:10]} using known proper motion"
+            if was_propagated
+            else "queried at the fixture position directly (no significant known proper motion)"
+        )
         overlays.append(
             {
                 "target_id": target["target_id"],
                 "source": "Gaia DR3",
-                "query": f"cone search, {GAIA_CONE_RADIUS_DEG * 3600:.0f} arcsec radius, via {GAIA_TAP_SYNC_URL}",
+                "query": f"cone search, {GAIA_CONE_RADIUS_DEG * 3600:.0f} arcsec radius, via {GAIA_TAP_SYNC_URL} — {epoch_note}",
                 "fetched_at": fetched_at,
                 **result,
             }
