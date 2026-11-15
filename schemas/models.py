@@ -32,3 +32,14 @@ class ObjectCard(BaseModel):
     detection: Detection
     releases: list[Release]
     blurb: str
+
+
+class TargetRecord(BaseModel):
+    target_id: str
+    display_name: str
+    object_type: ObjectType
+    coordinates: Coordinates
+    observations: list[Observation] = Field(min_length=2)
+    known_motion_arcsec: Optional[float] = None
+    verified: bool
+    story_note: Optional[str] = None
