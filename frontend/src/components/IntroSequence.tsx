@@ -111,7 +111,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
             type="button"
             aria-label="Enter research bay"
             onClick={event => { event.stopPropagation(); complete() }}
-            className="rounded-full border border-starlight/15 px-4 py-2 text-[10px] uppercase tracking-[.15em] text-moon/50 transition hover:border-starlight/30 hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember"
+            className="rounded-full bg-accent-ember px-6 py-3 text-xs font-semibold uppercase tracking-[.15em] text-space-950 shadow-[0_8px_30px_rgba(255,176,32,.4)] transition hover:bg-starlight focus-visible:outline-2 focus-visible:outline-starlight"
           >
             Enter research bay
           </button>

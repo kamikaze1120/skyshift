@@ -55,9 +55,9 @@ code, pre {
 }
 
 .micro-label {
-  font-size: .58rem;
+  font-size: .7rem;
   line-height: 1;
-  letter-spacing: .22em;
+  letter-spacing: .2em;
   text-transform: uppercase;
 }
 
@@ -130,7 +130,7 @@ code, pre {
 
 .glass-panel {
   border: 1px solid rgb(255 255 255 / 11%);
-  background: rgb(7 23 63 / 64%);
+  background: rgb(7 23 63 / 88%);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
   backdrop-filter: blur(18px);
 }
