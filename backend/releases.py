@@ -1,6 +1,8 @@
 # One place for release names, collections and DOIs. Adding a release is a
 # config edit, not a code change (see docs/DATA_RELEASES.md).
-# QR2 is not searchable as of 2026-11-14 (0 rows), so it is disabled.
+# QR2 is no longer searchable: IRSA stopped returning QR2 in searches when
+# DR1 was released (DR1 reprocesses the QR2 data), so this file serves DR1
+# and QR3 only.
 # The "deep" collections are left out until their DOIs are confirmed.
 RELEASES = [
     {
