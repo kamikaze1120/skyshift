@@ -52,7 +52,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-space-950">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(102,165,193,.08),transparent_35%),linear-gradient(140deg,#07101b,#020408_55%,#0d0a12)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(46,150,245,.08),transparent_35%),linear-gradient(140deg,#07173F,#0b1d4d_55%,#11295e)]" />
       {!hasReferenceImage && <div className="sky-noise drift-slow absolute -inset-10 opacity-35" aria-hidden="true" />}
 
       <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between gap-4 sm:inset-x-8 sm:top-6">

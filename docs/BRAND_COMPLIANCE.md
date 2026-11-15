@@ -76,6 +76,14 @@ tokens — these don't pick up a token-value change and were still rendering the
 (`.soft-scrollbar`, `.orbit-line`, `.glass-panel`). The documented decorative-art exemption
 (`.scene-shell`, `.sky-canvas`, `.celestial-body`, `.sky-noise`) is unchanged on purpose.
 
+A second, independent review pass caught one the first pass missed: `SkyFrame.tsx`'s full-frame
+background overlay (the `absolute inset-0 bg-[radial-gradient(...),linear-gradient(...)]` div
+behind the sky image) still had pre-migration near-black navy stops (`#07101b`/`#020408`/`#0d0a12`)
+and an unrelated slate-blue highlight tint (`rgba(102,165,193,.08)`). Converted the gradient stops
+to the Deep Blue token progression (`#07173F`/`#0b1d4d`/`#11295e`) and the highlight to Blue Yonder
+(`rgba(46,150,245,.08)`), matching the same highlight color already used for the placeholder-cutout
+gradient lower in the same file.
+
 ## Icons and imagery
 
 Icons are custom inline SVGs, line-based with consistent stroke weight — already matches the guide's
