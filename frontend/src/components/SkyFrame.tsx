@@ -19,15 +19,17 @@ const MARKER_POSITIONS = [
   { top: '61%', left: '74%' },
 ]
 
+const EPOCH_FORMATTER = new Intl.DateTimeFormat('en', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
+
 function formatEpoch(epoch: string) {
   const date = new Date(epoch)
   if (Number.isNaN(date.valueOf())) return epoch
-  return new Intl.DateTimeFormat('en', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).format(date)
+  return EPOCH_FORMATTER.format(date)
 }
 
 function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode = 'science', fieldOfView = 0.2, baselineImageUrl = null }: SkyFrameProps) {
@@ -52,7 +54,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-space-950">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(46,150,245,.08),transparent_35%),linear-gradient(140deg,#07173F,#0b1d4d_55%,#11295e)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(46,150,245,.08),transparent_35%),linear-gradient(140deg,var(--color-space-950),var(--color-space-900)_55%,var(--color-space-800))]" />
       {!hasReferenceImage && <div className="sky-noise drift-slow absolute -inset-10 opacity-35" aria-hidden="true" />}
 
       <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between gap-4 sm:inset-x-8 sm:top-6">
