@@ -95,17 +95,17 @@ function SequenceViewer({ target }: SequenceViewerProps) {
     <section className="relative h-full overflow-hidden bg-space-950 pt-20">
       <div className="flex h-full min-h-0 flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="relative min-h-0 flex-1 overflow-hidden border-b border-starlight/10 lg:border-b-0 lg:border-r">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4 sm:px-8">
-            <div>
-              <p className="micro-label text-accent-ember">Research bay</p>
-              <p className="mt-1 text-[10px] text-moon/35">Visual evidence · frame {currentIndex + 1} of {target.observations.length}</p>
-            </div>
-            <span className="rounded-full border border-starlight/10 bg-space-950/70 px-3 py-1.5 text-[9px] text-moon/45 backdrop-blur-md">
-              {activeMode.label} view
-            </span>
-          </div>
-
-          <SkyFrame observation={observation} index={currentIndex} reducedMotion={reducedMotion} showsMotion={showsMotion} displayMode={displayMode} fieldOfView={fieldOfView} baselineImageUrl={target.observations[0].image_url} />
+          <SkyFrame
+            observation={observation}
+            index={currentIndex}
+            totalFrames={target.observations.length}
+            modeLabel={activeMode.label}
+            reducedMotion={reducedMotion}
+            showsMotion={showsMotion}
+            displayMode={displayMode}
+            fieldOfView={fieldOfView}
+            baselineImageUrl={target.observations[0].image_url}
+          />
 
           <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 sm:inset-x-8 sm:bottom-6">
             <div className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-starlight/10 bg-space-950/85 px-4 py-3 shadow-2xl backdrop-blur-xl sm:px-5">

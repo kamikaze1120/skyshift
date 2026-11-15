@@ -5,6 +5,8 @@ import { fovToScale } from '../lib/fieldOfView'
 interface SkyFrameProps {
   observation: Observation
   index: number
+  totalFrames?: number
+  modeLabel?: string
   reducedMotion: boolean
   showsMotion: boolean
   displayMode?: 'science' | 'difference' | 'coadded'
@@ -32,7 +34,7 @@ function formatEpoch(epoch: string) {
   return EPOCH_FORMATTER.format(date)
 }
 
-function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode = 'science', fieldOfView = 0.2, baselineImageUrl = null }: SkyFrameProps) {
+function SkyFrame({ observation, index, totalFrames = 1, modeLabel = 'Science', reducedMotion, showsMotion, displayMode = 'science', fieldOfView = 0.2, baselineImageUrl = null }: SkyFrameProps) {
   const marker = showsMotion ? MARKER_POSITIONS[index % MARKER_POSITIONS.length] : MARKER_POSITIONS[0]
   const hasReferenceImage = !observation.image_url.startsWith('fixture-placeholder')
 
@@ -55,21 +57,26 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
   return (
     <div className="absolute inset-0 overflow-hidden bg-space-950">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(46,150,245,.08),transparent_35%),linear-gradient(140deg,var(--color-space-950),var(--color-space-900)_55%,var(--color-space-800))]" />
+      <div className="sky-grid absolute inset-0 opacity-70" aria-hidden="true" />
       {!hasReferenceImage && <div className="sky-noise drift-slow absolute -inset-10 opacity-35" aria-hidden="true" />}
 
-      <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between gap-4 sm:inset-x-8 sm:top-6">
-        <div>
-          <p className="micro-label text-moon/45">Epoch {index + 1}</p>
-          <p className="mt-1 text-[10px] tabular-nums text-moon/35">{formatEpoch(observation.epoch)} · UTC</p>
+      <div className="absolute inset-x-4 top-4 z-10 flex items-start justify-between gap-3 sm:inset-x-6 sm:top-6">
+        <div className="glass-panel rounded-xl px-3.5 py-2.5">
+          <p className="micro-label text-accent-ember">Research bay</p>
+          <p className="mt-1 text-[11px] tabular-nums text-moon/55">
+            Epoch {index + 1} of {totalFrames} · {formatEpoch(observation.epoch)} · UTC
+          </p>
         </div>
-        <div className="flex items-center gap-2 text-[9px] tabular-nums text-moon/35">
+        <div className="glass-panel flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-[10px] tabular-nums text-moon/55">
+          <span data-testid="frame-mode-label" className="text-starlight/85">{modeLabel} view</span>
+          <span className="h-3 w-px bg-starlight/15" />
           <span>{fieldOfView.toFixed(2)}° field</span>
           <span className="h-3 w-px bg-starlight/15" />
-          <span className={hasReferenceImage ? 'text-orbit/60' : 'text-accent-ember/60'}>{hasReferenceImage ? 'Reference cutout' : 'Placeholder cutout'}</span>
+          <span className={hasReferenceImage ? 'text-orbit/70' : 'text-accent-ember/70'}>{hasReferenceImage ? 'Reference cutout' : 'Placeholder cutout'}</span>
           {hasRealDiff && (
             <>
               <span className="h-3 w-px bg-starlight/15" />
-              <span className="text-orbit/60">Real pixel difference</span>
+              <span className="text-orbit/70">Real pixel difference</span>
             </>
           )}
         </div>
@@ -77,7 +84,7 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
 
       <div className="absolute inset-x-4 bottom-24 top-20 flex items-center justify-center sm:inset-x-8 sm:bottom-28 sm:top-24">
         {hasReferenceImage ? (
-          <div className="relative aspect-square w-[min(78vw,640px)] overflow-hidden rounded-2xl border border-starlight/12 bg-black shadow-[0_24px_90px_rgba(0,0,0,.45)]">
+          <div className="relative aspect-square h-full max-h-[640px] w-auto max-w-[min(78vw,640px)] overflow-hidden rounded-2xl border border-starlight/12 bg-black shadow-[0_24px_90px_rgba(0,0,0,.45)]">
             <img
               src={displaySrc}
               alt={'SPHEREx reference cutout for observation ' + (index + 1) + ', ' + observation.epoch}
@@ -85,9 +92,13 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
               style={{ transform: `scale(${fovToScale(fieldOfView)})` }}
             />
             <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[.06]" />
+            <span className="pointer-events-none absolute -left-px -top-px size-5 rounded-tl-xl border-l-2 border-t-2 border-orbit/60" aria-hidden="true" />
+            <span className="pointer-events-none absolute -right-px -top-px size-5 rounded-tr-xl border-r-2 border-t-2 border-orbit/60" aria-hidden="true" />
+            <span className="pointer-events-none absolute -bottom-px -left-px size-5 rounded-bl-xl border-b-2 border-l-2 border-orbit/60" aria-hidden="true" />
+            <span className="pointer-events-none absolute -bottom-px -right-px size-5 rounded-br-xl border-b-2 border-r-2 border-orbit/60" aria-hidden="true" />
           </div>
         ) : (
-          <div className="relative aspect-square w-[min(78vw,640px)] overflow-hidden rounded-2xl border border-starlight/10 bg-black/30 shadow-[0_24px_90px_rgba(0,0,0,.45)]">
+          <div className="relative aspect-square h-full max-h-[640px] w-auto max-w-[min(78vw,640px)] overflow-hidden rounded-2xl border border-starlight/10 bg-black/30 shadow-[0_24px_90px_rgba(0,0,0,.45)]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(255,224,180,.24),transparent_2%),radial-gradient(circle_at_20%_75%,rgba(46,150,245,.18),transparent_1%),radial-gradient(circle_at_55%_25%,rgba(255,255,255,.7),transparent_1%)]" />
             <div className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(255,255,255,.85)_0_1px,transparent_1.4px)] [background-size:87px_73px]" />
             <div data-marker className={markerClass} style={{ top: marker.top, left: marker.left }}>
@@ -101,6 +112,10 @@ function SkyFrame({ observation, index, reducedMotion, showsMotion, displayMode 
                 <span className="mt-1 block text-[9px] text-moon/35">epoch {index + 1}</span>
               </span>
             </div>
+            <span className="pointer-events-none absolute -left-px -top-px size-5 rounded-tl-xl border-l-2 border-t-2 border-orbit/60" aria-hidden="true" />
+            <span className="pointer-events-none absolute -right-px -top-px size-5 rounded-tr-xl border-r-2 border-t-2 border-orbit/60" aria-hidden="true" />
+            <span className="pointer-events-none absolute -bottom-px -left-px size-5 rounded-bl-xl border-b-2 border-l-2 border-orbit/60" aria-hidden="true" />
+            <span className="pointer-events-none absolute -bottom-px -right-px size-5 rounded-br-xl border-b-2 border-r-2 border-orbit/60" aria-hidden="true" />
           </div>
         )}
       </div>

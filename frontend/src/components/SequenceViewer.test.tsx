@@ -36,6 +36,18 @@ describe('SequenceViewer', () => {
     expect(screen.getByRole('button', { name: /flag.*possible mover/i })).toBeInTheDocument()
   })
 
+  it('shows a single merged frame header instead of two overlapping ones', () => {
+    render(<SequenceViewer target={barnard} />)
+    expect(screen.getByText(/epoch 1 of 2/i)).toBeInTheDocument()
+    expect(screen.queryByText(/visual evidence/i)).not.toBeInTheDocument()
+  })
+
+  it('updates the header mode label when a different view lens is chosen', () => {
+    render(<SequenceViewer target={barnard} />)
+    fireEvent.click(screen.getByRole('tab', { name: /difference/i }))
+    expect(screen.getByTestId('frame-mode-label')).toHaveTextContent(/difference/i)
+  })
+
   describe('with fake timers', () => {
     beforeEach(() => vi.useFakeTimers())
     afterEach(() => vi.useRealTimers())
