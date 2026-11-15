@@ -6,6 +6,7 @@ import SkyFrame from './SkyFrame'
 import PlaybackScrubber from './PlaybackScrubber'
 import SourcePanel from './SourcePanel'
 import FlagMoverPanel from './FlagMoverPanel'
+import CatalogCheckPanel from './CatalogCheckPanel'
 import SpectralControls from './SpectralControls'
 import AssistantPanel from './AssistantPanel'
 
@@ -194,6 +195,8 @@ function SequenceViewer({ target }: SequenceViewerProps) {
           <div className="m-3 rounded-2xl border border-l-4 border-starlight/10 border-l-orbit/50 bg-starlight/[.035] px-4 sm:px-5">
             <FlagMoverPanel targetId={target.target_id} />
           </div>
+
+          <CatalogCheckPanel targetId={target.target_id} />
 
           <section className="m-3">
             <button type="button" onClick={() => setAssistantOpen(open => !open)} className="flex w-full items-center justify-between rounded-2xl border border-accent-ember/25 bg-accent-ember/[.07] px-4 py-4 text-left shadow-[0_8px_30px_rgba(255,176,32,.08)] transition hover:bg-accent-ember/[.11] focus-visible:outline-1 focus-visible:outline-accent-ember">

@@ -1,0 +1,62 @@
+[
+  {
+    "target_id": "barnards-star-2025-2026",
+    "source": "Gaia DR3",
+    "query": "cone search, 5 arcsec radius, via https://gea.esac.esa.int/tap-server/tap/sync",
+    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "status": "service_unreachable",
+    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Read timed out. (read timeout=20)",
+    "sources": []
+  },
+  {
+    "target_id": "rw-aurigae-2025-2026",
+    "source": "Gaia DR3",
+    "query": "cone search, 5 arcsec radius, via https://gea.esac.esa.int/tap-server/tap/sync",
+    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "status": "service_unreachable",
+    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Read timed out. (read timeout=20)",
+    "sources": []
+  },
+  {
+    "target_id": "r-draconis-2025-2026",
+    "source": "Gaia DR3",
+    "query": "cone search, 5 arcsec radius, via https://gea.esac.esa.int/tap-server/tap/sync",
+    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "status": "service_unreachable",
+    "detail": "HTTPSConnectionPool(host='gea.esac.esa.int', port=443): Read timed out. (read timeout=20)",
+    "sources": []
+  },
+  {
+    "target_id": "433-eros-2025-06",
+    "source": "JPL Small-Body Database",
+    "query": "sstr=433, via https://ssd-api.jpl.nasa.gov/sbdb.api",
+    "fetched_at": "2026-11-15T21:25:25.371194+00:00",
+    "status": "ok",
+    "object": {
+      "shortname": "433 Eros",
+      "neo": true,
+      "prefix": null,
+      "des": "433",
+      "kind": "an",
+      "orbit_class": {
+        "code": "AMO",
+        "name": "Amor"
+      },
+      "orbit_id": "659",
+      "pha": false,
+      "fullname": "433 Eros (A898 PA)",
+      "spkid": "20000433"
+    },
+    "discovery": {
+      "name": null,
+      "date": "1898-Aug-13",
+      "discovery": "Discovered 1898-08-13 by Witt, G. at Berlin",
+      "location": "Berlin",
+      "cref": null,
+      "who": "Witt, G.",
+      "ref": "DISCOVERY.DB",
+      "site": null,
+      "citation": null
+    }
+  }
+]

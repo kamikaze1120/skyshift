@@ -5,6 +5,7 @@ import targets from '../fixtures/targets.json'
 import type { TargetRecord } from '../fixtures/types'
 
 const barnard = (targets as TargetRecord[]).find(t => t.target_id === 'barnards-star-2025-2026')!
+const eros = (targets as TargetRecord[]).find(t => t.target_id === '433-eros-2025-06')!
 
 const fourFrameTarget: TargetRecord = {
   ...barnard,
@@ -34,6 +35,11 @@ describe('SequenceViewer', () => {
   it('offers a way to flag the current target as a possible mover', () => {
     render(<SequenceViewer target={barnard} />)
     expect(screen.getByRole('button', { name: /flag.*possible mover/i })).toBeInTheDocument()
+  })
+
+  it('shows the real JPL SBDB catalog check for 433 Eros', () => {
+    render(<SequenceViewer target={eros} />)
+    expect(screen.getByText(/witt, g\./i)).toBeInTheDocument()
   })
 
   it('shows a single merged frame header instead of two overlapping ones', () => {
