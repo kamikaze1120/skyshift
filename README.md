@@ -7,15 +7,17 @@
 
 [![License: Apache 2.0](https://img.shields.io/github/license/kamikaze1120/skyshift?color=blue)](LICENSE)
 [![CI](https://github.com/kamikaze1120/skyshift/actions/workflows/ci.yml/badge.svg)](https://github.com/kamikaze1120/skyshift/actions/workflows/ci.yml)
-![Status](https://img.shields.io/badge/status-pre--kickoff-yellow)
+![Status](https://img.shields.io/badge/status-live-brightgreen)
 ![NASA Space Apps 2026](https://img.shields.io/badge/NASA%20Space%20Apps-2026-0B3D91)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Last Commit](https://img.shields.io/github/last-commit/kamikaze1120/skyshift)](https://github.com/kamikaze1120/skyshift/commits/main)
 [![Open Issues](https://img.shields.io/github/issues/kamikaze1120/skyshift)](https://github.com/kamikaze1120/skyshift/issues)
 
+### 🔗 [**Try the live demo →**](https://skyshift-blue.vercel.app)
+
 </div>
 
-> **Status: pre-kickoff.** This repo currently holds process/governance docs only — no application code. Space Apps rules ask teams not to start building the actual solution before kickoff (Nov 14, 2026, 9:00 AM). See [`docs/RULES_COMPLIANCE.md`](docs/RULES_COMPLIANCE.md).
+> **Status: shipped and live.** Skyshift is a working, deployed app — real SPHEREx archive search, a time-sequence viewer, and citizen-science flagging, all running against a real backend. Built across the Nov 14–15, 2026 Space Apps build weekend. See [`docs/RULES_COMPLIANCE.md`](docs/RULES_COMPLIANCE.md) for the rules this was built under.
 
 **Start here:** [`docs/TEAM_CHARTER.md`](docs/TEAM_CHARTER.md) is the living team charter, architecture, and working agreement — the authoritative plan this README summarizes.
 
@@ -51,13 +53,13 @@ Everything built here is judged on eight criteria, and every design decision sho
 
 ## The concept
 
-A "planet hunters' blink comparator": a curated real mover (asteroid first — stars barely shift at SPHEREx's resolution) blinks between two real SPHEREx observations, with every image traced to its source file, date, and DOI. Visitors can flag anything that moved; flags land on a shared, anonymous, country-level world map.
+A "planet hunters' blink comparator": search any object by name or by RA/Dec and the live backend queries the real SPHEREx archive, or jump straight into a curated gallery of pre-verified targets as a fast, guaranteed-to-work entry point. Either way, every image traces to its source file, date, and DOI. Visitors can flag anything that moved; flags feed a shared, anonymous, country-level tally of what people around the world have spotted.
 
 MVP scope: [`docs/MVP_CUT_LINE.md`](docs/MVP_CUT_LINE.md)
 
 ## Proof it works
 
-This isn't a theoretical concept — the core mechanic is verified against real SPHEREx archive data. **433 Eros**, confirmed via [IRSA's MOST tool](https://irsa.ipac.caltech.edu/applications/MOST/), moves ~604 arcsec (~98 pixels) across two real SPHEREx cutouts taken ~8 hours apart on 2025-06-25 — a clean, high-SNR (~24–27) detection in both frames:
+This isn't a theoretical concept — it's a live, working app running against the real SPHEREx archive. Search by name or by RA/Dec, and the backend queries real IRSA data, not a fixed gallery. **433 Eros**, confirmed via [IRSA's MOST tool](https://irsa.ipac.caltech.edu/applications/MOST/), moves ~604 arcsec (~98 pixels) across two real SPHEREx cutouts taken ~8 hours apart on 2025-06-25 — a clean, high-SNR (~24–27) detection in both frames:
 
 <p align="center">
   <img src="docs/assets/eros_blink_comparison.png" width="46%" alt="433 Eros full-frame blink comparison, two SPHEREx epochs" />
@@ -65,6 +67,15 @@ This isn't a theoretical concept — the core mechanic is verified against real 
 </p>
 
 Full writeup, exact coordinates, and the query used to find it: [`docs/CANDIDATE_TARGETS.md`](docs/CANDIDATE_TARGETS.md).
+
+**Required SPHEREx data citation, verbatim:**
+
+> This publication makes use of data products from the Spectro-Photometer for the History of the
+> Universe, Epoch of Reionization and Ices Explorer (SPHEREx), which is a joint project of the Jet
+> Propulsion Laboratory and the California Institute of Technology, and is funded by the National
+> Aeronautics and Space Administration.
+
+Full citation list (data sources, libraries, reference tools): [`docs/CREDITS.md`](docs/CREDITS.md). What's checked off for the official submission: [`SUBMISSION_CHECKLIST.md`](SUBMISSION_CHECKLIST.md).
 
 ## Team
 

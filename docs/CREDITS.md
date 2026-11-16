@@ -72,7 +72,16 @@ Cite these even where we only studied them, or where we deliberately decided not
 | Pillow | Converting image data to PNG | MIT-CMU |
 | Requests | HTTP requests to IRSA | Apache 2.0 |
 | Babel | Converting country codes to country names for the flag tally | BSD 3-Clause |
-| *(populate the rest as the build starts: framework, viewer, plotting, server)* | | |
+| React / React DOM | Frontend UI framework | MIT |
+| Three.js | WebGL rendering for the starfield/sky backdrop | MIT |
+| @react-three/fiber | React renderer for Three.js | MIT |
+| Framer Motion | Intro-sequence and panel animation | MIT |
+| Tailwind CSS | Utility-first styling, brand color tokens | MIT |
+| Vite | Frontend build tool / dev server | MIT |
+| TypeScript | Frontend static typing | Apache 2.0 |
+| Vitest | Frontend test runner | MIT |
+| Testing Library (React, jest-dom, user-event) | Frontend component tests | MIT |
+| oxlint | Frontend linting | MIT |
 
 ## AI tools
 See `../AI_USAGE.md` for the AI-assistance disclosure log.

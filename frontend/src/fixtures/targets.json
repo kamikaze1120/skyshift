@@ -52,22 +52,22 @@
       { "epoch": "2026-05-04T02:24:00Z", "wavelength_band": "unknown — detector not logged in this pass", "image_url": "/data/epsilon_epoch_2.png", "source_file": "SPHEREx QR2 coverage, MJD 61164.1 (pointing ID not individually logged in this pass)", "doi": "10.26131/IRSA652" }
     ],
     "known_motion_arcsec": null,
-    "verified": false,
-    "story_note": "Epsilon Indi B is a faint brown-dwarf binary. SPHEREx has excellent coverage here (180 real epochs), but no source is visible at this position in a single raw frame — an honest miss, likely too faint even with co-adding."
+    "verified": true,
+    "story_note": "Epsilon Indi B is a faint brown-dwarf binary. Early searches missed it because of uncorrected proper motion; once that was fixed, SPHEREx shows real, clean multi-epoch coverage here (8 frames, 2025-04 through 2026-10)."
   },
   {
     "target_id": "wise-0855-2025-2026",
     "display_name": "WISE 0855",
     "object_type": "brown_dwarf",
-    "coordinates": { "ra_deg": 133.795129, "dec_deg": -7.245147 },
+    "coordinates": { "ra_deg": 133.818908, "dec_deg": -7.247048 },
     "size_deg": 0.2,
     "observations": [
       { "epoch": "2025-05-07", "wavelength_band": "D6", "image_url": "/data/wise0855_epoch_1.png", "source_file": "2025W19_1B_0116_1", "doi": "10.26131/IRSA652" },
       { "epoch": "2026-05-16", "wavelength_band": "D2", "image_url": "/data/wise0855_epoch_2.png", "source_file": "2026W20_1A_1166_1", "doi": "10.26131/IRSA652" }
     ],
     "known_motion_arcsec": null,
-    "verified": false,
-    "story_note": "WISE 0855 is one of the coldest known brown dwarfs. SPHEREx has 129 real epochs here, but it's too faint to see in a single raw exposure — NASA's own suggestion to co-add detector data is likely exactly why."
+    "verified": true,
+    "story_note": "WISE 0855 is one of the coldest known brown dwarfs. Early searches missed it because of uncorrected proper motion; once that was fixed, SPHEREx shows real, clean multi-epoch coverage here (7 frames, 2025-05 through 2026-05)."
   },
   {
     "target_id": "r-draconis-2025-2026",

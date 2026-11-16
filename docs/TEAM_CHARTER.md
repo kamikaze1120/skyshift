@@ -85,6 +85,18 @@ Failure to cite can cost award eligibility. Required in README and on the About 
 
 ## 5. Architecture
 
+> **As shipped (2026-11-15):** Layer 2 (LangGraph) and Layer 1 (Postgres/pgvector), and the
+> Groq-backed `/ask` endpoint they were meant to support, were the pre-kickoff plan below —
+> **none of that was built in the 48-hour window and none of it ships in the submitted app.**
+> What actually runs: a FastAPI backend (`/search`, `/objects`, `/timeseries`, `/flags`,
+> `/flags/summary`) that queries IRSA/JPL SBDB/SIMBAD directly and returns real, typed records —
+> no LLM orchestration layer, no vector store, no `/ask` route. The frontend's `askSkyshift()`
+> helper still probes a `/ask` endpoint, gets nothing back since the backend doesn't define one,
+> and falls back to its honestly-labeled "Local research guide" mode — it was never wired to
+> Groq/LangGraph. Kept below as the original plan, not the current architecture, so the team's
+> own decision history stays intact; see the 2026-11-16 entry in `DECISIONS.md` for why it was
+> dropped.
+
 ```
 Layer 4   React + TypeScript + Tailwind                      [Mujtaba]
           Sky region picker, time slider, spectral plot, narrative panel
@@ -102,7 +114,13 @@ Layer 0   IRSA
           AWS nasa-irsa-spherex
 ```
 
+**(Original plan, not built — see the "As shipped" note above.)**
+
 ### Stack decisions and why
+
+**These were the pre-kickoff decisions. LangGraph, Postgres/pgvector, and Groq were never
+implemented — see the "As shipped" note at the top of Section 5. `DATABASE_URL` and
+`GROQ_API_KEY` are not real env vars in the shipped backend.**
 
 | Choice | Rationale |
 |---|---|
@@ -114,6 +132,10 @@ Layer 0   IRSA
 
 ### Deployment topology and env vars (locked 2026-11-09)
 
+**Shipped:** the backend is plain FastAPI with no database and no LLM provider — only
+`CORS_ALLOWED_ORIGINS` is a real backend env var. The table and env vars below describe the
+pre-kickoff plan, kept for history.
+
 | Layer | Host | Why |
 |---|---|---|
 | Layer 4 (frontend) | Vercel | Fast static/SSR hosting, free tier, automatic preview deployments per PR |
@@ -121,7 +143,7 @@ Layer 0   IRSA
 
 **Env var contract:**
 - Frontend (Vercel): `VITE_API_BASE_URL` (or `NEXT_PUBLIC_API_URL` if Next.js is chosen at kickoff) — public, build-time, points at the backend's deployed URL. Set separately per Vercel environment (Production / Preview / Development); locally it points at `http://localhost:8000` or wherever Athena runs FastAPI.
-- Backend (its own host, never Vercel): `DATABASE_URL` (Postgres/pgvector), `GROQ_API_KEY`, `CORS_ALLOWED_ORIGINS`. These secrets are never entered into Vercel's dashboard.
+- Backend (its own host, never Vercel): ~~`DATABASE_URL` (Postgres/pgvector), `GROQ_API_KEY`,~~ `CORS_ALLOWED_ORIGINS`. The struck-through vars were planned, never implemented. These secrets are never entered into Vercel's dashboard.
 - `.env.example` on both sides lists variable names with placeholder values only. Real `.env` files stay gitignored per Section 7 rule 4.
 
 **CORS gotcha:** Vercel issues a unique preview URL per PR/branch, not one fixed domain. The backend's CORS config must allow the production domain plus a pattern for preview deployments (e.g. `https://skyshift-*.vercel.app`), or every PR preview silently fails to reach the API.
@@ -130,7 +152,7 @@ Layer 0   IRSA
 
 ### Observability without paying
 
-No LangSmith. Structured JSON logging plus optional OpenTelemetry. Log every tool call with inputs, outputs, and duration. This doubles as evidence for the "no hallucination" claim.
+No LangSmith (there is no LangGraph to observe — see "As shipped" above). Structured JSON logging plus optional OpenTelemetry. Log every tool call with inputs, outputs, and duration. This doubles as evidence for the "no hallucination" claim.
 
 ---
 
@@ -138,11 +160,14 @@ No LangSmith. Structured JSON logging plus optional OpenTelemetry. Log every too
 
 Split by layer, not by feature. Nobody touches the other person's directories without asking.
 
+**`agents/` (LangGraph) and `data/` DB models below were planned, not built — there is no
+LangGraph graph and no database in the shipped repo.**
+
 | Mujtaba (frontend and everything else) | Athena (backend) |
 |---|---|
 | `frontend/` React components, state, styling | `backend/` FastAPI routers, Pydantic schemas |
-| `frontend/lib/api.ts` generated client | `agents/` LangGraph graph, tool definitions |
-| Sky view, spectral plot, time slider | `data/` IRSA clients, DB models, migrations |
+| `frontend/lib/api.ts` generated client | ~~`agents/` LangGraph graph, tool definitions~~ (not built) |
+| Sky view, spectral plot, time slider | ~~`data/` IRSA clients, DB models, migrations~~ (IRSA clients live in `backend/`; no DB) |
 | `infra/` — Vercel project, frontend env vars, CI | Backend host (Render/Railway/Fly) and its env vars |
 | | Fixture JSON that the frontend mocks against |
 | Submission form, citations, AI disclosure | Tool call logging and validation layer |

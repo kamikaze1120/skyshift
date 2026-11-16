@@ -10,8 +10,10 @@ describe('targets fixture', () => {
     }
   })
 
-  it('marks exactly three targets verified: true', () => {
+  it('marks exactly five targets verified: true', () => {
+    // WISE 0855 and Epsilon Indi B moved from 3 to 5 once the proper-motion
+    // fix (backend PR #77) turned their searches from empty into real hits.
     const verifiedCount = (targets as TargetRecord[]).filter(t => t.verified).length
-    expect(verifiedCount).toBe(3)
+    expect(verifiedCount).toBe(5)
   })
 })
