@@ -46,6 +46,8 @@ without its DOI reaching the About page. See `DATA_RELEASES.md`.
 | CSA NEOSSat | Independent near Earth object tracking, named in the cross check method | <https://data.asc-csa.gc.ca/dataset/neossat> |
 | Canadian Astronomy Data Centre (CADC) | Partner archive, if used | <https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/> |
 | SIMBAD (CDS) | Resolving object names and proper motions | <https://simbad.cds.unistra.fr/simbad/> |
+| SPHEREx Explanatory Supplement (IRSA) | FLAGS bit definitions (Table 16) for the contamination flags | <https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf> |
+
 
 ## Reference tools and inspiration
 
