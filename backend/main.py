@@ -18,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_origin_regex=os.getenv("CORS_ORIGIN_REGEX") or None,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -145,3 +145,7 @@ def timeseries(
 from backend.search import register_search  # noqa: E402
 
 register_search(app, OBJECTS, timeseries)
+
+from backend.flags import register_flags  # noqa: E402
+
+register_flags(app)
