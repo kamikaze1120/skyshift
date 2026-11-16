@@ -6,3 +6,4 @@ numpy
 astropy
 pillow
 babel
+astroquery

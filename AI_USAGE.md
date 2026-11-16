@@ -25,6 +25,7 @@ Space Apps 2026 rules permit AI tools to accelerate innovation and creativity, w
 |2026-11-15|Claude (Sonnet 5.5)|Drafted contamination-flag reading from the FITS FLAGS layer (bit names from the SPHEREx Explanatory Supplement); author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted target-ID alignment with the frontend fixtures and the 433 Eros card for /objects; author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted proper-motion correction and J2000 position for WISE 0855 and Epsilon Indi B; author reviewed and tested locally|
+|2026-11-15|Claude (Sonnet 5.5)|Drafted the astroquery IRSA search with a requests fallback in archive.py; author reviewed and tested locally|
 
 Add a row here every time an AI tool materially contributes to code, docs, design, or copy that ships in the submission.
 

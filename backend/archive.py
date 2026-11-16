@@ -2,7 +2,11 @@ import csv
 import io
 import time
 
+import astropy.units as u
+import numpy as np
 import requests
+from astropy.coordinates import SkyCoord
+from astroquery.ipac.irsa import Irsa
 
 from backend.releases import RELEASES
 
@@ -23,6 +27,43 @@ def fetch_with_retry(url, tries=6, wait=5):
     return None
 
 
+def rows_from_astroquery(collection, ra, dec, radius_deg):
+    """Ask IRSA through astroquery; rows come back as plain strings."""
+    pos = SkyCoord(ra * u.deg, dec * u.deg)
+    table = Irsa.query_sia(pos=(pos, radius_deg * u.deg), collection=collection)
+    rows = []
+    for record in table:
+        row = {}
+        for name in table.colnames:
+            value = record[name]
+            row[name] = "" if np.ma.is_masked(value) else str(value)
+        rows.append(row)
+    return rows
+
+
+def rows_from_requests(collection, ra, dec, radius_deg):
+    """Fallback: the original direct request to the IRSA SIA service."""
+    url = (
+        f"{SIA_URL}?COLLECTION={collection}"
+        f"&POS=CIRCLE+{ra}+{dec}+{radius_deg}&RESPONSEFORMAT=CSV"
+    )
+    r = fetch_with_retry(url)
+    if r is None:
+        return []
+    return list(csv.DictReader(io.StringIO(r.text)))
+
+
+def rows_for_collection(collection, ra, dec, radius_deg):
+    """Try astroquery twice; if it keeps failing, use the requests fallback."""
+    for attempt in range(2):
+        try:
+            return rows_from_astroquery(collection, ra, dec, radius_deg)
+        except Exception:
+            if attempt == 0:
+                time.sleep(3)
+    return rows_from_requests(collection, ra, dec, radius_deg)
+
+
 def search_images(ra, dec, radius_deg=0.02):
     """Find every image covering (ra, dec) across all enabled releases,
     merged and sorted by observation time."""
@@ -31,14 +72,7 @@ def search_images(ra, dec, radius_deg=0.02):
         if not release["enabled"]:
             continue
         for collection in release["collections"]:
-            url = (
-                f"{SIA_URL}?COLLECTION={collection}"
-                f"&POS=CIRCLE+{ra}+{dec}+{radius_deg}&RESPONSEFORMAT=CSV"
-            )
-            r = fetch_with_retry(url)
-            if r is None:
-                continue
-            for row in csv.DictReader(io.StringIO(r.text)):
+            for row in rows_for_collection(collection, ra, dec, radius_deg):
                 row["_release"] = release["id"]
                 row["_doi"] = release["doi"]
                 rows.append(row)
