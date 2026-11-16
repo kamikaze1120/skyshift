@@ -16,6 +16,33 @@ from schemas.models import Observation
 
 warnings.filterwarnings("ignore")
 
+# Warning bits of the FLAGS layer, from Table 16 of the SPHEREx Explanatory
+# Supplement (IRSA). Bits are numbered from 0. SOURCE (21) and FULLSAMPLE (12)
+# are informational, not warnings, so they are left out.
+FLAG_BITS = {
+    0: "TRANSIENT", 1: "OVERFLOW", 2: "SUR_ERROR", 6: "NONFUNC",
+    7: "DICHROIC", 9: "MISSING_DATA", 10: "HOT", 11: "COLD",
+    14: "PHANMISS", 15: "NONLINEAR", 17: "PERSIST", 19: "OUTLIER",
+    20: "CROSSTALK", 22: "GHOST", 23: "GHOST_FPA", 24: "GHOST_EXT",
+    25: "STREAK", 26: "BLOOM", 27: "SNOWBALL", 28: "HALO",
+    29: "SATELLITE_HALO",
+}
+
+
+def contamination_flags(hdul, half=3):
+    """Names of warning flags set in a small window around the cutout centre
+    (where the target is). Returns None if the layer can't be read, and an
+    empty list if it was read and nothing was raised."""
+    try:
+        flag_data = hdul["FLAGS"].data
+        ny, nx = flag_data.shape
+        cy, cx = ny // 2, nx // 2
+        window = flag_data[max(cy - half, 0):cy + half + 1, max(cx - half, 0):cx + half + 1]
+        combined = int(np.bitwise_or.reduce(window.astype("int64").ravel()))
+        return [name for bit, name in sorted(FLAG_BITS.items()) if (combined >> bit) & 1]
+    except Exception:
+        return None
+
 
 def position_at(mjd, ra, dec, pm_ra, pm_dec):
     """Where a moving star is at a given time. Without proper motion the
@@ -51,6 +78,7 @@ def make_frame(row, ra, dec, pm_ra, pm_dec, size, frames_dir, base_url):
             spectral.sip = None
             ny, nx = data.shape
             wl, bw = spectral.pixel_to_world(nx // 2, ny // 2)
+            flags = contamination_flags(hdul)
 
         lo, hi = np.nanpercentile(data, [1, 99.5])
         scaled = np.clip((np.nan_to_num(data, nan=lo) - lo) / (hi - lo), 0, 1)
@@ -73,6 +101,7 @@ def make_frame(row, ra, dec, pm_ra, pm_dec, size, frames_dir, base_url):
             image_url=f"{base_url}/frames/{png_name}",
             source_file=source_file,
             doi=row["_doi"],
+            flags=flags,
         )
     except Exception:
         return None

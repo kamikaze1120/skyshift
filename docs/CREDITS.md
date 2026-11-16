@@ -43,6 +43,8 @@ without its DOI reaching the About page. See `DATA_RELEASES.md`.
 | Gaia Data Release 3 | Catalog overlay ("Catalog check" panel): cone search near each star target, telling a known catalogued star from something that moved. Fetched once via `scripts/fetch_catalog_overlays.py` into `frontend/src/fixtures/catalogOverlays.json`, not queried live by the running app. As of the 2026-11-15 run, the TAP service (`gea.esac.esa.int`) was unreachable from the build machine — re-run the script from an unrestricted network before the demo to backfill real matches | <https://gea.esac.esa.int/archive/> |
 | NASA JPL Small-Body Database (SBDB) API | Catalog check for 433 Eros: real discovery record and orbit class, fetched the same way as Gaia above. Confirmed working 2026-11-15 | <https://ssd-api.jpl.nasa.gov/doc/sbdb.html> |
 | SIMBAD (CDS) | Resolving object names and proper motions | <https://simbad.cds.unistra.fr/simbad/> |
+| SPHEREx Explanatory Supplement (IRSA) | FLAGS bit definitions (Table 16) for the contamination flags | <https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf> |
+
 
 ## Reference tools and inspiration
 
