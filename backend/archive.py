@@ -64,7 +64,7 @@ def rows_for_collection(collection, ra, dec, radius_deg):
     return rows_from_requests(collection, ra, dec, radius_deg)
 
 
-def search_images(ra, dec, radius_deg=0.02):
+def search_images_uncached(ra, dec, radius_deg=0.02):
     """Find every image covering (ra, dec) across all enabled releases,
     merged and sorted by observation time."""
     rows = []
@@ -78,3 +78,20 @@ def search_images(ra, dec, radius_deg=0.02):
                 rows.append(row)
     rows.sort(key=lambda row: float(row["t_min"]))
     return rows
+
+
+SEARCH_CACHE = {}
+CACHE_SECONDS = 1800
+
+
+def search_images(ra, dec, radius_deg=0.02):
+    """Same as search_images_uncached, but remembers each answer for 30
+    minutes so repeat requests skip the slow IRSA search."""
+    key = (round(ra, 5), round(dec, 5), radius_deg)
+    hit = SEARCH_CACHE.get(key)
+    if hit and time.time() - hit[0] < CACHE_SECONDS:
+        return [dict(row) for row in hit[1]]
+    rows = search_images_uncached(ra, dec, radius_deg)
+    if rows:
+        SEARCH_CACHE[key] = (time.time(), rows)
+    return [dict(row) for row in rows]
