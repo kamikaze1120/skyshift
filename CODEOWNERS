@@ -1,7 +1,9 @@
-# Default owner for everything until roles are filled in docs/TEAM_ROLES.md
+# Default owner for anything not covered by a more specific rule below.
 * @kamikaze1120
 
-# Example once teammates join (uncomment and edit):
-# /frontend/ @frontend-username
-# /data/ @data-username
-# /docs/ @kamikaze1120
+# Athena (Starfoxxy) — backend/data, per docs/TEAM_CHARTER.md Section 6.
+/backend/ @Starfoxxy
+/schemas/ @Starfoxxy
+
+# Mujtaba (kamikaze1120) — frontend/infra/submission, explicit for clarity.
+/frontend/ @kamikaze1120

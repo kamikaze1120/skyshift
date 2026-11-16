@@ -1,14 +1,13 @@
 # Team & Roles
 
-Team cap is **6 people**. Currently: lead only — team page is open to local participants, no members confirmed yet.
+Team cap is **6 people**. Currently: 2 confirmed (Mujtaba, Athena) — still open to local participants.
 
 | Role | Looking for | Status |
 |---|---|---|
-| Lead / product / story | Product scope, narrative, user flow | Filled (Moe) |
-| Frontend | React or Next.js, cares about how things look | Open |
-| Data / backend | Python, comfortable with scientific data files (astropy) | Open |
+| Lead / product / story / frontend / infra / submission | Product scope, narrative, user flow, React | Filled (Mujtaba, GitHub: kamikaze1120) |
+| Data / backend / agents | Python, comfortable with scientific data files (astropy) | Filled (Athena, GitHub: Starfoxxy) |
 | Astronomy validation | Anyone who can sanity-check coordinates and dates — a hobbyist astronomer counts | Open |
-| Design / video | The 30-second submission video is graded — this role is not optional | Open |
+| Design / video | The 30-second submission video is graded — this role is not optional | Filled (Mujtaba) |
 | QA / floater | Testing, deployment, unblocking | Open |
 
 ## Screening questions for each candidate
