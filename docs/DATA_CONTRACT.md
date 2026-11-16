@@ -39,8 +39,8 @@ Draft schema for a single "target" record — the interface the frontend builds 
 How the frontend actually reaches these records — see `docs/TEAM_CHARTER.md` "Deployment topology and env vars" for the full reasoning.
 
 - Frontend calls the backend through `import.meta.env.VITE_API_BASE_URL` (a Vercel env var) — never a hardcoded URL in frontend source.
-- Backend endpoints, per `TEAM_CHARTER.md` Section 5: `/search` `/object` `/timeseries` `/spectrum` `/ask`. `/object` and `/timeseries` return a single target record shaped as above; `/search` returns an array of them.
-- Backend runs on its own host (Render/Railway/Fly — picked together, not Vercel), because Vercel's serverless functions don't suit a long-lived FastAPI + LangGraph + Postgres process. It needs `CORS_ALLOWED_ORIGINS` covering the production Vercel domain plus the `*.vercel.app` preview-deployment pattern, or PR previews can't reach it.
+- Backend endpoints, **as shipped**: `/search` `/objects` `/timeseries` `/flags` `/flags/summary` `/health`. (`TEAM_CHARTER.md` Section 5 planned `/object` `/spectrum` `/ask` too — none of those three were built; `/ask` is not implemented and the frontend's `askSkyshift()` call to it always falls back gracefully.) `/timeseries` returns a single target record shaped as above; `/search` returns an array of them.
+- Backend runs on its own host (Render — picked, not Vercel), because Vercel's serverless functions don't suit a long-lived FastAPI process. (The original plan cited a LangGraph + Postgres process too; neither was built — see `TEAM_CHARTER.md` Section 5's "As shipped" note.) It needs `CORS_ALLOWED_ORIGINS` covering the production Vercel domain plus the `*.vercel.app` preview-deployment pattern, or PR previews can't reach it.
 - Local dev before any real deployment exists: frontend's `.env` sets `VITE_API_BASE_URL=http://localhost:8000` (or wherever Athena runs FastAPI locally).
 
 ## Resolved (2026-10-02, from IRSA's own tutorials — see `IRSA_DATA_GUIDE.md`)

@@ -23,10 +23,14 @@ Space Apps 2026 rules permit AI tools to accelerate innovation and creativity, w
 |2026-11-15|Claude (Sonnet 5.5)|Drafted /search and frontend-compatible contract fields (wavelength\_band, flags, size\_deg); author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted /flags and /flags/summary (anonymous, country-only citizen flagging); author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted contamination-flag reading from the FITS FLAGS layer (bit names from the SPHEREx Explanatory Supplement); author reviewed and tested locally|
+|2026-11-15|Claude (Sonnet 5.5)|Drafted official logo integration, brand-gradient color tokens, target-selection screen, and sidebar redesign (PR #71); author reviewed and tested locally|
+|2026-11-15|Claude (Sonnet 5.5)|Drafted the catalog-check panel (real Gaia DR3 / JPL SBDB data) and teammate-reviewed UX fixes to nav/CTA contrast (PR #73); author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted target-ID alignment with the frontend fixtures and the 433 Eros card for /objects; author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted proper-motion correction and J2000 position for WISE 0855 and Epsilon Indi B; author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted the astroquery IRSA search with a requests fallback in archive.py; author reviewed and tested locally|
 |2026-11-15|Claude (Sonnet 5.5)|Drafted a 30-minute in-memory cache for IRSA search results in archive.py after timing showed uncached searches were the slow step; author reviewed and tested locally|
+|2026-11-16|Microsoft Edge neural TTS (en-US-ChristopherNeural)|Generated the original documentary-style narration for the Skyshift demo video; no sky or astronomy data was generated|
+|2026-11-16|Claude (Sonnet 5.5)|Flipped WISE 0855 and Epsilon Indi B to verified: true in the frontend fixture and corrected WISE 0855's coordinates, after confirming live that the proper-motion fix turns both into real multi-epoch detections; author reviewed and tested locally|
 
 Add a row here every time an AI tool materially contributes to code, docs, design, or copy that ships in the submission.
 
