@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import AppShell from './components/AppShell'
 import IntroSequence from './components/IntroSequence'
+import TargetSelectionScreen from './components/TargetSelectionScreen'
 import { findTargetByCoordinates, getTargetById } from './lib/api'
 import { parseTargetParams, buildTargetParams } from './lib/urlParams'
 import type { TargetRecord } from './fixtures/types'
@@ -9,6 +10,17 @@ const BARNARD = getTargetById('barnards-star-2025-2026')!
 const EROS = getTargetById('433-eros-2025-06')!
 const RW_AURIGAE = getTargetById('rw-aurigae-2025-2026')!
 const CURATED_TARGETS = [EROS, BARNARD, RW_AURIGAE]
+
+// The five objects NASA named for this challenge — presented on the
+// selection screen the user picks from after the intro, in the same order
+// the challenge statement lists them.
+const OFFICIAL_TARGETS = [
+  BARNARD,
+  RW_AURIGAE,
+  getTargetById('r-draconis-2025-2026')!,
+  getTargetById('wise-0855-2025-2026')!,
+  getTargetById('epsilon-indi-b-2025-2026')!,
+]
 
 export const INTRO_SESSION_KEY = 'skyshift:introPlayed'
 
@@ -70,17 +82,38 @@ function clearIntroPlayed() {
   }
 }
 
+type EntryStep = 'intro' | 'selecting' | 'done'
+
+// A deep link bypasses both the intro and the selection screen on load (it
+// already names a specific target), but "Replay intro" must still work
+// afterwards — so the bypass is folded into the initial step instead of
+// gating the render separately, which would otherwise leave "Replay intro"
+// a dead control for anyone who arrived via a link.
+function initialStep(): EntryStep {
+  return isDeepLinkRequest() || readIntroPlayed() ? 'done' : 'intro'
+}
+
 function App() {
   const [{ target, linkNotFound }, setState] = useState(stateFromLocation)
-  // A deep link bypasses the intro on load, but "Replay intro" must still
-  // work afterwards — so the bypass is folded into introDone's initial
-  // value instead of gating the render separately, which would otherwise
-  // leave "Replay intro" a dead control for anyone who arrived via a link.
-  const [introDone, setIntroDone] = useState(() => isDeepLinkRequest() || readIntroPlayed())
+  const [step, setStep] = useState<EntryStep>(initialStep)
 
   function handleIntroComplete() {
+    setStep('selecting')
+  }
+
+  function handleOpenTargetSelection() {
+    setStep('selecting')
+  }
+
+  function handleDismissTargetSelection() {
+    setStep('done')
+  }
+
+  function handleTargetChosen(chosenTarget: TargetRecord) {
     writeIntroPlayed()
-    setIntroDone(true)
+    setState({ target: chosenTarget, linkNotFound: false })
+    window.history.pushState({}, '', buildTargetParams(chosenTarget))
+    setStep('done')
   }
 
   useEffect(() => {
@@ -98,7 +131,14 @@ function App() {
 
   return (
     <>
-      {!introDone && <IntroSequence onComplete={handleIntroComplete} />}
+      {step === 'intro' && <IntroSequence onComplete={handleIntroComplete} />}
+      {step === 'selecting' && (
+        <TargetSelectionScreen
+          targets={OFFICIAL_TARGETS}
+          onTargetChosen={handleTargetChosen}
+          onDismiss={handleDismissTargetSelection}
+        />
+      )}
       <a
         href="#viewer"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded focus:bg-accent-ember focus:px-3 focus:py-2 focus:text-space-950"
@@ -111,8 +151,9 @@ function App() {
         onTargetSelected={handleTargetSelected}
         onReplayIntro={() => {
           clearIntroPlayed()
-          setIntroDone(false)
+          setStep('intro')
         }}
+        onOpenTargetSelection={handleOpenTargetSelection}
         linkNotFound={linkNotFound}
       />
     </>

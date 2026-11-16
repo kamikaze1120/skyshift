@@ -10,14 +10,14 @@ const RW_AUR = getTargetById('rw-aurigae-2025-2026')!
 describe('AppShell', () => {
   it('renders as a fixed, non-scrolling viewport (no page-level overflow class on the root)', () => {
     const { container } = render(
-      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} linkNotFound={false} />,
+      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} onOpenTargetSelection={vi.fn()} linkNotFound={false} />,
     )
     expect(container.firstChild).toHaveClass('h-dvh')
   })
 
   it('shows the always-visible honesty badge near the workspace', () => {
     render(
-      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} linkNotFound={false} />,
+      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} onOpenTargetSelection={vi.fn()} linkNotFound={false} />,
     )
     // SkyFrame already discloses its own per-frame "Placeholder visual" text,
     // so this targets the shell's persistent badge specifically rather than
@@ -27,7 +27,7 @@ describe('AppShell', () => {
 
   it('toggles the About panel via the NavBar control', () => {
     render(
-      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} linkNotFound={false} />,
+      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} onOpenTargetSelection={vi.fn()} linkNotFound={false} />,
     )
     fireEvent.click(screen.getByRole('button', { name: /about/i }))
     expect(screen.getByText(/note on what you're seeing/i)).toBeInTheDocument()
@@ -35,8 +35,17 @@ describe('AppShell', () => {
 
   it('renders the active target in the workspace (sequence viewer + provenance panel)', () => {
     render(
-      <AppShell target={EROS} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} linkNotFound={false} />,
+      <AppShell target={EROS} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} onOpenTargetSelection={vi.fn()} linkNotFound={false} />,
     )
     expect(screen.getByText(EROS.observations[EROS.observations.length - 1].doi)).toBeInTheDocument()
+  })
+
+  it('opens target selection via the NavBar Targets control', () => {
+    const onOpenTargetSelection = vi.fn()
+    render(
+      <AppShell target={BARNARD} curatedTargets={[EROS, BARNARD, RW_AUR]} onTargetSelected={vi.fn()} onReplayIntro={vi.fn()} onOpenTargetSelection={onOpenTargetSelection} linkNotFound={false} />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /^targets$/i }))
+    expect(onOpenTargetSelection).toHaveBeenCalled()
   })
 })

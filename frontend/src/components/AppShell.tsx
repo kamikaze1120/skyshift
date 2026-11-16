@@ -10,10 +10,11 @@ interface AppShellProps {
   curatedTargets: TargetRecord[]
   onTargetSelected: (target: TargetRecord) => void
   onReplayIntro: () => void
+  onOpenTargetSelection: () => void
   linkNotFound: boolean
 }
 
-function AppShell({ target, curatedTargets, onTargetSelected, onReplayIntro, linkNotFound }: AppShellProps) {
+function AppShell({ target, curatedTargets, onTargetSelected, onReplayIntro, onOpenTargetSelection, linkNotFound }: AppShellProps) {
   const [aboutOpen, setAboutOpen] = useState(false)
 
   return (
@@ -27,6 +28,7 @@ function AppShell({ target, curatedTargets, onTargetSelected, onReplayIntro, lin
         activeTarget={target}
         onTargetSelected={onTargetSelected}
         onReplayIntro={onReplayIntro}
+        onOpenTargetSelection={onOpenTargetSelection}
         onToggleAbout={() => setAboutOpen(open => !open)}
         linkNotFound={linkNotFound}
       />

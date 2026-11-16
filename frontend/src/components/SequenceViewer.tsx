@@ -95,17 +95,17 @@ function SequenceViewer({ target }: SequenceViewerProps) {
     <section className="relative h-full overflow-hidden bg-space-950 pt-20">
       <div className="flex h-full min-h-0 flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="relative min-h-0 flex-1 overflow-hidden border-b border-starlight/10 lg:border-b-0 lg:border-r">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4 sm:px-8">
-            <div>
-              <p className="micro-label text-accent-ember">Research bay</p>
-              <p className="mt-1 text-[10px] text-moon/35">Visual evidence · frame {currentIndex + 1} of {target.observations.length}</p>
-            </div>
-            <span className="rounded-full border border-starlight/10 bg-space-950/70 px-3 py-1.5 text-[9px] text-moon/45 backdrop-blur-md">
-              {activeMode.label} view
-            </span>
-          </div>
-
-          <SkyFrame observation={observation} index={currentIndex} reducedMotion={reducedMotion} showsMotion={showsMotion} displayMode={displayMode} fieldOfView={fieldOfView} baselineImageUrl={target.observations[0].image_url} />
+          <SkyFrame
+            observation={observation}
+            index={currentIndex}
+            totalFrames={target.observations.length}
+            modeLabel={activeMode.label}
+            reducedMotion={reducedMotion}
+            showsMotion={showsMotion}
+            displayMode={displayMode}
+            fieldOfView={fieldOfView}
+            baselineImageUrl={target.observations[0].image_url}
+          />
 
           <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 sm:inset-x-8 sm:bottom-6">
             <div className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-starlight/10 bg-space-950/85 px-4 py-3 shadow-2xl backdrop-blur-xl sm:px-5">
@@ -121,8 +121,8 @@ function SequenceViewer({ target }: SequenceViewerProps) {
           </div>
         </div>
 
-        <aside className="soft-scrollbar relative min-h-0 overflow-y-auto bg-space-900">
-          <div className="border-b border-starlight/10 px-4 py-4 sm:px-5">
+        <aside className="brand-gradient soft-scrollbar relative min-h-0 overflow-y-auto">
+          <div className="border-b border-l-4 border-starlight/10 border-l-accent-ember/60 bg-starlight/[.03] px-4 py-5 sm:px-5">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="micro-label text-moon/35">Selected patch · {target.object_type.replace('_', ' ')}</p>
@@ -140,7 +140,7 @@ function SequenceViewer({ target }: SequenceViewerProps) {
             </div>
           </div>
 
-          <section className="border-b border-starlight/10 px-4 py-4 sm:px-5" aria-labelledby="view-lens-title">
+          <section className="m-3 rounded-2xl border border-l-4 border-starlight/10 border-l-orbit/60 bg-starlight/[.035] px-4 py-4 sm:px-5" aria-labelledby="view-lens-title">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="micro-label text-moon/35">01 · View lens</p>
@@ -171,9 +171,11 @@ function SequenceViewer({ target }: SequenceViewerProps) {
             </div>
           </section>
 
-          <SpectralControls channel={channel} onChannelChange={setChannel} />
+          <div className="m-3 rounded-2xl border border-l-4 border-starlight/10 border-l-neon-blue/60 bg-starlight/[.035]">
+            <SpectralControls channel={channel} onChannelChange={setChannel} />
+          </div>
 
-          <section className="border-t border-starlight/10 px-4 py-4 sm:px-5">
+          <section className="m-3 rounded-2xl border border-l-4 border-starlight/10 border-l-accent-ember/60 bg-starlight/[.035] px-4 py-4 sm:px-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="micro-label text-moon/35">03 · Frame</p>
@@ -185,19 +187,21 @@ function SequenceViewer({ target }: SequenceViewerProps) {
             <div className="mt-2 flex justify-between text-[8px] text-moon/25"><span>Wide context</span><span>Close detail</span></div>
           </section>
 
-          <SourcePanel observation={observation} verified={target.verified} storyNote={target.story_note} />
+          <div className="m-3 rounded-2xl border border-l-4 border-starlight/10 border-l-lilac/50 bg-starlight/[.035]">
+            <SourcePanel observation={observation} verified={target.verified} storyNote={target.story_note} />
+          </div>
 
-          <div className="px-4 sm:px-5">
+          <div className="m-3 rounded-2xl border border-l-4 border-starlight/10 border-l-orbit/50 bg-starlight/[.035] px-4 sm:px-5">
             <FlagMoverPanel targetId={target.target_id} />
           </div>
 
-          <section className="border-t border-starlight/10 px-4 py-4 sm:px-5">
-            <button type="button" onClick={() => setAssistantOpen(open => !open)} className="flex w-full items-center justify-between rounded-xl border border-accent-ember/20 bg-accent-ember/[.045] px-3 py-3 text-left transition hover:bg-accent-ember/[.08] focus-visible:outline-1 focus-visible:outline-accent-ember">
+          <section className="m-3">
+            <button type="button" onClick={() => setAssistantOpen(open => !open)} className="flex w-full items-center justify-between rounded-2xl border border-accent-ember/25 bg-accent-ember/[.07] px-4 py-4 text-left shadow-[0_8px_30px_rgba(255,176,32,.08)] transition hover:bg-accent-ember/[.11] focus-visible:outline-1 focus-visible:outline-accent-ember">
               <span>
                 <span className="micro-label block text-accent-ember">Ask the guide</span>
                 <span className="mt-1 block text-sm text-starlight">Explain this evidence</span>
               </span>
-              <span className="grid size-7 place-items-center rounded-full border border-accent-ember/25 text-accent-ember">✦</span>
+              <span className="grid size-8 place-items-center rounded-full border border-accent-ember/35 text-accent-ember">✦</span>
             </button>
           </section>
 
