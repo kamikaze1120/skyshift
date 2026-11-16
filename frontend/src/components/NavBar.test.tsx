@@ -88,6 +88,23 @@ describe('NavBar', () => {
     expect(screen.getByRole('button', { name: /about/i })).not.toHaveAttribute('tabindex', '-1')
   })
 
+  it('lets the user click the Skyshift logo to return to the starting page', () => {
+    const onReplayIntro = vi.fn()
+    render(
+      <NavBar
+        curatedTargets={[EROS, BARNARD, RW_AUR]}
+        activeTarget={BARNARD}
+        onTargetSelected={vi.fn()}
+        onReplayIntro={onReplayIntro}
+        onOpenTargetSelection={vi.fn()}
+        onToggleAbout={vi.fn()}
+        linkNotFound={false}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /skyshift/i }))
+    expect(onReplayIntro).toHaveBeenCalled()
+  })
+
   it('offers a Targets control that re-opens target selection', () => {
     const onOpenTargetSelection = vi.fn()
     render(
