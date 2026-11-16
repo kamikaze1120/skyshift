@@ -110,7 +110,7 @@ Layer 0   IRSA
 | FastAPI | Async, native Pydantic validation, auto generated OpenAPI which the frontend consumes as types |
 | Postgres + pgvector | One database for relational metadata and vector retrieval |
 | React + Vite or Next.js | Decide at kickoff based on whether SSR buys anything |
-| Groq or Gemini free tier, Ollama local fallback | The orchestrator is free. Inference is the real cost. Local model means a dead venue network does not kill the demo. |
+| Groq free tier (sole provider, see DECISIONS.md 2026-11-13/2026-11-15) | The orchestrator is free. Inference is the real cost. A hard 5-8s per-call timeout falls back to a non-AI, code-generated sentence over the deterministic query results — no local model needed to avoid a dead-air demo. |
 
 ### Deployment topology and env vars (locked 2026-11-09)
 
@@ -121,7 +121,7 @@ Layer 0   IRSA
 
 **Env var contract:**
 - Frontend (Vercel): `VITE_API_BASE_URL` (or `NEXT_PUBLIC_API_URL` if Next.js is chosen at kickoff) — public, build-time, points at the backend's deployed URL. Set separately per Vercel environment (Production / Preview / Development); locally it points at `http://localhost:8000` or wherever Athena runs FastAPI.
-- Backend (its own host, never Vercel): `DATABASE_URL` (Postgres/pgvector), `GROQ_API_KEY`, the local Ollama endpoint URL, `CORS_ALLOWED_ORIGINS`. These secrets are never entered into Vercel's dashboard.
+- Backend (its own host, never Vercel): `DATABASE_URL` (Postgres/pgvector), `GROQ_API_KEY`, `CORS_ALLOWED_ORIGINS`. These secrets are never entered into Vercel's dashboard.
 - `.env.example` on both sides lists variable names with placeholder values only. Real `.env` files stay gitignored per Section 7 rule 4.
 
 **CORS gotcha:** Vercel issues a unique preview URL per PR/branch, not one fixed domain. The backend's CORS config must allow the production domain plus a pattern for preview deployments (e.g. `https://skyshift-*.vercel.app`), or every PR preview silently fails to reach the API.
@@ -178,7 +178,7 @@ Mujtaba owns the critical path on Day 2. The demo video, citations, AI disclosur
 
 **Athena:** IRSA tutorial notebooks, `spherex.obscore` column notes, cutout service, query timing. Practice LangGraph on an unrelated API.
 
-**Mujtaba:** generic starter template (FastAPI, Postgres with pgvector, React, OpenAPI type generation), accounts and keys, Ollama running locally, project name and logo, README and `AI_USAGE.md` skeletons, demo script.
+**Mujtaba:** generic starter template (FastAPI, Postgres with pgvector, React, OpenAPI type generation), accounts and keys, project name and logo, README and `AI_USAGE.md` skeletons, demo script.
 
 **Both:** agree this charter, pick two or three demo sky regions with good repeat coverage.
 
@@ -209,11 +209,10 @@ Finalize the API contract on paper. Rehearse the demo narrative. Four hour dry r
 
 | Risk | Mitigation |
 |---|---|
-| Venue Wi-Fi too slow for FITS downloads | Pre cached demo region, seeded fixtures, Ollama local model |
+| Venue Wi-Fi too slow for FITS downloads | Pre cached demo region, seeded fixtures |
 | TAP endpoint slow or down | AWS Open Data bucket as fallback path |
 | Agent loops, burns free tier | Recursion cap, timeouts, cache every tool result |
-| LLM call stalls or returns empty mid-demo (Gemini free tier tested unreliable pre-kickoff) | Groq as primary provider, Ollama local as guaranteed fallback; hard 5-8s timeout per LLM call in the LangGraph layer; on timeout or empty response, fall back to a code-generated (non-AI) sentence describing the deterministic query results so the UI never stalls; pre-run and cache the exact demo queries before judging so the live call is warm, not cold |
-| LLM call stalls or returns empty mid-demo (Gemini free tier tested unreliable pre-kickoff) | Groq as primary provider, Ollama local as guaranteed fallback; hard 5-8s timeout per LLM call in the LangGraph layer; on timeout or empty response, fall back to a code-generated (non-AI) sentence describing the deterministic query results so the UI never stalls; pre-run and cache the exact demo queries before judging so the live call is warm, not cold |
+| LLM call stalls or returns empty mid-demo (Gemini free tier tested unreliable pre-kickoff; Ollama fallback dropped 2026-11-15, see DECISIONS.md) | Groq as sole provider; hard 5-8s timeout per LLM call in the LangGraph layer; on timeout or empty response, fall back to a code-generated (non-AI) sentence describing the deterministic query results so the UI never stalls; pre-run and cache the exact demo queries before judging so the live call is warm, not cold |
 | Scope creep into real astronomy analysis | Ship exploration and comparison, make no discovery claims |
 | Merge conflicts | Layer ownership plus contract first |
 | Citation or AI disclosure miss costs the award | Both files exist from commit one, checked before submit |
