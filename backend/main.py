@@ -31,40 +31,46 @@ app.mount("/frames", StaticFiles(directory=FRAMES_DIR), name="frames")
 # propagate its proper motion to each observation date.
 OBJECTS = [
     ObjectCard(
-        target_id="barnards-star", display_name="Barnard's Star", object_type="star",
+        target_id="barnards-star-2025-2026", display_name="Barnard's Star", object_type="star",
         coordinates=Coordinates(ra_deg=269.452075, dec_deg=4.693364),
-        detection="clear", releases=["qr2"],
+        detection="clear", releases=["dr1", "qr3"],
         blurb="A nearby red dwarf with the largest known proper motion; clearly detected.",
     ),
     ObjectCard(
-        target_id="rw-aurigae", display_name="RW Aurigae", object_type="star",
+        target_id="rw-aurigae-2025-2026", display_name="RW Aurigae", object_type="star",
         coordinates=Coordinates(ra_deg=76.9564535, dec_deg=30.4013327),
-        detection="clear", releases=["qr2"],
+        detection="clear", releases=["dr1", "qr3"],
         blurb="A young variable star whose brightness changes between observations.",
     ),
     ObjectCard(
-        target_id="r-draconis", display_name="R Draconis", object_type="star",
+        target_id="r-draconis-2025-2026", display_name="R Draconis", object_type="star",
         coordinates=Coordinates(ra_deg=248.167472, dec_deg=66.7549882),
-        detection="needs_check", releases=["qr2"],
+        detection="needs_check", releases=["dr1", "qr3"],
         blurb="A large-amplitude variable star; very bright and may saturate the detector.",
     ),
     ObjectCard(
-        target_id="wise-0855", display_name="WISE 0855-0714", object_type="brown_dwarf",
+        target_id="wise-0855-2025-2026", display_name="WISE 0855-0714", object_type="brown_dwarf",
         coordinates=Coordinates(ra_deg=133.795129, dec_deg=-7.245147),
-        detection="not_detected", releases=["qr2"],
+        detection="not_detected", releases=["dr1"],
         blurb="One of the coldest known brown dwarfs; too faint in single frames, may need stacking.",
     ),
     ObjectCard(
-        target_id="epsilon-indi-b", display_name="Epsilon Indi B", object_type="brown_dwarf",
+        target_id="epsilon-indi-b-2025-2026", display_name="Epsilon Indi B", object_type="brown_dwarf",
         coordinates=Coordinates(ra_deg=331.043836, dec_deg=-56.782707),
-        detection="not_detected", releases=["qr2"],
+        detection="not_detected", releases=["dr1", "qr3"],
         blurb="A pair of brown dwarfs orbiting a star; not detected in single frames.",
+    ),
+    ObjectCard(
+        target_id="433-eros-2025-06", display_name="433 Eros", object_type="asteroid",
+        coordinates=Coordinates(ra_deg=7.413807, dec_deg=9.976979),
+        detection="clear", releases=["qr2"],
+        blurb="A near-Earth asteroid that crosses about 604 arcseconds of sky in just over eight hours.",
     ),
 ]
 
 # Proper motion (mas/yr): (pm_ra_cosdec, pm_dec). Only Barnard's Star moves
 # enough to matter. Source: SIMBAD, via docs/CANDIDATE_TARGETS.md.
-PROPER_MOTION = {"barnards-star": (-801.551, 10362.394)}
+PROPER_MOTION = {"barnards-star-2025-2026": (-801.551, 10362.394)}
 
 # Reference time for the archive search (mid-survey), so a moving star is
 # searched near where it was during the observations.
@@ -98,6 +104,10 @@ def timeseries(
     limit: int = Query(8, ge=2, le=24),
 ):
     card = next((o for o in OBJECTS if o.target_id == target_id), None)
+    if card is not None and card.object_type == "asteroid":
+        raise HTTPException(
+            501, "Moving objects need ephemeris-based cutouts, which are not supported yet."
+        )
     if ra is None or dec is None:
         if card is None:
             raise HTTPException(422, "Give ra and dec, or a known target_id.")
