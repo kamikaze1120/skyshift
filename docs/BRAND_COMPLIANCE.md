@@ -58,13 +58,49 @@ is in the guide.
 
 ## Logo and NASA branding
 
-No NASA insignia or Space Apps logo graphic is used anywhere in the app — only text attribution
-("Built for NASA Space Apps 2026...", `AboutSection.tsx`; "NASA Space Apps · 2026",
-`IntroSequence.tsx`). This already matches `docs/RULES_COMPLIANCE.md`'s hard rule ("Generated
-content must not use, contain, or modify NASA branding or design elements") and avoids every "Logo
-Don't" in the guide (recoloring, tilting, stretching, deconstructing lockups) by not embedding the
-logo mark at all. If the team wants to add the actual Space Apps "Orbit" logo mark later, pull the
-real asset from spaceappschallenge.org/brand rather than approximating it.
+**Updated 2026-11-15: the Space Apps "Orbit" logo is now used, and that's correct, not a
+violation.** The earlier version of this doc read `docs/RULES_COMPLIANCE.md`'s "must not use NASA
+branding" rule as covering the Space Apps Challenge's own logo too. Re-reading the brand guide
+(20 pages, pulled directly from `assets.spaceappschallenge.org`) shows that rule is about **NASA's
+own insignia** (the meatball logo, flags, mission identifiers) — the guide itself exists
+specifically to tell participants how to use the Orbit mark correctly, with its own download link
+(`spaceappschallenge.org/brand` → `NASA_Space_Apps_Logos_2026.zip`). Using the Challenge's own logo
+is expected, not prohibited.
+
+Two official assets are now in `frontend/public/brand/`, pulled from that same zip:
+- `space-apps-lockup.svg` ("Color and White" Default horizontal lockup) — shown top-right in
+  `IntroSequence.tsx`, replacing the old "NASA Space Apps · 2026" text.
+- `space-apps-mark.svg` (White small Orbit mark only) — shown in `NavBar.tsx`'s header, next to the
+  Skyshift wordmark.
+
+Both are the untouched, unmodified official files — no recoloring, rotating, stretching, or
+deconstructing the lockup (every "Logo Don't" in the guide avoided by not touching the files at
+all). NASA's own insignia is still never used anywhere, which remains the actual hard rule.
+
+## Follow-up (2026-11-15): Electric Blue and Neon Blue added
+
+The guide documents exactly 3 approved backgrounds (Deep Blue, Electric Blue, White) and 5 accents
+(Blue Yonder, Neon Blue, Rocket Red, Martian Red, Neon Yellow) — the app previously only ever used
+one of the three backgrounds (Deep Blue), rendering as flat and monotone. Added as new tokens:
+
+| Token | Hex | Maps to | Used for |
+|---|---|---|---|
+| `electric-blue` | `#0042A6` | **Electric Blue** (2nd approved background) | `.brand-gradient` (below) |
+| `neon-blue` | `#0960E1` | **Neon Blue** (accent) | secondary interactive accent, distinct from `orbit`/Blue Yonder |
+
+Added `.brand-gradient` (`index.css`): the guide's own documented 45° linear gradient from Electric
+Blue (top-left) to Deep Blue (bottom-right) — applied to UI chrome surfaces (`NavBar`'s header,
+`SequenceViewer`'s data rail, `TargetSelectionScreen`'s backdrop), never to the decorative
+sky/nebula art, which keeps its own exempted illustrative gradient as before. This breaks up flat
+single-tone chrome using a second *approved* background rather than introducing a new hue.
+
+Also used White as an actual panel background (not just text) for the first time: the short-description
+card in `TargetSelectionScreen.tsx` is a white card with Deep Blue text — one of the guide's
+documented text/background pairings, used here for a deliberate light/dark contrast beat in the new
+intro → selection → research-bay flow.
+
+Martian Red (`#8E1100`) was considered and left out — likely has the same WCAG AA contrast problem
+Rocket Red already failed in this app's reduced-opacity usage (see below), and wasn't re-verified.
 
 ## Follow-up: literal color leftovers
 

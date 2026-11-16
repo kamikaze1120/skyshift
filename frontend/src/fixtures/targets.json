@@ -25,7 +25,7 @@
     ],
     "known_motion_arcsec": 7.46,
     "verified": true,
-    "story_note": "Barnard's Star, the fastest-moving star in the sky, shifted about 7.5 arcseconds across these two epochs — real motion, though under one SPHEREx pixel, so this is confirmed-present rather than a dramatic visible jump."
+    "story_note": "Barnard's Star, the fastest-moving star in the sky, shifted about 7.5 arcseconds across these two epochs — real motion, about 1.2 SPHEREx pixels (6.15 arcsec/pixel), so this is confirmed-present rather than a dramatic visible jump."
   },
   {
     "target_id": "rw-aurigae-2025-2026",

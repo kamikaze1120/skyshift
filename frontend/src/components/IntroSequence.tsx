@@ -44,7 +44,11 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
               <p className="micro-label mt-1 text-moon/35">A public SPHEREx research tool</p>
             </div>
           </div>
-          <p className="micro-label hidden text-moon/30 sm:block">NASA Space Apps · 2026</p>
+          <img
+            src="/brand/space-apps-lockup.svg"
+            alt="NASA Space Apps Challenge 2026"
+            className="hidden h-6 w-auto opacity-90 sm:block"
+          />
         </div>
 
         <div className="grid min-h-0 flex-1 items-center gap-8 py-8 lg:grid-cols-[1fr_340px] lg:gap-20">
@@ -107,7 +111,7 @@ function IntroSequence({ onComplete }: IntroSequenceProps) {
             type="button"
             aria-label="Enter research bay"
             onClick={event => { event.stopPropagation(); complete() }}
-            className="rounded-full border border-starlight/15 px-4 py-2 text-[10px] uppercase tracking-[.15em] text-moon/50 transition hover:border-starlight/30 hover:text-starlight focus-visible:outline-2 focus-visible:outline-accent-ember"
+            className="rounded-full bg-accent-ember px-6 py-3 text-xs font-semibold uppercase tracking-[.15em] text-space-950 shadow-[0_8px_30px_rgba(255,176,32,.4)] transition hover:bg-starlight focus-visible:outline-2 focus-visible:outline-starlight"
           >
             Enter research bay
           </button>

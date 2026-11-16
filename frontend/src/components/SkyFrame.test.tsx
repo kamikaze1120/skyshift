@@ -54,4 +54,10 @@ describe('SkyFrame', () => {
     const closeImg = close.querySelector('img') as HTMLImageElement
     expect(wideImg.style.transform).not.toBe(closeImg.style.transform)
   })
+
+  it('shows the frame count and active mode label as a single merged header, when given', () => {
+    render(<SkyFrame observation={obs} index={0} totalFrames={2} modeLabel="Difference" reducedMotion={false} showsMotion={true} />)
+    expect(screen.getByText(/epoch 1 of 2/i)).toBeInTheDocument()
+    expect(screen.getByTestId('frame-mode-label')).toHaveTextContent(/difference/i)
+  })
 })
