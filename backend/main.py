@@ -50,7 +50,7 @@ OBJECTS = [
     ),
     ObjectCard(
         target_id="wise-0855-2025-2026", display_name="WISE 0855-0714", object_type="brown_dwarf",
-        coordinates=Coordinates(ra_deg=133.795129, dec_deg=-7.245147),
+        coordinates=Coordinates(ra_deg=133.818908, dec_deg=-7.247048),
         detection="not_detected", releases=["dr1"],
         blurb="One of the coldest known brown dwarfs; too faint in single frames, may need stacking.",
     ),
@@ -70,7 +70,11 @@ OBJECTS = [
 
 # Proper motion (mas/yr): (pm_ra_cosdec, pm_dec). Only Barnard's Star moves
 # enough to matter. Source: SIMBAD, via docs/CANDIDATE_TARGETS.md.
-PROPER_MOTION = {"barnards-star-2025-2026": (-801.551, 10362.394)}
+PROPER_MOTION = {
+    "barnards-star-2025-2026": (-801.551, 10362.394),
+    "wise-0855-2025-2026": (-8123.7, 673.2),
+    "epsilon-indi-b-2025-2026": (3981.977, -2466.832),
+}
 
 # Reference time for the archive search (mid-survey), so a moving star is
 # searched near where it was during the observations.
